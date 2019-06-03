@@ -27,7 +27,7 @@
 				$.post({
 					url:"image.php",
 					data:{
-						
+						asd
 					}
 				});
 			}
