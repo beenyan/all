@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>無標題文件</title>
+<script src="js/jquery-3.4.1.js"></script>
+<link rel="stylesheet" href="js/jquery-ui.css">
+<script src="js/jquery-ui.js"></script>
+<link type="text/css" href="css.css" rel="stylesheet">
+<script>
+	$(function(){
+		$( "#slider" ).slider({
+			max:200,
+			min:10,
+		});
+		$( "#slider" ).slider("value",100)
+		$("#dialog").dialog({
+			width:500,
+			height:500,
+		})
+		$(".ui-dialog-titlebar").hide();
+		$("#stroke").mousedown(function(){
+			$("#nc").val($(this).val())
+		})
+		$("#stroke").mousemove(function(){
+			$("#nc").val($(this).val())
+		})
+		$(".stroke").mousedown(function(){
+			$(".nc").val($(this).val())
+		})
+		$(".stroke").mousemove(function(){
+			$(".nc").val($(this).val())
+		})
+		$("#anglecount").keydown(function(){
+			return false;
+		})
+		$("#stamp").click(function(){
+			$("#stlist").css("transform","scale(1,1)")
+		})
+	})
+</script>
+</head>
+
+<body style="text-align: right;user-select: none">
+	<div id="allcanvas">
+		<canvas class="cana can" id="canvas0" width="0px" height="0px"></canvas>
+		<canvas id="tc" width="50px" height="50px" style="z-index: 999999999"></canvas>
+	</div>
+	<canvas id="canvas3" width="50px" height="50px" style="display: none"></canvas>
+	<canvas id="canvas2" width="256px" height="30px"></canvas>
+	<canvas id="canvas1" width="256px" height="256px"></canvas>
+	<canvas id="downcanvas" style="display: none"></canvas>
+	<div id="cs">
+		<div id="pen"></div>
+		<div id="eraser"></div>
+		<div id="button"></div>
+		<div id="square"></div>
+		<div id="angle"></div>
+		<div id="round"></div>
+		<div id="star"></div>
+		<label class="basiccolor" style="background: rgb(255,0,0)"></label>
+		<label class="basiccolor" style="background: rgb(255,165,0)"></label>
+		<label class="basiccolor" style="background: rgb(255,255,0)"></label>
+		<label class="basiccolor" style="background: rgb(0,128,0)"></label>
+		<label class="basiccolor" style="background: rgb(0,0,255)"></label>
+		<label class="basiccolor" style="background: rgb(128,0,128)"></label>
+		<label class="basiccolor" style="background: rgb(255,255,255)"></label>
+		<label class="basiccolor" style="background: rgb(0,0,0)"></label>
+		<label class="basiccolor" style="background: rgb(60,60,60)"></label>
+		<label class="basiccolor" style="background: rgb(120,120,120)"></label>
+		<label class="basiccolor" style="background: rgb(180,180,180)"></label>
+		<label class="basiccolor" style="background: rgb(15,80,120)"></label>
+	</div>
+	<div id="point"></div>
+	<div id="l255"></div>
+	<div id="back"></div>
+	<div id="next"></div>
+	<div class="house">
+		<div id="list" style="text-align: left" class="sortable">
+			<div class="ll" id="ll">
+				<input id="ccanvas0" type="radio" class="radio" checked name="asd">
+				<img id="c0" class="allimg">
+			</div>
+		</div>
+		<input id="addpage" type="image" src="newpage.png">
+		<input name="up" type="file" id="up" accept="image/*">
+		<input type="button" id="textout" value="純文字檔儲存">
+		<input type="file" id="textin" accept="text/plain">
+		<img id="img" style="display: none">
+	</div>
+	<a href="#" download="" id="download"></a>
+	<div id="stamp"></div>
+	<div id="slider" width="800px" height="600px"></div>
+	<div id="dialog" style="background:#97E2F2; text-align: center; display: none">
+		<div>
+			<h1 style="display: inline-block;">畫布寬度</h1>
+			<input class="it" value="800" id="t0" type="text" style="height: 25px; text-align:center" maxlength="4" size="1">
+			<h3 style="display: inline-block">px</h3>&nbsp;&nbsp;&nbsp;
+			<h1 style="display: inline-block;">畫布高度</h1>
+			<input class="it" value="600" id="t1" type="text" style="height: 25px; text-align: center" maxlength="4" size="1">
+			<h3 style="display: inline-block">px</h3>
+		</div>
+		<div>
+			<h1><strong>畫布背景顏色</strong></h1>
+			<h1 style="display: inline-block; padding:0% 5% 0% 5%">R</h1> 
+			<h1 style="display: inline-block; padding:0% 5% 0% 5%">G</h1> 
+			<h1 style="display: inline-block; padding:0% 5% 0% 5%">B</h1> <br>
+			<input class="it" id="t2" value="0" type="text" readonly style="height: 25px; text-align: center;margin: 0% 2% 0% 2%" placeholder="0~255" maxlength="3" size="2">
+			<input class="it" id="t3" value="0" type="text" readonly style="height: 25px; text-align: center;margin: 0% 2% 0% 2%" placeholder="0~255" maxlength="3" size="2">
+			<input class="it" id="t4" value="0" type="text" readonly style="height: 25px; text-align: center;margin: 0% 2% 0% 2%" placeholder="0~255" maxlength="3" size="2"><br><br>
+			<input id="b0" type="button" value="確認" style="font-size: 200%">
+		</div>
+	</div>
+	<div id="dialog0" style="background:#97E2F2; text-align: center; display: none;font-size: 200%; font-family: '微軟正黑體'">
+		<strong>塗色方式：</strong>
+		<select id="style">
+			<option value="fill">填滿</option>
+			<option value="stork">框線</option>
+		</select><br>
+		<strong>頂點數：</strong><input class="anglecount" value="3" type="number" min="3" max="10"><br>
+		<strong>邊框大小：</strong><input id="stroke" value="10" type="range" min="2" max="100">
+		<input readonly type="text" id="nc" value="10" size="2"><br>
+		<input id="close" type="button" value="確定">
+	</div>
+	<div id="dialog1" style="z-index: 9999999999999;background:#97E2F2; text-align: center; display: none;font-size: 200%; font-family: '微軟正黑體'">
+		<strong>塗色方式：</strong>
+		<select style="z-index: 9999999999999;" id="style0">
+			<option value="fill">填滿</option>
+			<option value="stork">框線</option>
+		</select><br>
+		<strong>邊框大小：</strong><input style="z-index: 9999999999999;" class="stroke" value="10" type="range" min="2" max="100">
+		<input readonly type="text" class="nc" value="10" size="2"><br>
+		<input id="close0" type="button" value="確定">
+	</div>
+	<div id="stlist" style="text-align: left">
+		<img class="img" src="stamp0.png" draggable="false">
+		<img class="img" src="stamp1.png" draggable="false">
+		<img class="img" src="stamp2.png" draggable="false">
+		<img class="img" src="stamp3.png" draggable="false">
+	</div>
+	<div class="move"></div>
+	<script src="js/function.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>

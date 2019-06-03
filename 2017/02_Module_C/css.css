@@ -1,0 +1,341 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	position: absolute;
+	background: gray;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+}
+#canvas1{
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	cursor: pointer;
+}
+#canvas2{
+	position: absolute;
+	left: 10px;
+	top: 270px;
+	cursor: pointer;
+}
+#point{
+	pointer-events: none;
+	top: -7px;
+	left: -7px;
+	width: 36px;
+	height: 36px;
+	position: absolute;
+	background: url("point.png")
+}
+#l255{
+	pointer-events: none;
+	left:7px;
+	top: 266px;
+	width: 6px;
+	height: 38px;
+	position: absolute;
+	background: url("255.png")
+}
+#pen{
+	left:7px;
+	top: 10px;
+	width: 36px;
+	height: 36px;
+	position: absolute;
+	background: url("pen.png");
+	cursor: pointer;
+	transform: scale(0.8);
+}
+#pen:active{
+	transform: scale(1);
+}
+#back{
+	left:7px;
+	top: 610px;
+	width: 136px;
+	height: 140px;
+	position: absolute;
+	background: url("back.png");
+	cursor: pointer;
+	transform: scale(0.8);
+	opacity: 0.8;
+}
+#back:active{
+	transform: scale(1);
+	opacity: 1
+}
+#next{
+	left:143px;
+	top: 610px;
+	width: 136px;
+	height: 140px;
+	position: absolute;
+	background: url("next.png");
+	cursor: pointer;
+	transform: scale(0.8);
+	opacity: 0.8;
+}
+#next:active{
+	transform: scale(1);
+	opacity: 1
+}
+#download{
+	position:absolute;
+	left:1320px;
+	top: 640px;
+	width: 59px;
+	height: 87px;
+	background: url("download.png");
+	cursor: pointer;
+	transform: scale(0.8);
+	opacity: 0.8;
+}
+#download:active{
+	transform: scale(1);
+	opacity: 1;
+}
+#eraser{
+	left:7px;
+	top: 46px;
+	width: 36px;
+	height: 36px;
+	position: absolute;
+	background: url("eraser.png");
+	cursor: pointer;
+	transform: scale(0.8);
+}
+#eraser:active{
+	transform: scale(1);
+}
+#button{
+	left:7px;
+	top: 82px;
+	width: 36px;
+	height: 36px;
+	position: absolute;
+	background: url("button.png");
+	cursor: pointer;
+	transform: scale(0.8);
+}
+#button:active{
+	transform: scale(1);
+}
+#square{
+	left:7px;
+	top: 119px;
+	width: 36px;
+	height: 36px;
+	position: absolute;
+	background: url("square.png");
+	cursor: pointer;
+	transform: scale(0.8);
+}
+#square:active{
+	transform: scale(1);
+}
+#angle{
+	left:7px;
+	top: 155px;
+	width: 36px;
+	height: 36px;
+	position: absolute;
+	background: url("angle.png");
+	cursor: pointer;
+	transform: scale(0.8);
+}
+#angle:active{
+	transform: scale(1);
+}
+#round{
+	left:7px;
+	top: 191px;
+	width: 36px;
+	height: 36px;
+	position: absolute;
+	background: url("round.png");
+	cursor: pointer;
+	transform: scale(0.8);
+}
+#round:active{
+	transform: scale(1);
+}
+#star{
+	left:7px;
+	top: 227px;
+	width: 36px;
+	height: 36px;
+	position: absolute;
+	background: url("star.png");
+	cursor: pointer;
+	transform: scale(0.8);
+}
+#star:active{
+	transform: scale(1);
+}
+#cs{
+	position: absolute;
+	display: inline-block;
+	left: 10px;
+	top: 304px;
+	width: 256px;
+	height: 280px;
+	background: white;
+	border-radius: 5%;
+}
+.basiccolor{
+	display:inline-block;
+	position: relative;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin: 3%;
+	border: outset;
+	border-color: black;
+	transform: scale(0.8);
+	cursor:pointer;
+}
+.basiccolor:active{
+	transform: scale(1)
+}
+#slider{
+	position: absolute;
+	left: 10px;
+	top: 588px;
+	width: 256px;
+	height: 30px;
+}
+#tc{
+	position: absolute;
+	pointer-events: none;
+	right: 0;
+}
+#stamp{
+	margin: 0px;
+	right: 0px;
+	left:1260px;
+	width: 60px;
+	height: 90px;
+	position:relative;
+	background: url("stamp.png");
+	cursor: pointer;
+	transform: scale(0.8);
+	opacity: 0.8;
+}
+#stamp:active{
+	transform: scale(1);
+	opacity: 1;
+}
+.img{
+	width: 90px;
+	height: 90px;
+	cursor: pointer;
+	transform: scale(0.8)
+}
+.img:active{
+	transform: scale(1)
+}
+#stlist{
+	top: -80px;
+	position:relative;
+	left:850px;
+	width: 400px;
+	transform: scale(0,1);
+}
+.move{
+	top: -180px;
+	position: relative;
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background: url(move.png);
+	cursor: nwse-resize;
+}
+.house{
+	position: absolute;
+	top: 10px;
+	left: 280px;
+	width: 320px;
+	height: 600px;
+	background: white;
+	border-radius: 2%;
+}
+#up{
+	position:absolute;
+	left: 5px;
+	width: 70px;
+	top: 568px;
+}
+#textout{
+	position:absolute;
+	left: 80px;
+	width: 100px;
+	top: 568px;
+}
+#textin{
+	position:absolute;
+	left: 185px;
+	width: 70px;
+	top: 568px;
+}
+#list{
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	background: blue;
+	width: 310px;
+	height: 500px;
+	overflow: auto;
+}
+.ll{
+	position:relative;
+	background:white;
+	margin: 5px 0px 0px 0px ;
+	left: 5px;
+	width: 280px;
+	height: 50px;
+}
+.allimg{
+	position: relative;
+	width: 40px;
+	height: 40px;
+	margin: 3px 0px 3px 5px;
+	border:outset;
+}
+.radio{
+	position: relative;
+	top: -10px;
+	margin: 0px 0px 0px 5px;
+}
+#addpage{
+	position: absolute;
+	left: 5px;
+	top: 510px;
+}
+.cana{
+	position:absolute;
+	top: 0;
+	right: 0;
+}
+.can{
+	position:relative;
+	top: 0;
+}
+.ud{
+	position: relative;
+	left: 100px;
+}
+.trash{
+	cursor: pointer;
+}
+.allmove{
+	cursor: pointer;
+}
+.mm{
+	position: absolute;
+	background:url("mm.png");
+	width:30px;
+	height:30px;
+	z-index: 999999999;
+	cursor: all-scroll;
+}

@@ -1,0 +1,203 @@
+@charset "utf-8";
+/* CSS Document */
+/*上進*/
+@keyframes ldowni{
+	0%{width: 0%}
+	0%{height: 0%}
+	100%{width: 95%}
+	100%{height: 98%}
+	0%{opacity:0}
+	100%{opacity:1}
+	0%{top:-100%;}
+	0%{left:-100%;}
+	100%{top:inherit;}
+	100%{left:2.5%;}
+}
+@keyframes downi{
+	0%{width: 0%}
+	0%{height: 0%}
+	100%{width: 95%}
+	100%{height: 98%}
+	0%{opacity:0}
+	100%{opacity:1}
+	0%{top:-100%;}
+	0%{left:2.5%;}
+	100%{top:inherit;}
+	100%{left:2.5%;}
+}
+/*左進*/
+@keyframes lefti{
+	0%{width: 0%}
+	0%{height: 0%}
+	100%{width: 95%}
+	100%{height: 98%}
+	0%{opacity:0}
+	100%{opacity:1}
+	0%{top:0%;}
+	0%{left:-100%;}
+	100%{top:inherit;}
+	100%{left:2.5%;}
+}
+@keyframes dlefti{
+	0%{width: 0%}
+	0%{height: 0%}
+	100%{width: 95%}
+	100%{height: 98%}
+	0%{opacity:0}
+	100%{opacity:1}
+	0%{top:100%;}
+	0%{left:-100%;}
+	100%{top:inherit;}
+	100%{left:2.5%;}
+}
+/*下進*/
+@keyframes upi{
+	0%{width: 0%}
+	0%{height: 0%}
+	100%{width: 95%}
+	100%{height: 98%}
+	0%{opacity:0}
+	100%{opacity:1}
+	0%{top:100%;}
+	0%{left:2.5%;}
+	100%{top:inherit;}
+	100%{left:2.5%;}
+}
+@keyframes rupi{
+	0%{width: 0%}
+	0%{height: 0%}
+	100%{width: 95%}
+	100%{height: 98%}
+	0%{opacity:0}
+	100%{opacity:1}
+	0%{top:100%;}
+	0%{left:100%;}
+	100%{top:inherit;}
+	100%{left:2.5%;}
+}
+/*右進*/
+@keyframes righti{
+	0%{width: 0%}
+	0%{height: 0%}
+	100%{width: 95%}
+	100%{height: 98%}
+	0%{opacity:0}
+	100%{opacity:1}
+	0%{top:0%;}
+	0%{left:100%;}
+	100%{top:inherit;}
+	100%{left:2.5%;}
+}
+@keyframes urighti{
+	0%{width: 0%}
+	0%{height: 0%}
+	100%{width: 95%}
+	100%{height: 98%}
+	0%{opacity:0}
+	100%{opacity:1}
+	0%{top:-100%;}
+	0%{left:100%;}
+	100%{top:inherit;}
+	100%{left:2.5%;}
+}
+
+/*上退*/
+@keyframes upo{
+	100%{width: 0%}
+	100%{height: 0%}
+	0%{width: 95%}
+	0%{height: 98%}
+	100%{opacity:0}
+	0%{opacity:1}
+	100%{top:-100%;}
+	100%{left:0%;}
+	0%{top:inherit;}
+	0%{left:2.5%;}
+}
+@keyframes lupo{
+	100%{width: 0%}
+	100%{height: 0%}
+	0%{width: 95%}
+	0%{height: 98%}
+	100%{opacity:0}
+	0%{opacity:1}
+	0%{top:inherit;}
+	0%{left:2.5%;}
+	100%{top:-100%;}
+	100%{left:-100%;}
+}
+/*左退*/
+@keyframes lefto{
+	100%{width: 0%}
+	100%{height: 0%}
+	0%{width: 95%}
+	0%{height: 98%}
+	100%{opacity:0}
+	0%{opacity:1}
+	0%{top:inherit;}
+	0%{left:2.5%;}
+	100%{top:0%;}
+	100%{left:-100%;}
+}
+@keyframes dlefto{
+	100%{width: 0%}
+	100%{height: 0%}
+	0%{width: 95%}
+	0%{height: 98%}
+	100%{opacity:0}
+	0%{opacity:1}
+	0%{top:inherit;}
+	0%{left:2.5%;}
+	100%{top:100%;}
+	100%{left:-100%;}
+}
+/*下退*/
+@keyframes downo{
+	100%{width: 0%}
+	100%{height: 0%}
+	0%{width: 95%}
+	0%{height: 98%}
+	100%{opacity:0}
+	0%{opacity:1}
+	0%{top:0%;}
+	0%{left:2.5%;}
+	100%{top:100%;}
+	100%{left:2.5%;}
+}
+@keyframes rdowno{
+	100%{width: 0%}
+	100%{height: 0%}
+	0%{width: 95%}
+	0%{height: 98%}
+	100%{opacity:0}
+	0%{opacity:1}
+	0%{top:0%;}
+	0%{left:0%;}
+	100%{top:100%;}
+	100%{left:100%;}
+}
+/*右退*/
+@keyframes righto{
+	100%{width: 0%}
+	100%{height: 0%}
+	0%{width: 95%}
+	0%{height: 98%}
+	100%{opacity:0}
+	0%{opacity:1}
+	0%{top:0%;}
+	0%{left:0%;}
+	100%{top:0%;}
+	100%{left:100%;}
+}
+@keyframes urighto{
+	100%{width: 0%}
+	100%{height: 0%}
+	0%{width: 95%}
+	0%{height: 98%}
+	100%{opacity:0}
+	0%{opacity:1}
+	0%{top:0%;}
+	0%{left:0%;}
+	100%{top:-100%;}
+	100%{left:100%;}
+}

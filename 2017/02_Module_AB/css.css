@@ -1,0 +1,134 @@
+@charset "utf-8";
+/* CSS Document */
+#icon {
+	position: fixed;
+	top: 0.5%;
+	left: 1%;
+	width: 8%;
+	height: 8%;
+	animation-duration:3s;
+	animation-name:inout;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+@keyframes inout{
+	0%{
+		top: 1%;
+		left: 2%;
+		width: 8%;
+		height: 8%;
+	}
+	50%{
+		top: 0.5%;
+		left: 1%;
+		width: 10%;
+		height: 10%;
+	}
+	100%{
+		top: 1%;
+		left: 2%;
+		width: 8%;
+		height: 8%;
+	}
+}
+#head{
+	position: fixed;
+	width: 100%; 
+	height: 12%;
+	top:0%;
+	left:0%;
+	background: linear-gradient(#B5F5FF,#43E8FE);
+	border-radius: 0% 0% 15% 15%;
+	overflow:hidden;
+}
+#menu{
+	text-align: center;
+	position: absolute;
+	width: 100%; 
+	height: 10%;
+	top:90%;
+	left:0%;
+	background: linear-gradient(rgba(71, 40, 157,0.6),rgba(31, 15, 92,1));
+	overflow:hidden;
+	color: red;
+	font-size: 450%;
+	animation-duration:7s;
+	animation-name:rainbow;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+@keyframes rainbow{
+	0%{color:red }
+	17%{color:orange }
+	34%{color:yellow}
+	50%{color:green }
+	62%{color:#43E8FE}
+	84%{color:indigo }
+	98%{color:purple }
+	100%{color:red }
+}
+#ghost{
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	transform: scale(0,0);
+	animation-duration: 5s;
+	animation-name:ghostshow;
+	animation-fill-mode: both;
+}
+@keyframes ghostshow{
+	100%{
+		transform: scale(1, 1);
+	}
+}
+.ahref{
+	font-size: 150%;
+	position: relative;
+	background: linear-gradient(#B5F5FF,#43E8FE);
+	padding: 1%;
+	margin: 0.5%;
+	left:15%;
+	top: 30%;
+	border-radius: 20%;
+	text-decoration: none;
+}
+.ahref:hover{
+	background: linear-gradient(#E5F5FF,#00F8FE);
+}
+.O{
+	position: absolute;
+	top: 0%;
+	width: 10%;
+	height: 10%;
+}
+@media(max-width:1439px){
+	#icon{
+		display: none;
+	}
+	#head{
+		position: fixed;
+		width: 100%; 
+		height: 24%;
+		top:66%;
+		left:0%;
+		background: linear-gradient(#B5F5FF,rgba(71, 40, 157,0.6));
+		border-radius: 15% 15% 0% 0%;
+		overflow:hidden;
+	}
+	.ahref{
+		display: inline-block;
+		font-size: 250%;
+		position: relative;
+		background: linear-gradient(#B5F5FF,#43E8FE);
+		padding: 1%;
+		margin:2% 1% 1% 2%;
+		left:10%;
+		top: 25%;
+		border-radius: 20%;
+		margin:  2% 0% 2% 0%;
+		text-decoration: none;
+	}
+}
+@media(max-width:767px){
+}
