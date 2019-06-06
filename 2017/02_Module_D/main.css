@@ -13,6 +13,9 @@ body{
 #canvas0{
 	pointer-events: none;
 }
+#canvas2{
+	pointer-events: none;
+}
 .canvas{
 	position: absolute;
 	right: 50%;

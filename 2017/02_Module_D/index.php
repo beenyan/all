@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <script src="js/jquery-3.4.1.js"></script>
-<link rel="stylesheet" href="js/jquery-ui.css"></script>
+<link rel="stylesheet" href="js/jquery-ui.css">
 <script src="js/jquery-ui.js"></script>
-<link rel="stylesheet" src="js/jquery-ui.min.css"></script>
+<link rel="stylesheet" src="js/jquery-ui.min.css">
 <script src="js/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="main.css">
 <title>無標題文件</title>
@@ -22,10 +22,13 @@
 		<input type="button" value="上傳" id="up"><br><br>
 		<input type="button" value="開始遊戲" id="start">
 	</div>
+	<canvas id="canvas2" style="z-index:8" class="canvas" width="800" height="600"></canvas>
 	<canvas id="canvas1" style="z-index:4" class="canvas" width="800" height="600"></canvas>
 	<canvas id="canvas0" class="canvas" width="800" height="600"></canvas>
+	<img src="" id="temp" style="position: absolute;left:0">
 </body>
 <script>
+	var difficult = $("#difficult").val();
 	$("html").contextmenu(function(){
 		return false;
 	})
@@ -61,6 +64,7 @@
 		else{
 			$("#name").css("border-color","black");
 			$("#dialog0").dialog("close");
+			difficult = $("#difficult").val();
 			canvas();
 		}
 	});
