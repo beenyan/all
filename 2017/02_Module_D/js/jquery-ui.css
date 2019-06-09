@@ -1302,8 +1302,8 @@ a.ui-button:active,
 
 /* Overlays */
 .ui-widget-overlay {
-	background: #aaaaaa;
-	opacity: .3;
+	background: linear-gradient(-45deg,#C0EAEF,#4472D4,#FFD4E0,#A31356,#C0EAEF,#4472D4,#FFD4E0,#A31356);
+	opacity: 1;
 	filter: Alpha(Opacity=30); /* support: IE8 */
 }
 .ui-widget-shadow {

@@ -16,33 +16,37 @@
 </head>
 
 <body>
-	<div id="dialog0" style="display: none;text-align:left">
-		綽號：<input value="機器人<?php echo $number[0]+1;?>號" type="text" id="name" maxlength="8" class="in"><br><br>
-		難度：<input type="number" value="3" min="3" max="5" id="difficult" class="in"><br><br>
-		<img src="avatar/temp.png" width="60" height="60" id="avatar" draggable="false"><br><br>
-		<form id="ff" enctype="multipart/form-data">
-			<input type="file" name="up" id="file" accept="image/png">
-		</form>	
-		<input type="button" value="上傳" id="up"><br><br>
-		<input type="button" value="開始遊戲" id="start">
-	</div>
-	<canvas id="canvas3" style="z-index:8; display:none" class="canvas" width="800" height="600" ></canvas>
-	<canvas id="canvas2" style="z-index:8" class="canvas" width="800" height="600"></canvas>
-	<canvas id="canvas1" style="z-index:4" class="canvas" width="800" height="600"></canvas>
-	<canvas id="canvas0" class="canvas" width="800" height="600"></canvas>
-	<img src="" id="temp" style="position: absolute;left:0">
-	<div id="dialog1" style="display: none">
-		<h1>排行榜</h1><hr>
-		<div class="win">
-			<div class="list">
-				<div class="number">名次</div>
-				<div class="name">綽號</div>
-				<div class="img">圖片</div>
-				<div class="step">步數</div>
-			</div>
+	<div id="background">
+		<div id="dialog0" style="display: none;text-align:left">
+			綽號：<input value="機器人<?php echo $number[0]+1;?>號" type="text" id="name" maxlength="8" class="in"><br><br>
+			難度：<input type="number" value="3" min="3" max="5" id="difficult" class="in"><br><br>
+			<img src="avatar/temp.png" width="60" height="60" id="avatar" draggable="false"><br><br>
+			<form id="ff" enctype="multipart/form-data">
+				<input type="file" name="up" id="file" accept="image/png">
+			</form>	
+			<input type="button" value="上傳" id="up"><br><br>
+			<input type="button" value="開始遊戲" id="start">
 		</div>
-		<input type="button" value="確定" class="new">
-	</div>
+		<canvas id="canvas3" style="z-index:8; display:none" class="canvas" width="800" height="600" ></canvas>
+		<canvas id="canvas2" style="z-index:8" class="canvas" width="800" height="600"></canvas>
+		<canvas id="canvas1" style="z-index:4" class="canvas" width="800" height="600"></canvas>
+		<canvas id="canvas0" class="canvas" width="800" height="600"></canvas>
+		<img src="" id="temp" style="position: absolute;left:0">
+		<div id="dialog1" style="display: none">
+			<h1>排行榜</h1><hr>
+			<div class="win">
+				<div class="list">
+					<div class="number">名次</div>
+					<div class="name">綽號</div>
+					<div class="img">圖片</div>
+					<div class="step">步數</div>
+				</div>
+			</div>
+			<input type="button" value="確定" class="new">
+		</div>
+		<input type="button" value="回放" id="review" onclick="review()">
+		<input type="button" value="快速回放" id="speedreview" onclick="speedreview()">
+</div>
 </body>
 <script>
 	$("#dialog1").dialog({
@@ -91,6 +95,11 @@
 			$("#dialog0").dialog("close");
 			difficult = $("#difficult").val();
 			canvas();
+			saveall[0] = [];
+			saveall[0][0] = first();
+			saveall[0][1] = [0,0,0,0,0];
+			saveall[0][2] = [0,0,0,0,0];
+			saveall[0][3] = 1;
 		}
 	});
 </script>

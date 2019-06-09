@@ -31,22 +31,22 @@ function drawcan1(){
   ctx1.fillRect(615,5,180,80);
   ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
   ctx1.font="40px 微軟正黑體";//字體大小
-  ctx1.fillText(parseInt(time/60)+"："+time%60,640,60);
+  ctx1.fillText(parseInt(time/60) + "：" + time%60,640,60);
   ctx1.fillStyle = "rgba(255,0,0,0.2)";
   ctx1.fillRect(5,90,180,505);
   //步數
   ctx1.fillStyle = "rgb(127,208,191)";
-  ctx1.font="80px 微軟正黑體";//字體大小
+  ctx1.font = "80px 微軟正黑體";//字體大小
   ctx1.fillText(step,40,200)
   if (step == 0){
     //解答
     ctx1.fillStyle = "rgba(255,255,255,1)";
-    ctx1.font="80px 微軟正黑體";//字體大小
+    ctx1.font = "80px 微軟正黑體";//字體大小
     ctx1.fillText("Ans",25,500);
   }
   else{
     //返回鍵
-    img.src="image/back.png";
+    img.src = "image/back.png";
     img.onload = function (){
       ctx1.drawImage(img,25,250);
     };
@@ -59,7 +59,7 @@ function drawcan1(){
     ctx1.fillRect(615,5,180,80);
     ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
     ctx1.font="40px 微軟正黑體";//字體大小
-    ctx1.fillText(parseInt(time/60)+"："+time%60,640,60);
+    ctx1.fillText(parseInt(time/60) + "：" + time%60,640,60);
   },1000);
 };
 function pillar(){//柱子
@@ -140,39 +140,55 @@ function thisplate(x,y,lengh){
   ctx2.strokeRect(x-lengh/2,y,lengh,0);
 };
 function ck(){
+  savereview();
   cook();
   saveimg();
   step++;
   ctx1.clearRect(5,90,180,505);//清理畫布
-  ctx1.fillStyle="rgba(255,0,0,0.2)";
+  ctx1.fillStyle = "rgba(255,0,0,0.2)";
   ctx1.fillRect(5,90,180,505);
   //步數
-  ctx1.fillStyle="rgb(127,208,191)";
-  ctx1.font="80px 微軟正黑體";//字體大小
+  ctx1.fillStyle = "rgb(127,208,191)";
+  ctx1.font = "80px 微軟正黑體";//字體大小
   ctx1.fillText(step,40,200)
   //返回鍵
-  img.src="image/back.png";
+  img.src = "image/back.png";
   img.onload = function (){
     ctx1.drawImage(img,25,250);
   };
-  answer=0;
-  back=1;
-  let cc=difficult;
-  for (var i=4 ; i>=0 ; i--){
-    templine[i]=cc--;
-    if (cc==0){
+  answer = 0;
+  back = 1;
+  let cc = difficult;
+  for (var i = 4 ; i>=0 ; i--){
+    templine[i] = cc--;
+    if (cc == 0){
       break;
     };
   };
-  var count=0;
-  for (var i=0;i<=4;i++){
-    if (lineC[i]==templine[i]){
+  var count = 0;
+  for (var i = 0 ; i <= 4 ; i++){
+    if (lineC[i] == templine[i]){
       count++;
     };
   };
   if (count == 5){
     win();
   };
+};
+function first(){
+  let diff = parseInt(difficult);
+  let arr = [];
+  arr.length = 5;
+  for (let i = 4 ; i >= 0 ; i--){
+    if (diff>0){
+      arr[i] = diff;
+    }
+    else{
+      arr[i] = 0;
+    };
+    diff--;
+  };
+  return arr;
 };
 function backc(){
   if (backstep-1 < 0){
@@ -200,6 +216,8 @@ function backc(){
   answer = 0;
   back = 1;
   cook(-1);
+  savereview();
+  cook();
 };
 function saveimg(){
   ++backstep;
@@ -236,6 +254,16 @@ function win(){
   $("#dialog1").dialog("open")
 };
 function winlist(e){
+  document.cookie = "time=";
+  document.cookie = "step=";
+  document.cookie = "name=";
+  document.cookie = "lineA=";
+  document.cookie = "lineB=";
+  document.cookie = "lineC=";
+  document.cookie = "img=";
+  document.cookie = "difficult=";
+  document.cookie = "backstep=";
+  document.cookie = "allline=";
   document.cookie = "past=true";
   let arr = e.split(";");
   for (let i = 0 ; i < arr.length-1 ; i++){
@@ -251,7 +279,7 @@ function winlist(e){
   }
 };
 function cook(num){
-  if (num==undefined){
+  if (num == undefined){
     num = 0;
   };
   document.cookie = "name="+$("#name").val();
@@ -269,6 +297,11 @@ function cook(num){
     fixline = fixline + allline[i][0] + "**" + allline[i][1] + "**" + allline[i][2] + "++";
   };
   document.cookie = "allline=" + fixline;
+  let ss = "";
+  for (i = 0 ; i < saveall.length ; i++){
+    ss = ss + saveall[i][0] + "**" + saveall[i][1] + "**" + saveall[i][2] + "**" + parseInt(saveall[i][3]) + "++";
+  };
+  document.cookie = "saveall=" + ss;
 };
 function stringarray(nn){
   let arr=new Array();
@@ -278,7 +311,7 @@ function stringarray(nn){
   };
   return arr;
 };
-function resaveback(nn,pos,ABC){
+function resaveback(ctx,nn,pos,ABC){
   ctx3.lineCap = "round";
   ctx3.lineJoin = "round";
   ctx3.lineWidth = 30;
@@ -287,21 +320,83 @@ function resaveback(nn,pos,ABC){
     return false;
   }
   else if (nn == 1){
-    return ctx3.strokeRect(260+200*ABC,545-pos*31,65,0);
+    return ctx.strokeRect(260+200*ABC,545-pos*31,65,0);
   }
   else if (nn == 2){
-    return ctx3.strokeRect(250+200*ABC,545-pos*31,85,0);
+    return ctx.strokeRect(250+200*ABC,545-pos*31,85,0);
   }
   else if (nn == 3){
-    return ctx3.strokeRect(240+200*ABC,545-pos*31,105,0);
+    return ctx.strokeRect(240+200*ABC,545-pos*31,105,0);
   }
   else if (nn == 4){
-    return ctx3.strokeRect(230+200*ABC,545-pos*31,125,0);
+    return ctx.strokeRect(230+200*ABC,545-pos*31,125,0);
   }
   else if (nn == 5){
-    return ctx3.strokeRect(220+200*ABC,545-pos*31,145,0);
+    return ctx.strokeRect(220+200*ABC,545-pos*31,145,0);
   };
 };
+function savereview(){
+  saveall.push([inline(lineA),inline(lineB),inline(lineC),retime]);
+  retime = 0;
+};
+setInterval(function(){
+  retime = retime + 1000/60;
+},1000/60);
 function review(){
-
+  if (saveall.length == 1 || re)return false;
+  clearInterval(tm);
+  let settime = 0;
+  re = 1;
+  for (let i = 0 ; i < saveall.length ; i++){
+    settime = settime + saveall[i][3];
+    setTimeout(function(){
+      ctx1.clearRect(196,200,canvas2.width-196,canvas2.height-200);
+      for (j = 4 ; j >= 0 ; j--){
+        resaveback(ctx1,saveall[i][0][j],4-j,0);
+        resaveback(ctx1,saveall[i][1][j],4-j,1);
+        resaveback(ctx1,saveall[i][2][j],4-j,2);
+      };
+      if (i+1 == saveall.length){
+        tm = setInterval(function(){
+          ++time;
+          ctx1.clearRect(615,5,180,80);
+          ctx1.fillStyle = "rgba(142,36,23,0.5)";//時間背景
+          ctx1.fillRect(615,5,180,80);
+          ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
+          ctx1.font="40px 微軟正黑體";//字體大小
+          ctx1.fillText(parseInt(time/60)+"："+time%60,640,60);
+        },1000);
+        re = 0;
+      }
+    },settime);
+  };
+};
+function speedreview(){
+  if (saveall.length == 1 || re)return false;
+  clearInterval(tm);
+  let settime = 200;
+  re = 1;
+  for (let i = 0 ; i < saveall.length ; i++){
+    settime = settime + 200;
+    setTimeout(function(){
+      ctx1.clearRect(196,200,canvas2.width-196,canvas2.height-200);
+      for (j = 4 ; j >= 0 ; j--){
+        resaveback(ctx1,saveall[i][0][j],4-j,0);
+        resaveback(ctx1,saveall[i][1][j],4-j,1);
+        resaveback(ctx1,saveall[i][2][j],4-j,2);
+      };
+      if (i+1 == saveall.length){
+        tm = setInterval(function(){
+          ++time;
+          ctx1.clearRect(615,5,180,80);
+          ctx1.fillStyle = "rgba(142,36,23,0.5)";//時間背景
+          ctx1.fillRect(615,5,180,80);
+          ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
+          ctx1.font="40px 微軟正黑體";//字體大小
+          ctx1.fillText(parseInt(time/60)+"："+time%60,640,60);
+        },1000);
+        re = 0;
+      }
+    },settime);
+  };
 };

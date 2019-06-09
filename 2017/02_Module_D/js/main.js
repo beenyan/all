@@ -21,7 +21,12 @@ var allline=[];
 var backstep=-1;
 var backarr=new Array();
 var tm;
+//review 變數
+var re = 0;
+var saveall=new Array();
+var retime=0;
 $("#canvas1").mousemove(function(e){
+  if (re)return false;
   //顯示ABC
   var bound=canvas1.getBoundingClientRect();
   var lx=e.clientX-bound.left;
@@ -81,6 +86,7 @@ $("#canvas1").mousemove(function(e){
   };
 });
 $("#canvas1").mousedown(function(e){//搬移河內塔的盤子
+  if (re)return false;
   var bound = canvas1.getBoundingClientRect();
   var lx = e.clientX-bound.left;
   var ly = e.clientY-bound.top;
@@ -210,6 +216,16 @@ $(function(){
       };
       arr.pop();
       allline = arr;
+      let allarr = allcookie.saveall.split("++");
+      allarr.pop();
+      for (let i = 0 ; i < allarr.length ; i++){
+        allarr[i]=allarr[i].split("**");
+        for (let j = 0 ; j < 3 ; j++){
+          allarr[i][j] = stringarray(allarr[i][j]);
+        };
+        allarr[i][3] = parseInt(allarr[i][3]);
+      };
+      saveall = allarr;
       back = 1;
       answer = 0;
       backstep = allcookie.backstep++
@@ -239,9 +255,9 @@ $(function(){
       };
       for ( i = 0 ; i < allline.length ; i++){
         for (j = 4 ; j >= 0 ; j--){
-          resaveback(allline[i][0][j],4-j,0);
-          resaveback(allline[i][1][j],4-j,1);
-          resaveback(allline[i][2][j],4-j,2);
+          resaveback(ctx3,allline[i][0][j],4-j,0);
+          resaveback(ctx3,allline[i][1][j],4-j,1);
+          resaveback(ctx3,allline[i][2][j],4-j,2);
         };
         backarr[i] = ctx3.getImageData(195,227,canvas1.width-195,canvas1.height-227);
         ctx3.clearRect(0,0,canvas3.width,canvas3.height);

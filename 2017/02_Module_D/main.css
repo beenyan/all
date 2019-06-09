@@ -99,3 +99,43 @@ body{
 	border-left-style:inset;
 	top: 0;
 }
+#review{
+	position: absolute;
+	left: 1%;
+	top: 1%;
+	font-size: 500%;
+	border-radius: 20%;
+	border-style: none;
+	cursor: pointer;
+	font-family: "微軟正黑體";
+	color: red;
+	background: linear-gradient(45deg,#4483bc,#32479e);
+	transform: scale(0.8);
+}
+#review:active{
+	transform: scale(1);
+}
+#speedreview{
+	position: absolute;
+	left: 1%;
+	top: 15%;
+	font-size: 300%;
+	border-radius: 10%;
+	border-style: none;
+	cursor: pointer;
+	font-family: "微軟正黑體";
+	color: red;
+	background: linear-gradient(45deg,#4483bc,#32479e);
+	transform: scale(0.8);
+}
+#speedreview:active{
+	transform: scale(1);
+}
+#background{
+	position: fixed;
+	background: linear-gradient(-45deg,#C0EAEF,#4472D4,#FFD4E0,#A31356,#C0EAEF,#4472D4,#FFD4E0,#A31356);
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
