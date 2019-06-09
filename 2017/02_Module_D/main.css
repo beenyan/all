@@ -21,3 +21,81 @@ body{
 	right: 50%;
 	transform: translateX(50%);
 }
+.win{
+	position: absolute;
+	display: block;
+	background:rgba(0,0,0,0.1);
+	width: 870px;
+	height: 450px;
+	overflow: auto;
+	border-radius: 2%;
+}
+.new{
+	position: absolute;
+	left: 400px;
+	top: 550px;
+	width: 100px;
+	height: 80px;
+	border-radius: 20%;
+	cursor: pointer;
+	background-color: lightgreen;
+}
+.list{
+	position: relative;
+	background: rgba(255,0,0,0.5);
+	border-radius: 10px;
+	text-align: left;
+	width: 840px;
+	height: 80px;
+	margin: 10px 10px 0px 10px;
+}
+.number{
+	text-align: center;
+	display: inline-block;
+	position: relative;
+	font-size: 200%;
+	line-height: 250%;
+	width: 130px;
+	border-radius: 10px;
+	height: 80px;
+	top: 0;
+}
+.name{
+	text-align: center;
+	display: inline-block;
+	position: relative;
+	font-size: 200%;
+	line-height: 250%;
+	width: 400px;
+	height: 80px;
+	border: 10px;
+	border-color: rgba(0,0,255,0.5);
+	border-left-style:inset;
+	top: 0;
+}
+.step{
+	text-align: center;
+	display: inline-block;
+	position: relative;
+	font-size: 200%;
+	line-height: 250%;
+	width: 120px;
+	height: 80px;
+	border: 10px;
+	border-color: rgba(0,0,255,0.5);
+	border-left-style:inset;
+	top: 0;
+}
+.img{
+	text-align: center;
+	display: inline-block;
+	position: relative;
+	font-size: 200%;
+	line-height: 250%;
+	width: 120px;
+	height: 80px;
+	border: 10px;
+	border-color: rgba(0,0,255,0.5);
+	border-left-style:inset;
+	top: 0;
+}

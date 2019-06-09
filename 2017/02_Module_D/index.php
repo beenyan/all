@@ -1,3 +1,7 @@
+<?php
+	$db = mysqli_connect("localhost","admin","1234","2017D01");
+	$number = mysqli_fetch_array(mysqli_query($db,"SELECT * FROM `d` ORDER BY `d`.`id` DESC"));
+?>
 <!doctype html>
 <html>
 <head>
@@ -13,7 +17,7 @@
 
 <body>
 	<div id="dialog0" style="display: none;text-align:left">
-		綽號：<input value="機器人1號" type="text" id="name" maxlength="8" class="in"><br><br>
+		綽號：<input value="機器人<?php echo $number[0]+1;?>號" type="text" id="name" maxlength="8" class="in"><br><br>
 		難度：<input type="number" value="3" min="3" max="5" id="difficult" class="in"><br><br>
 		<img src="avatar/temp.png" width="60" height="60" id="avatar" draggable="false"><br><br>
 		<form id="ff" enctype="multipart/form-data">
@@ -22,12 +26,32 @@
 		<input type="button" value="上傳" id="up"><br><br>
 		<input type="button" value="開始遊戲" id="start">
 	</div>
+	<canvas id="canvas3" style="z-index:8; display:none" class="canvas" width="800" height="600" ></canvas>
 	<canvas id="canvas2" style="z-index:8" class="canvas" width="800" height="600"></canvas>
 	<canvas id="canvas1" style="z-index:4" class="canvas" width="800" height="600"></canvas>
 	<canvas id="canvas0" class="canvas" width="800" height="600"></canvas>
 	<img src="" id="temp" style="position: absolute;left:0">
+	<div id="dialog1" style="display: none">
+		<h1>排行榜</h1><hr>
+		<div class="win">
+			<div class="list">
+				<div class="number">名次</div>
+				<div class="name">綽號</div>
+				<div class="img">圖片</div>
+				<div class="step">步數</div>
+			</div>
+		</div>
+		<input type="button" value="確定" class="new">
+	</div>
 </body>
 <script>
+	$("#dialog1").dialog({
+		width:900,
+		height:700,
+		modal:true,
+		autoOpen:false,
+		resizable:false,
+	});
 	var difficult = $("#difficult").val();
 	$("html").contextmenu(function(){
 		return false;
@@ -36,6 +60,7 @@
 		width:350,
 		height:350,
 		modal:true,
+		autoOpen:false,
 	});
 	$(".ui-dialog-titlebar").hide();
 	$("#difficult").keydown(function(){return false;});

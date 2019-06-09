@@ -4,7 +4,7 @@ function canvas(){
     lineA[count]=parseInt($("#difficult").val());
     count--;
     $("#difficult").val($("#difficult").val()-1);
-  };
+  }
   $("#difficult").val(difficult);
   var img = new Image();
   img.src = "image/background.jpg";
@@ -31,26 +31,18 @@ function drawcan1(){
   ctx1.fillRect(615,5,180,80);
   ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
   ctx1.font="40px 微軟正黑體";//字體大小
-  ctx1.fillText(parseInt(time/60)+"："+time%60,640,60);
+  ctx1.fillText("0：0",640,60);
   ctx1.fillStyle = "rgba(255,0,0,0.2)";
   ctx1.fillRect(5,90,180,505);
   //步數
   ctx1.fillStyle = "rgb(127,208,191)";
   ctx1.font="80px 微軟正黑體";//字體大小
   ctx1.fillText(step,40,200)
-  if (step == 0){
-    //解答
-    ctx1.fillStyle = "rgba(255,255,255,1)";
-    ctx1.font="80px 微軟正黑體";//字體大小
-    ctx1.fillText("Ans",25,500);
-  }
-  else{
-    //返回鍵
-    img.src="image/back.png";
-    img.onload = function (){
-      ctx1.drawImage(img,25,250);
-    };
-  };
+  //解答
+  ctx1.fillStyle = "rgba(255,255,255,1)";
+  ctx1.font="80px 微軟正黑體";//字體大小
+  ctx1.fillText("Ans",25,500);
+
   clearInterval(tm);
   tm = setInterval(function(){
     ++time;
@@ -98,10 +90,6 @@ function plate(){//盤子
   saveimg();
 };
 function whplan(nn,pos,ABC){//畫盤子
-  ctx1.lineCap = "round";
-  ctx1.lineJoin = "round";
-  ctx1.lineWidth = 30;
-  ctx1.strokeStyle = "red";
   if (nn == 0){
     return false;
   }
@@ -140,7 +128,6 @@ function thisplate(x,y,lengh){
   ctx2.strokeRect(x-lengh/2,y,lengh,0);
 };
 function ck(){
-  cook();
   saveimg();
   step++;
   ctx1.clearRect(5,90,180,505);//清理畫布
@@ -171,7 +158,7 @@ function ck(){
     };
   };
   if (count == 5){
-    win();
+    alert ("恭喜過關");
   };
 };
 function backc(){
@@ -179,11 +166,12 @@ function backc(){
     return false;
   };
   backstep--;
+  console.log(backstep)
   ctx1.putImageData(backarr[backstep],195,227);
   let temp = allline[backstep];
-  lineA = inline(temp[0]);
-  lineB = inline(temp[1]);
-  lineC = inline(temp[2]);
+  lineA = temp[0];
+  lineB = temp[1];
+  lineC = temp[2];
   step++;
   ctx1.clearRect(5,90,180,505);//清理畫布
   ctx1.fillStyle="rgba(255,0,0,0.2)";
@@ -199,109 +187,16 @@ function backc(){
   };
   answer = 0;
   back = 1;
-  cook(-1);
 };
 function saveimg(){
-  ++backstep;
+  backstep++;
   allline[backstep] = [inline(lineA),inline(lineB),inline(lineC)];
   backarr[backstep] = ctx1.getImageData(195,227,canvas1.width-195,canvas1.height-227);
 };
 function inline(nn){
   let list = [];
-  for (let i = 0 ; i < nn.length ; i++){
+  for (let i = 0 ; i<nn.length ; i++){
     list.push(nn[i]);
   };
   return list;
-};
-function win(){
-  clearInterval(tm);
-  $.post({
-    async:false,
-    url:"add.php",
-    data:{
-      name:$("#name").val(),
-      step:step,
-      img:$("#avatar")[0].src,
-      difficult:difficult
-    },
-  });
-  $.post({
-    async:false,
-    url:"search.php",
-    data:{difficult:difficult},
-    success:function(e){
-      winlist(e);
-    },
-  });
-  $("#dialog1").dialog("open")
-};
-function winlist(e){
-  document.cookie = "past=true";
-  let arr = e.split(";");
-  for (let i = 0 ; i < arr.length-1 ; i++){
-    var arry=arr[i].split(",");
-    $(".win").append(`
-			<div class="list">
-        <div class="number">${arry[0]}</div>
-        <div class="name">${arry[1]}</div>
-        <div class="img" style="background:url(${arry[2]});background-position: center center;background-repeat: no-repeat;z-index:5"> . </div>
-        <div class="step">${arry[3]}</div>
-      </div>
-    `);
-  }
-};
-function cook(num){
-  if (num==undefined){
-    num = 0;
-  };
-  document.cookie = "name="+$("#name").val();
-  document.cookie = "step="+(step+1+num);
-  document.cookie = "lineA="+inline(lineA);
-  document.cookie = "lineB="+inline(lineB);
-  document.cookie = "lineC="+inline(lineC);
-  document.cookie = "difficult="+difficult;
-  document.cookie = "time="+time;
-  document.cookie = "past=false";
-  document.cookie = "img="+$("#avatar")[0].src;
-  document.cookie = "backstep="+backstep;
-  let fixline = new Array();
-  for (let i = 0 ; i < allline.length ; i++){
-    fixline = fixline + allline[i][0] + "**" + allline[i][1] + "**" + allline[i][2] + "++";
-  };
-  document.cookie = "allline=" + fixline;
-};
-function stringarray(nn){
-  let arr=new Array();
-  arr = nn.split(",");
-  for (let i = 0 ; i < arr.length ; i++){
-    arr[i] = parseInt(arr[i]);
-  };
-  return arr;
-};
-function resaveback(nn,pos,ABC){
-  ctx3.lineCap = "round";
-  ctx3.lineJoin = "round";
-  ctx3.lineWidth = 30;
-  ctx3.strokeStyle = "red";
-  if (nn == 0){
-    return false;
-  }
-  else if (nn == 1){
-    return ctx3.strokeRect(260+200*ABC,545-pos*31,65,0);
-  }
-  else if (nn == 2){
-    return ctx3.strokeRect(250+200*ABC,545-pos*31,85,0);
-  }
-  else if (nn == 3){
-    return ctx3.strokeRect(240+200*ABC,545-pos*31,105,0);
-  }
-  else if (nn == 4){
-    return ctx3.strokeRect(230+200*ABC,545-pos*31,125,0);
-  }
-  else if (nn == 5){
-    return ctx3.strokeRect(220+200*ABC,545-pos*31,145,0);
-  };
-};
-function review(){
-
 };
