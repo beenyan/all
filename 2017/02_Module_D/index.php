@@ -19,7 +19,7 @@
 	<div id="background">
 		<div id="dialog0" style="display: none;text-align:left">
 			綽號：<input value="機器人<?php echo $number[0]+1;?>號" type="text" id="name" maxlength="8" class="in"><br><br>
-			難度：<input type="number" value="3" min="3" max="5" id="difficult" class="in"><br><br>
+			難度：<input type="number" value="10" min="1" max="10" id="difficult" class="in"><br><br>
 			<img src="avatar/temp.png" width="60" height="60" id="avatar" draggable="false"><br><br>
 			<form id="ff" enctype="multipart/form-data">
 				<input type="file" name="up" id="file" accept="image/png">
@@ -79,7 +79,7 @@
 					contentType:false,
 					data:new FormData($("#ff")[0]),
 					success:function(e){
-						if (e=="Please select image .png"){alert (e);return false;};
+						if (e == "Please select image .png"){alert (e);return false;};
 						$("#avatar")[0].src=e;
 					},
 				});
@@ -87,22 +87,18 @@
 		};
 	});
 	$("#start").click(function(){
-		if ($("#name").val()==""){
+		if ($("#name").val() == ""){
 			$("#name").css("border-color","red");
 		}
 		else{
 			$("#name").css("border-color","black");
 			$("#dialog0").dialog("close");
 			difficult = $("#difficult").val();
+			set();
 			canvas();
 			setInterval(function(){
-				retime = retime + parseInt(1000/60);
+				retime = retime + parseInt(1000 / 60);
 			},1000/60);
-			saveall[0] = [];
-			saveall[0][0] = first();
-			saveall[0][1] = [0,0,0,0,0];
-			saveall[0][2] = [0,0,0,0,0];
-			saveall[0][3] = 1;
 		};
 	});
 </script>

@@ -1,26 +1,29 @@
-var canvas0=document.getElementById("canvas0");
-var ctx0=canvas0.getContext('2d');
-var canvas1=document.getElementById("canvas1");
-var ctx1=canvas1.getContext('2d');
-var canvas2=document.getElementById("canvas2");
-var ctx2=canvas2.getContext('2d');
-var canvas3=document.getElementById("canvas3");
-var ctx3=canvas3.getContext('2d');
-var allcookie=new Object();
+var canvas0 = document.getElementById("canvas0");
+var ctx0 = canvas0.getContext('2d');
+var canvas1 = document.getElementById("canvas1");
+var ctx1 = canvas1.getContext('2d');
+var canvas2 = document.getElementById("canvas2");
+var ctx2 = canvas2.getContext('2d');
+ctx1.lineWidth = 20;
+ctx2.lineWidth = 20;
+var canvas3 = document.getElementById("canvas3");
+var ctx3 = canvas3.getContext('2d');
+var allcookie = new Object();
 var img = new Image();
-var step=0;
-var time=0;
-var lineA=[0,0,0,0,0];
-var lineB=[0,0,0,0,0];
-var lineC=[0,0,0,0,0];
-var templine=[0,0,0,0,0];
-var temp="";
-var back=0;
-var answer=1;
-var allline=[];
-var backstep=-1;
-var backarr=new Array();
+var step = 0;
+var time = 0;
+var lineA = [];
+var lineB = [];
+var lineC = [];
+var templine = [];
+var temp = "";
+var back = 0;
+var answer = 1;
+var allline = [];
+var backstep = -1;
+var backarr = new Array();
 var tm;
+var lengthmiss = 16; //盤子長度差
 //review 變數
 var re = 0;
 var saveall = new Array();
@@ -30,43 +33,43 @@ var ansspeed = 500;
 $("#canvas1").mousemove(function(e){
   if (re)return false;
   //顯示ABC
-  var bound=canvas1.getBoundingClientRect();
-  var lx=e.clientX-bound.left;
-  var ly=e.clientY-bound.top;
-  if (lx<180&&ly<400&&ly>240&&back){//返回鍵
+  var bound = canvas1.getBoundingClientRect();
+  var lx = e.clientX-bound.left;
+  var ly = e.clientY-bound.top;
+  if (lx < 180 && ly < 400 && ly > 240 && back){//返回鍵
     $("#canvas1").css("cursor","pointer");
   }
-  else if (lx<180&&ly<500&&ly>430&&answer){//答案
+  else if (lx < 180 && ly < 500 && ly > 430 && answer){//答案
     $("#canvas1").css("cursor","pointer");
   }
   else{
     $("#canvas1").css("cursor","auto");
   }
-  if (lx>195&&lx<390&&ly>230){//A
-    ctx0.fillStyle="white";
-    ctx0.font="40px 微軟正黑體";
-    ctx0.fillText("C",680,595);
-    ctx0.fillText("B",480,595);
-    ctx0.fillText("A",278,595);
-    $("#canvas1").css("cursor","pointer");
-    ctx0.fillStyle="blue";
-    ctx0.font = "40px 微軟正黑體";
-    ctx0.fillText("A",278,595);
-  }
-  else if (lx>390&&lx<589&&ly>230){//B
-    ctx0.fillStyle="white";
-    ctx0.font = "40px 微軟正黑體";
-    ctx0.fillText("C",680,595);
-    ctx0.fillText("B",480,595);
-    ctx0.fillText("A",278,595);
-    $("#canvas1").css("cursor","pointer");
-    ctx0.fillStyle="blue";
-    ctx0.font = "40px 微軟正黑體";
-    ctx0.fillText("B",480,595);
-  }
-  else if (lx>593&&lx<790&&ly>230){//C
+  if (lx > 195 && lx < 390 && ly > 230){//A
     ctx0.fillStyle = "white";
-    ctx0.font="40px 微軟正黑體";
+    ctx0.font = "40px 微軟正黑體";
+    ctx0.fillText("C",680,595);
+    ctx0.fillText("B",480,595);
+    ctx0.fillText("A",278,595);
+    $("#canvas1").css("cursor","pointer");
+    ctx0.fillStyle = "blue";
+    ctx0.font = "40px 微軟正黑體";
+    ctx0.fillText("A",278,595);
+  }
+  else if (lx > 390 && lx < 589 && ly > 230){//B
+    ctx0.fillStyle = "white";
+    ctx0.font = "40px 微軟正黑體";
+    ctx0.fillText("C",680,595);
+    ctx0.fillText("B",480,595);
+    ctx0.fillText("A",278,595);
+    $("#canvas1").css("cursor","pointer");
+    ctx0.fillStyle = "blue";
+    ctx0.font = "40px 微軟正黑體";
+    ctx0.fillText("B",480,595);
+  }
+  else if (lx > 593 && lx < 790 && ly > 230){//C
+    ctx0.fillStyle = "white";
+    ctx0.font = "40px 微軟正黑體";
     ctx0.fillText("C",680,595);
     ctx0.fillText("B",480,595);
     ctx0.fillText("A",278,595);
@@ -84,7 +87,7 @@ $("#canvas1").mousemove(function(e){
   };
   //顯示正在移動的盤子
   if (temp != ""){
-    thisplate(lx,ly,45+20*temp);
+    thisplate(lx,ly,5 + lengthmiss * temp);
   };
 });
 $("#canvas1").mousedown(function(e){//搬移河內塔的盤子
@@ -93,25 +96,23 @@ $("#canvas1").mousedown(function(e){//搬移河內塔的盤子
   var lx = e.clientX-bound.left;
   var ly = e.clientY-bound.top;
   var img = new Image();
-  if (lx>195&&lx<390&&ly>230){//A
+  if (lx > 195 && lx < 390 && ly > 230){//A
     if (temp != ""){
       var count = 1;
       if (lineA[lineA.length-1] == 0){
-        count=lineA.length;
+        count = lineA.length;
       }
       else {
         while (lineA[count] == 0){
           count++;
         }; 
       };
-      if (temp<lineA[count]||lineA[lineA.length-1]==0){
+      if (temp < lineA[count] || lineA[lineA.length - 1] == 0){
         ctx2.clearRect(0,0,canvas2.width,canvas2.height);
         lineA[count-1] = temp;
         temp = "";
-        var plan = 4;
-        while (plan >= 0){//盤子放入陣列
-          whplan(lineA[plan],lineA.length-1-plan,0);
-          plan--;
+        for (let i = lineA.length - 1; i >= 0 ;i--){
+          whplan(lineA[i],lineA.length - 1 - i,0);
         };
         ck();
       };
@@ -119,25 +120,23 @@ $("#canvas1").mousedown(function(e){//搬移河內塔的盤子
     };
     select(lineA,0);
   }
-  else if (lx>390&&lx<589&&ly>230){//B
+  else if (lx > 390 && lx < 589 && ly > 230){//B
     if (temp != ""){
       var count = 1;
-      if (lineB[lineB.length-1] == 0){
-        count=lineB.length;
+      if (lineB[lineB.length - 1] == 0){
+        count = lineB.length;
       }
       else {
         while (lineB[count] == 0){
           count++;
         };
       };
-      if (temp<lineB[count]||lineB[lineB.length-1]==0){
+      if (temp < lineB[count] || lineB[lineB.length - 1] == 0){
         ctx2.clearRect(0,0,canvas2.width,canvas2.height);
         lineB[count-1] = temp;
         temp = "";
-        var plan = 4;
-        while (plan >= 0){//盤子放入陣列
-          whplan(lineB[plan],lineB.length-1-plan,1);
-          plan--;
+        for (let i = lineA.length - 1; i >= 0 ;i--){
+          whplan(lineB[i],lineB.length - 1 - i,1);
         };
         ck();
       };
@@ -158,12 +157,10 @@ $("#canvas1").mousedown(function(e){//搬移河內塔的盤子
       }
       if (temp < lineC[count] || lineC[lineC.length-1] == 0){
         ctx2.clearRect(0,0,canvas2.width,canvas2.height);
-        lineC[count-1]=temp;
+        lineC[count-1] = temp;
         temp = "";
-        var plan = 4
-        while (plan >= 0){//盤子放入陣列
-          whplan(lineC[plan],lineC.length-1-plan,2);
-          plan--;
+        for (let i = lineA.length - 1; i >= 0 ;i--){
+          whplan(lineC[i],lineC.length - 1 - i,2);
         };
         ck();
       };
@@ -173,7 +170,7 @@ $("#canvas1").mousedown(function(e){//搬移河內塔的盤子
   };
   //顯示正在移動的盤子
   if (temp != ""){
-    thisplate(lx , ly, 45 + 20*temp);
+    thisplate(lx , ly, 5 + lengthmiss * temp);
   };
   if (lx < 180 && ly < 500 && ly > 430 && answer && temp == ""){//答案
     answerc();
@@ -214,8 +211,8 @@ $(function(){
     else{
       let arr = allcookie.allline.split("++");
       for (let i = 0 ; i < arr.length-1 ; i++){
-        arr[i]=arr[i].split("**");
-        for (let j = 0 ; j < 3 ; j++){
+        arr[i] = arr[i].split("**");
+        for (let j = 0 ; j < arr[i].length ; j++){
           arr[i][j] = stringarray(arr[i][j]);
         };
       };
@@ -225,7 +222,7 @@ $(function(){
       allarr.pop();
       for (let i = 0 ; i < allarr.length ; i++){
         allarr[i]=allarr[i].split("**");
-        for (let j = 0 ; j < 3 ; j++){
+        for (let j = 0 ; j < allarr[i].length ; j++){
           allarr[i][j] = stringarray(allarr[i][j]);
         };
         allarr[i][3] = parseInt(allarr[i][3]);
@@ -254,18 +251,17 @@ $(function(){
         pillar();
       };
       drawcan1();
-      var plan = 4;
-      while (plan >= 0){//盤子放入陣列
-        whplan(lineA[plan],lineA.length-1-plan,0);
-        whplan(lineB[plan],lineB.length-1-plan,1);
-        whplan(lineC[plan],lineC.length-1-plan,2);
-        plan--;
+      for (let i = lineA.length-1 ; i >= 0 ; i--){
+        whplan(lineA[i],lineA.length - 1 - i,0);
+        whplan(lineB[i],lineB.length - 1 - i,1);
+        whplan(lineC[i],lineC.length - 1 - i,2);
       };
       for ( i = 0 ; i < allline.length ; i++){
-        for (j = 4 ; j >= 0 ; j--){
-          resaveback(ctx3,allline[i][0][j],4-j,0);
-          resaveback(ctx3,allline[i][1][j],4-j,1);
-          resaveback(ctx3,allline[i][2][j],4-j,2);
+        for (j = allline[i][0].length-1 ; j >= 0 ; j--){
+          whplan(lineA[i],lineA.length - 1 - i,0);
+          resaveback(ctx3,allline[i][0][j],allline[i][0].length - j - 1,0);
+          resaveback(ctx3,allline[i][1][j],allline[i][0].length - j - 1,1);
+          resaveback(ctx3,allline[i][2][j],allline[i][0].length - j - 1,2);
         };
         backarr[i] = ctx3.getImageData(195,227,canvas1.width-195,canvas1.height-227);
         ctx3.clearRect(0,0,canvas3.width,canvas3.height);

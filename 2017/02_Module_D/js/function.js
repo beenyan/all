@@ -1,11 +1,30 @@
-function canvas(){
-  var count = 4;
-  while ($("#difficult").val()>0){//盤子放入陣列
-    lineA[count] = parseInt($("#difficult").val());
-    count--;
-    $("#difficult").val($("#difficult").val()-1);
+function set(){
+  saveall[0] = [];
+  saveall[0][0] = [];
+  saveall[0][1] = [];
+  saveall[0][2] = [];
+  lineA.length = difficult;
+  lineB.length = difficult;
+  lineC.length = difficult;
+  templine.length = difficult;
+  saveall[0][0].length = difficult;
+  saveall[0][1].length = difficult;
+  saveall[0][2].length = difficult;
+  saveall[0][0] = first();
+  saveall[0][3] = 1;
+  for (let i = 0 ; i < lineA.length ; i++){
+    lineA[i] = 0;
+    lineB[i] = 0;
+    lineC[i] = 0;
+    templine[i] = 0;
+    saveall[0][1][i] = 0;
+    saveall[0][2][i] = 0;
   };
-  $("#difficult").val(difficult);
+};
+function canvas(){
+  for (let i = lineA.length-1 ; i >= 0 ; i--){
+    lineA[i] = i+1;
+  };
   var img = new Image();
   img.src = "image/background.jpg";
   img.onload = function(){
@@ -17,27 +36,28 @@ function canvas(){
 function drawcan1(){
   //黑底
   ctx1.fillStyle = "rgba(0,0,0,0.5)";
-  ctx1.fillRect(5,5,80+52.5*$("#name").val().length,80);
+  ctx1.fillRect(5,5,80 + 52.5 * $("#name").val().length,80);
   ctx1.drawImage($("#avatar")[0],15,15);//大頭貼
   ctx1.font="50px 微軟正黑體";//字體大小
   ctx1.fillStyle = "rgb(255,255,255)";//字體顏色
   ctx1.fillText($("#name").val(),90,60);//文字
   ctx1.fillStyle = "rgba(166,49,26,1)";//難度背景
-  ctx1.arc(140+52.5*$("#name").val().length,45,35,0,Math.PI*2);
+  ctx1.arc(140+52.5*$("#name").val().length,45,35,0,Math.PI * 2);
   ctx1.fill();
   ctx1.fillStyle = "rgb(135,212,218)";//字體顏色
-  ctx1.fillText($("#difficult").val(),126+52.5*$("#name").val().length,62);//難度文字
+  ctx1.font="30px 微軟正黑體";//字體大小
+  ctx1.fillText($("#difficult").val(),126 + 52.5 * $("#name").val().length,58);//難度文字
   ctx1.fillStyle = "rgba(142,36,23,0.5)";//時間背景
   ctx1.fillRect(615,5,180,80);
   ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
   ctx1.font = "40px 微軟正黑體";//字體大小
-  ctx1.fillText(parseInt(time/60) + "：" + time%60,640,60);
+  ctx1.fillText(parseInt(time/60) + "：" + time % 60,640,60);
   ctx1.fillStyle = "rgba(255,0,0,0.2)";
   ctx1.fillRect(5,90,180,505);
   //步數
   ctx1.fillStyle = "rgb(127,208,191)";
   ctx1.font = "80px 微軟正黑體";//字體大小
-  ctx1.fillText(step,40,200)
+  ctx1.fillText(step,5,200)
   if (step == 0){
     //解答
     ctx1.fillStyle = "rgba(255,255,255,1)";
@@ -59,7 +79,7 @@ function drawcan1(){
     ctx1.fillRect(615,5,180,80);
     ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
     ctx1.font = "40px 微軟正黑體";//字體大小
-    ctx1.fillText(parseInt(time/60) + "：" + time%60,640,60);
+    ctx1.fillText(parseInt(time/60) + "：" + time % 60,640,60);
   },1000);
 };
 function pillar(){//柱子
@@ -84,41 +104,21 @@ function pillar(){//柱子
 function plate(){//盤子
   ctx1.lineCap = "round";
   ctx1.lineJoin = "round";
-  ctx1.lineWidth = 30;
-  /*var lingrad2 = ctx1.createLinearGradient(200,400,385,400); //漸層
-  lingrad2.addColorStop(0, 'rgb(100,0,0)');
-  lingrad2.addColorStop(0.5, 'rgb(255,0,0)');
-  lingrad2.addColorStop(1, 'rgb(100,0,0)');*/
   ctx1.strokeStyle = "red";
-  var count = 4;
-  while (count >= 0){//盤子放入陣列
-    whplan(lineA[count],lineA.length-1-count,0);
-    count--;
+  for (let i = lineA.length - 1; i >= 0 ; i--){
+    whplan(lineA[i],lineA.length - 1 - i,0);
   };
   saveimg();
 };
 function whplan(nn,pos,ABC){//畫盤子
   ctx1.lineCap = "round";
   ctx1.lineJoin = "round";
-  ctx1.lineWidth = 30;
   ctx1.strokeStyle = "red";
   if (nn == 0){
     return false;
   }
-  else if (nn == 1){
-    return ctx1.strokeRect(260+200*ABC,545-pos*31,65,0);
-  }
-  else if (nn == 2){
-    return ctx1.strokeRect(250+200*ABC,545-pos*31,85,0);
-  }
-  else if (nn == 3){
-    return ctx1.strokeRect(240+200*ABC,545-pos*31,105,0);
-  }
-  else if (nn == 4){
-    return ctx1.strokeRect(230+200*ABC,545-pos*31,125,0);
-  }
-  else if (nn == 5){
-    return ctx1.strokeRect(220+200*ABC,545-pos*31,145,0);
+  else {
+    return ctx1.strokeRect(288 - nn * lengthmiss / 2 + 200 * ABC,550 - pos * (ctx1.lineWidth + 1),5 + nn * lengthmiss,0); 
   };
 };
 function select(nn,pos){//拿河內塔的盤子
@@ -126,7 +126,7 @@ function select(nn,pos){//拿河內塔的盤子
   if (nn[nn.length-1] == 0)return false;
   while (nn[count] == 0)count++;
   if (temp == ""){
-    ctx1.clearRect(193+pos*200,545-(nn.length-count-1)*31-15,200,30);//清除拿取
+    ctx1.clearRect(193 + pos * 200 , 550 - (nn.length-count-1) * (ctx1.lineWidth + 1) - ctx1.lineWidth / 2 , 200 , ctx1.lineWidth);//清除拿取
     temp = nn[count];//存在變數
     nn[count] = 0;//陣列刪除
   };
@@ -135,22 +135,21 @@ function thisplate(x,y,length){
   ctx2.lineCap = 'round';
   ctx2.lineJoin = 'round';
   ctx2.strokeStyle = "rgb(255,0,0)";
-  ctx2.lineWidth = 30;
   ctx2.clearRect(0,0,canvas2.width,canvas2.height);
-  ctx2.strokeRect(x-length/2,y,length,0);
+  ctx2.strokeRect(x - length / 2,y,length,0);
 };
 function ck(){
   savereview();
   cook();
   saveimg();
   step++;
-  ctx1.clearRect(5,90,180,505);//清理畫布
+  ctx1.clearRect(5,90,185,505);//清理畫布
   ctx1.fillStyle = "rgba(255,0,0,0.2)";
   ctx1.fillRect(5,90,180,505);
   //步數
   ctx1.fillStyle = "rgb(127,208,191)";
   ctx1.font = "80px 微軟正黑體";//字體大小
-  ctx1.fillText(step,40,200)
+  ctx1.fillText(step,5,200)
   //返回鍵
   img.src = "image/back.png";
   img.onload = function (){
@@ -159,28 +158,28 @@ function ck(){
   answer = 0;
   back = 1;
   let cc = difficult;
-  for (var i = 4 ; i>=0 ; i--){
+  for (var i = lineA.length - 1 ; i >= 0 ; i--){
     templine[i] = cc--;
     if (cc == 0){
       break;
     };
   };
   var count = 0;
-  for (var i = 0 ; i <= 4 ; i++){
+  for (var i = 0 ; i <= lineC.length - 1 ; i++){
     if (lineC[i] == templine[i]){
       count++;
     };
   };
-  if (count == 5){
+  if (count == lineC.length){
     win();
   };
 };
 function first(){
   let diff = parseInt(difficult);
   let arr = [];
-  arr.length = 5;
-  for (let i = 4 ; i >= 0 ; i--){
-    if (diff>0){
+  arr.length = lineA.length;
+  for (let i = lineA.length - 1 ; i >= 0 ; i--){
+    if (diff > 0){
       arr[i] = diff;
     }
     else{
@@ -201,13 +200,13 @@ function backc(){
   lineB = inline(temp[1]);
   lineC = inline(temp[2]);
   step++;
-  ctx1.clearRect(5,90,180,505);//清理畫布
-  ctx1.fillStyle="rgba(255,0,0,0.2)";
+  ctx1.clearRect(5,90,185,505);//清理畫布
+  ctx1.fillStyle = "rgba(255,0,0,0.2)";
   ctx1.fillRect(5,90,180,505);
   //步數
   ctx1.fillStyle = "rgb(127,208,191)";
   ctx1.font = "80px 微軟正黑體";//字體大小
-  ctx1.fillText(step,40,200)
+  ctx1.fillText(step,5,200)
   //返回鍵
   img.src="image/back.png";
   img.onload = function (){
@@ -284,16 +283,16 @@ function cook(num){
   if (num == undefined){
     num = 0;
   };
-  document.cookie = "name="+$("#name").val();
-  document.cookie = "step="+(step+1+num);
-  document.cookie = "lineA="+inline(lineA);
-  document.cookie = "lineB="+inline(lineB);
-  document.cookie = "lineC="+inline(lineC);
-  document.cookie = "difficult="+difficult;
-  document.cookie = "time="+time;
+  document.cookie = "name=" + $("#name").val();
+  document.cookie = "step=" + (step+1+num);
+  document.cookie = "lineA=" + inline(lineA);
+  document.cookie = "lineB=" + inline(lineB);
+  document.cookie = "lineC=" + inline(lineC);
+  document.cookie = "difficult=" + difficult;
+  document.cookie = "time=" + time;
   document.cookie = "past=false";
-  document.cookie = "img="+$("#avatar")[0].src;
-  document.cookie = "backstep="+backstep;
+  document.cookie = "img=" + $("#avatar")[0].src;
+  document.cookie = "backstep=" + backstep;
   let fixline = new Array();
   for (let i = 0 ; i < allline.length ; i++){
     fixline = fixline + allline[i][0] + "**" + allline[i][1] + "**" + allline[i][2] + "++";
@@ -316,25 +315,13 @@ function stringarray(nn){
 function resaveback(ctx,nn,pos,ABC){
   ctx3.lineCap = "round";
   ctx3.lineJoin = "round";
-  ctx3.lineWidth = 30;
+  ctx3.lineWidth = 20;
   ctx3.strokeStyle = "red";
   if (nn == 0){
     return false;
   }
-  else if (nn == 1){
-    return ctx.strokeRect(260+200*ABC,545-pos*31,65,0);
-  }
-  else if (nn == 2){
-    return ctx.strokeRect(250+200*ABC,545-pos*31,85,0);
-  }
-  else if (nn == 3){
-    return ctx.strokeRect(240+200*ABC,545-pos*31,105,0);
-  }
-  else if (nn == 4){
-    return ctx.strokeRect(230+200*ABC,545-pos*31,125,0);
-  }
-  else if (nn == 5){
-    return ctx.strokeRect(220+200*ABC,545-pos*31,145,0);
+  else {
+    return ctx.strokeRect(288 - nn * lengthmiss / 2 + 200 * ABC,550 - pos * (ctx1.lineWidth + 1),5 + nn * lengthmiss,0);
   };
 };
 function savereview(){
@@ -353,20 +340,20 @@ function review(){
     settime = settime + saveall[i][3];
     setTimeout(function(){
       ctx1.clearRect(196,200,canvas2.width-196,canvas2.height-200);
-      for (j = 4 ; j >= 0 ; j--){
-        resaveback(ctx1,saveall[i][0][j],4-j,0);
-        resaveback(ctx1,saveall[i][1][j],4-j,1);
-        resaveback(ctx1,saveall[i][2][j],4-j,2);
+      for (j = lineA.length-1 ; j >= 0 ; j--){
+        resaveback(ctx1,saveall[i][0][j],saveall[i][0].length - j -1,0);
+        resaveback(ctx1,saveall[i][1][j],saveall[i][0].length - j -1,1);
+        resaveback(ctx1,saveall[i][2][j],saveall[i][0].length - j -1,2);
       };
-      if (i+1 == saveall.length){
+      if (i + 1 == saveall.length){
         tm = setInterval(function(){
           ++time;
           ctx1.clearRect(615,5,180,80);
           ctx1.fillStyle = "rgba(142,36,23,0.5)";//時間背景
           ctx1.fillRect(615,5,180,80);
           ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
-          ctx1.font="40px 微軟正黑體";//字體大小
-          ctx1.fillText(parseInt(time/60)+"："+time%60,640,60);
+          ctx1.font = "40px 微軟正黑體";//字體大小
+          ctx1.fillText(parseInt(time/60) + "：" + time%60,640,60);
         },1000);
         re = 0;
       }
@@ -384,21 +371,21 @@ function speedreview(){
   for (let i = 0 ; i < saveall.length ; i++){
     settime = settime + 200;
     setTimeout(function(){
-      ctx1.clearRect(196,200,canvas2.width-196,canvas2.height-200);
-      for (j = 4 ; j >= 0 ; j--){
-        resaveback(ctx1,saveall[i][0][j],4-j,0);
-        resaveback(ctx1,saveall[i][1][j],4-j,1);
-        resaveback(ctx1,saveall[i][2][j],4-j,2);
+      ctx1.clearRect(196,200,canvas2.width-196,canvas2.height - 200);
+      for (j = lineA.length-1 ; j >= 0 ; j--){
+        resaveback(ctx1,saveall[i][0][j],saveall[i][0].length - j -1,0);
+        resaveback(ctx1,saveall[i][1][j],saveall[i][0].length - j -1,1);
+        resaveback(ctx1,saveall[i][2][j],saveall[i][0].length - j -1,2);
       };
-      if (i+1 == saveall.length){
+      if (i + 1 == saveall.length){
         tm = setInterval(function(){
           ++time;
           ctx1.clearRect(615,5,180,80);
           ctx1.fillStyle = "rgba(142,36,23,0.5)";//時間背景
           ctx1.fillRect(615,5,180,80);
           ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
-          ctx1.font="40px 微軟正黑體";//字體大小
-          ctx1.fillText(parseInt(time/60)+"："+time%60,640,60);
+          ctx1.font = "40px 微軟正黑體";//字體大小
+          ctx1.fillText(parseInt(time/60) + "：" + time % 60,640,60);
         },1000);
         re = 0;
       }
@@ -413,7 +400,7 @@ function answerc(){
     let settime = 0;
     let ck = 1;
     let intl;
-    intl=setInterval(() => {
+    intl = setInterval(() => {
       if (!lastck()){
         clearInterval(tm);
         clearInterval(intl);
@@ -459,7 +446,7 @@ function answerc(){
     let settime = 0;
     let ck = 1;
     let intl;
-    intl=setInterval(() => {
+    intl = setInterval(() => {
       if (!lastck()){ 
         clearInterval(tm);
         clearInterval(intl);
@@ -549,18 +536,18 @@ function arrput(fir,sec){
       };
     };
   };
-  for (j = 4 ; j >= 0 ; j--){
-    resaveback(ctx1,lineA[j],4-j,0);
-    resaveback(ctx1,lineB[j],4-j,1);
-    resaveback(ctx1,lineC[j],4-j,2);
+  for (j = lineA.length-1 ; j >= 0 ; j--){
+    resaveback(ctx1,lineA[j],lineA.length - j - 1,0);
+    resaveback(ctx1,lineB[j],lineA.length - j - 1,1);
+    resaveback(ctx1,lineC[j],lineA.length - j - 1,2);
   };
   //步數增加
   step++;
-  ctx1.clearRect(5,90,180,505);//清理畫布
+  ctx1.clearRect(5,90,185,505);//清理畫布
   ctx1.fillStyle = "rgba(255,0,0,0.2)";
   ctx1.fillRect(5,90,180,505);//繪製畫布
   //步數
   ctx1.fillStyle = "rgb(127,208,191)";
   ctx1.font = "80px 微軟正黑體";//字體大小
-  ctx1.fillText(step,40,200)
+  ctx1.fillText(step,5,200)
 };
