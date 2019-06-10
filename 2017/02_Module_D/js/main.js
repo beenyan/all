@@ -221,7 +221,7 @@ $(function(){
       let allarr = allcookie.saveall.split("++");
       allarr.pop();
       for (let i = 0 ; i < allarr.length ; i++){
-        allarr[i]=allarr[i].split("**");
+        allarr[i] = allarr[i].split("**");
         for (let j = 0 ; j < allarr[i].length ; j++){
           allarr[i][j] = stringarray(allarr[i][j]);
         };
