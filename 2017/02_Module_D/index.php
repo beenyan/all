@@ -95,12 +95,15 @@
 			$("#dialog0").dialog("close");
 			difficult = $("#difficult").val();
 			canvas();
+			setInterval(function(){
+				retime = retime + parseInt(1000/60);
+			},1000/60);
 			saveall[0] = [];
 			saveall[0][0] = first();
 			saveall[0][1] = [0,0,0,0,0];
 			saveall[0][2] = [0,0,0,0,0];
 			saveall[0][3] = 1;
-		}
+		};
 	});
 </script>
 <script src="js/main.js"></script>

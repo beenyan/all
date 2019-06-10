@@ -1,7 +1,7 @@
 function canvas(){
   var count = 4;
   while ($("#difficult").val()>0){//盤子放入陣列
-    lineA[count]=parseInt($("#difficult").val());
+    lineA[count] = parseInt($("#difficult").val());
     count--;
     $("#difficult").val($("#difficult").val()-1);
   };
@@ -30,7 +30,7 @@ function drawcan1(){
   ctx1.fillStyle = "rgba(142,36,23,0.5)";//時間背景
   ctx1.fillRect(615,5,180,80);
   ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
-  ctx1.font="40px 微軟正黑體";//字體大小
+  ctx1.font = "40px 微軟正黑體";//字體大小
   ctx1.fillText(parseInt(time/60) + "：" + time%60,640,60);
   ctx1.fillStyle = "rgba(255,0,0,0.2)";
   ctx1.fillRect(5,90,180,505);
@@ -58,7 +58,7 @@ function drawcan1(){
     ctx1.fillStyle = "rgba(142,36,23,0.5)";//時間背景
     ctx1.fillRect(615,5,180,80);
     ctx1.fillStyle = "rgba(229,194,78,1)";//時間文字顏色
-    ctx1.font="40px 微軟正黑體";//字體大小
+    ctx1.font = "40px 微軟正黑體";//字體大小
     ctx1.fillText(parseInt(time/60) + "：" + time%60,640,60);
   },1000);
 };
@@ -68,15 +68,15 @@ function pillar(){//柱子
   img.onload = function (){
     ctx0.drawImage(img,190,229);
     ctx0.fillStyle = "rgba(255,255,255,1)";
-    ctx0.font="40px 微軟正黑體";//字體大小
+    ctx0.font = "40px 微軟正黑體";//字體大小
     ctx0.fillText("A",278,595);
     ctx0.drawImage(img,390,229);
     ctx0.fillStyle = "rgba(255,255,255,1)";
-    ctx0.font="40px 微軟正黑體";//字體大小
+    ctx0.font = "40px 微軟正黑體";//字體大小
     ctx0.fillText("B",480,595);
     ctx0.drawImage(img,590,229);
     ctx0.fillStyle = "rgba(255,255,255,1)";
-    ctx0.font="40px 微軟正黑體";//字體大小
+    ctx0.font = "40px 微軟正黑體";//字體大小
     ctx0.fillText("C",680,595);
     plate();
   }
@@ -131,13 +131,13 @@ function select(nn,pos){//拿河內塔的盤子
     nn[count] = 0;//陣列刪除
   };
 };
-function thisplate(x,y,lengh){
-  ctx2.lineCap='round';
-  ctx2.lineJoin='round';
-  ctx2.strokeStyle="rgb(255,0,0)";
-  ctx2.lineWidth=30;
+function thisplate(x,y,length){
+  ctx2.lineCap = 'round';
+  ctx2.lineJoin = 'round';
+  ctx2.strokeStyle = "rgb(255,0,0)";
+  ctx2.lineWidth = 30;
   ctx2.clearRect(0,0,canvas2.width,canvas2.height);
-  ctx2.strokeRect(x-lengh/2,y,lengh,0);
+  ctx2.strokeRect(x-length/2,y,length,0);
 };
 function ck(){
   savereview();
@@ -205,8 +205,8 @@ function backc(){
   ctx1.fillStyle="rgba(255,0,0,0.2)";
   ctx1.fillRect(5,90,180,505);
   //步數
-  ctx1.fillStyle="rgb(127,208,191)";
-  ctx1.font="80px 微軟正黑體";//字體大小
+  ctx1.fillStyle = "rgb(127,208,191)";
+  ctx1.font = "80px 微軟正黑體";//字體大小
   ctx1.fillText(step,40,200)
   //返回鍵
   img.src="image/back.png";
@@ -232,6 +232,8 @@ function inline(nn){
   return list;
 };
 function win(){
+  re = 1;
+  $("#canvas1").css("cursor","auto");
   clearInterval(tm);
   $.post({
     async:false,
@@ -267,12 +269,12 @@ function winlist(e){
   document.cookie = "past=true";
   let arr = e.split(";");
   for (let i = 0 ; i < arr.length-1 ; i++){
-    var arry=arr[i].split(",");
+    var arry = arr[i].split(",");
     $(".win").append(`
 			<div class="list">
         <div class="number">${arry[0]}</div>
         <div class="name">${arry[1]}</div>
-        <div class="img" style="background:url(${arry[2]});background-position: center center;background-repeat: no-repeat;z-index:5"> . </div>
+        <div class="img" style="background:url(${arry[2]});background-position: center center;background-repeat: no-repeat;z-index:5">  </div>
         <div class="step">${arry[3]}</div>
       </div>
     `);
@@ -304,7 +306,7 @@ function cook(num){
   document.cookie = "saveall=" + ss;
 };
 function stringarray(nn){
-  let arr=new Array();
+  let arr = new Array();
   arr = nn.split(",");
   for (let i = 0 ; i < arr.length ; i++){
     arr[i] = parseInt(arr[i]);
@@ -339,10 +341,10 @@ function savereview(){
   saveall.push([inline(lineA),inline(lineB),inline(lineC),retime]);
   retime = 0;
 };
-setInterval(function(){
-  retime = retime + 1000/60;
-},1000/60);
 function review(){
+  if (temp != ""){
+    return false;
+  };
   if (saveall.length == 1 || re)return false;
   clearInterval(tm);
   let settime = 0;
@@ -372,6 +374,9 @@ function review(){
   };
 };
 function speedreview(){
+  if (temp != ""){
+    return false;
+  };
   if (saveall.length == 1 || re)return false;
   clearInterval(tm);
   let settime = 200;
@@ -399,4 +404,163 @@ function speedreview(){
       }
     },settime);
   };
+};
+function answerc(){
+  answer = 0;
+  re = 1;
+  $("#canvas1").css("cursor","auto");
+  if (parseInt(difficult) %2 == 1){//奇數
+    let settime = 0;
+    let ck = 1;
+    let intl;
+    intl=setInterval(() => {
+      if (!lastck()){
+        clearInterval(tm);
+        clearInterval(intl);
+      };
+      if (ck){
+        settime = settime + ansspeed;
+        setTimeout(() => {
+          //AC
+          if (arrf(lineA) < arrf(lineC)){
+            arrput(lineA,lineC);
+          }
+          else {
+            arrput(lineC,lineA);
+          };
+        }, settime);
+        settime = settime + ansspeed;
+        setTimeout(() => {
+          //AB
+          if (arrf(lineA) < arrf(lineB)){
+            arrput(lineA,lineB);
+          }
+          else {
+            arrput(lineB,lineA);
+          };
+        }, settime);
+        settime = settime + ansspeed;
+        setTimeout(() => {
+          //BC
+          if (arrf(lineB) < arrf(lineC)){
+            arrput(lineB,lineC);
+          }
+          else {
+            arrput(lineC,lineB);
+          };
+          ck = 1;
+        }, settime);
+        ck = 0;
+        settime = 0;
+      }
+    }, 1000/60);
+  }
+  else if (parseInt(difficult) %2 == 0){//偶數
+    let settime = 0;
+    let ck = 1;
+    let intl;
+    intl=setInterval(() => {
+      if (!lastck()){ 
+        clearInterval(tm);
+        clearInterval(intl);
+      };
+      if (ck){
+        settime = settime + ansspeed;
+        setTimeout(() => {
+          //AB
+          if (arrf(lineA) < arrf(lineB)){
+            arrput(lineA,lineB);
+          }
+          else {
+            arrput(lineB,lineA);
+          };
+        }, settime);
+        settime = settime + ansspeed;
+        setTimeout(() => {
+          //AC
+          if (arrf(lineA) < arrf(lineC)){
+            arrput(lineA,lineC);
+          }
+          else {
+            arrput(lineC,lineA);
+          };
+        }, settime);
+        settime = settime + ansspeed;
+        setTimeout(() => {
+          //BC
+          if (arrf(lineB) < arrf(lineC)){
+            arrput(lineB,lineC);
+          }
+          else {
+            arrput(lineC,lineB);
+          };
+          ck = 1;
+        }, settime);
+        ck = 0;
+        settime = 0;
+      };
+    }, 1000/60);
+  };
+};
+function lastck(){
+  let count = 0;
+  let last = first();
+  for (let i = 0 ; i < last.length ; i++){
+    if (lineC[i] == last[i]){
+      count++
+    };
+  };
+  return !(count == last.length);
+};
+function arrf(nn){
+  if (nn[nn.length-1] == 0){
+    return nn.length+1;
+  }
+  else {
+    for (let i = 0 ; i < nn.length ; i++){
+      if (nn[i] != 0){
+        return nn[i];
+      };
+    };
+  };
+};
+function arrput(fir,sec){
+  if (!lastck()){
+    return false;
+  };
+  ctx1.clearRect(196,200,canvas2.width-196,canvas2.height-200);
+  let firnum = 0;
+  let i = 0 ;
+  for (i = 0 ; i < fir.length ; i++){
+    if (fir[i] != 0){
+      firnum = fir[i];
+      fir [i] = 0;
+      break;
+    };
+  };
+  if (sec[sec.length-1] == 0){
+    sec[sec.length-1] = firnum;
+  }
+  else {
+    for (i = 0 ; i < sec.length ; i++){
+      if (sec[i+1] != 0){
+        sec[i] = firnum;
+        break;
+      };
+    };
+  };
+  for (j = 4 ; j >= 0 ; j--){
+    resaveback(ctx1,lineA[j],4-j,0);
+    resaveback(ctx1,lineB[j],4-j,1);
+    resaveback(ctx1,lineC[j],4-j,2);
+  };
+  //步數增加
+  step++;
+  ctx1.clearRect(5,90,180,505);//清理畫布
+  ctx1.fillStyle = "rgba(255,0,0,0.2)";
+  ctx1.fillRect(5,90,180,505);//繪製畫布
+  //步數
+  ctx1.fillStyle = "rgb(127,208,191)";
+  ctx1.font = "80px 微軟正黑體";//字體大小
+  ctx1.fillText(step,40,200)
 };

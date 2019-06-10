@@ -23,8 +23,10 @@ var backarr=new Array();
 var tm;
 //review 變數
 var re = 0;
-var saveall=new Array();
-var retime=0;
+var saveall = new Array();
+var retime = 0;
+//解答
+var ansspeed = 500;
 $("#canvas1").mousemove(function(e){
   if (re)return false;
   //顯示ABC
@@ -173,6 +175,9 @@ $("#canvas1").mousedown(function(e){//搬移河內塔的盤子
   if (temp != ""){
     thisplate(lx , ly, 45 + 20*temp);
   };
+  if (lx < 180 && ly < 500 && ly > 430 && answer && temp == ""){//答案
+    answerc();
+  }
   if (lx < 180 && ly < 400 && ly > 240 && back && temp == ""){
     backc();
   };
@@ -237,6 +242,9 @@ $(function(){
       difficult = allcookie.difficult;
       $("#difficult").val(difficult);
       $("#name").val(allcookie.name);
+      setInterval(function(){
+        retime = retime + parseInt(1000/60);
+      },1000/60);
       time = allcookie.time;
       var img = new Image();
       img.src = "image/background.jpg";

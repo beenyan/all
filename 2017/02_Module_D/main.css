@@ -59,6 +59,7 @@ body{
 	border-radius: 10px;
 	height: 80px;
 	top: 0;
+	vertical-align: top;
 }
 .name{
 	text-align: center;
@@ -72,6 +73,7 @@ body{
 	border-color: rgba(0,0,255,0.5);
 	border-left-style:inset;
 	top: 0;
+	vertical-align: top;
 }
 .step{
 	text-align: center;
@@ -85,6 +87,7 @@ body{
 	border-color: rgba(0,0,255,0.5);
 	border-left-style:inset;
 	top: 0;
+	vertical-align: top;
 }
 .img{
 	text-align: center;
