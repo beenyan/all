@@ -1,11 +1,14 @@
 <?php
 	$db = mysqli_connect("localhost","admin","1234","2017D01");
 	$number = mysqli_fetch_array(mysqli_query($db,"SELECT * FROM `d` ORDER BY `d`.`id` DESC"));
+	$pass = hash("sha512" , "Been_Yan");
+	echo "<script>console.log(\"$pass\")</script>";
 ?>
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="avatar/temp.png">
 <script src="js/jquery-3.4.1.js"></script>
 <link rel="stylesheet" href="js/jquery-ui.css">
 <script src="js/jquery-ui.js"></script>

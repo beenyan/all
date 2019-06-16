@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <meta charset="utf-8">
+  <head>
+    <script src="js/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="js/jquery-ui.css">
+    <script src="js/jquery-ui.js"></script>
+    <link rel="stylesheet" src="js/jquery-ui.min.css">
+    <script src="js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <title>無標題文件</title>
+  </head>
+<style>
+    .button{
+      width: 60px;
+      height: 60px;
+      background: gray;
+    }
+  </style>
+  <body>
+    <div id="d0">
+      <h1>汽車共乘會員網站前台登入模組</h1>
+      <hr>
+      帳號：<input type="text" id="t0"><br><br>
+      密碼：<input type="text" id="t1"><br><br>
+      圖片驗證碼：<input type="text" id="t2"><br><br>
+      <img src="p1.php" id="src"><input type="button" value="刷新驗證碼" onclick="re()">
+      <input type="button" id="send" value="送出" onclick="send()">
+      <!--<form accept="" method="POST">
+          帳號：<input type="text" name="t0"><br><br>
+          密碼：<input type="text" name="t1"><br><br>
+          圖片驗證碼：<input type="text" name="t2"><br><br>
+          <input type="submit"> <input type="reset">
+      </form>-->
+  </div>
+    <div id="d1" style="display: none">
+      <div>
+        <input type="button" id="b0" class="button">
+        <input type="button" id="b1" class="button">
+        <input type="button" id="b2" class="button"> <br><br>
+        <input type="button" id="b3" class="button">
+        <input type="button" id="b4" class="button">
+        <input type="button" id="b5" class="button"> <br><br>
+        <input type="button" id="b6" class="button">
+        <input type="button" id="b7" class="button">
+        <input type="button" id="b8" class="button"> <br><br>
+      </div>
+      <input type="button" value="判斷" onclick="ck()">
+    </div>
+  </body>
+  <script>
+    function re(){
+      $("#src")[0].src="p1.php";
+    };
+    function send(){
+      if ($("#t0").val()==""||$("#t1").val()==""||$("#t2").val()==""){
+        alert("值不能為空");
+        return false;
+      }
+      else if ($("#t0").val()=="admin"){
+        $("#d0").hide();
+        $("#d1").show();
+      }
+      else{
+        $.post({
+          url:"ck.php",
+          data:{
+            name:$("#t0").val(),
+            pass:$("#t1").val(),
+            ckpass:$("#t2").val(),
+          },
+          success:function(e){
+            alert(e);
+          },
+        });
+      };
+    };
+    $(".button").click(function(){
+      if ($(this).css("background-color")=="rgb(255, 0, 0)"){
+        $(this).css("background-color","gray");
+      }
+      else{
+        $(this).css("background-color","red");
+      };
+    });
+    function ck(){
+      let a1 = $("#b0").css("background-color")=="rgb(255, 0, 0)";
+      let a2 = $("#b1").css("background-color")=="rgb(255, 0, 0)";
+      let a3 = $("#b2").css("background-color")=="rgb(255, 0, 0)";
+      let a4 = $("#b3").css("background-color")=="rgb(255, 0, 0)";
+      let a5 = $("#b4").css("background-color")=="rgb(255, 0, 0)";
+      let a6 = $("#b5").css("background-color")=="rgb(255, 0, 0)";
+      let a7 = $("#b6").css("background-color")=="rgb(255, 0, 0)";
+      let a8 = $("#b7").css("background-color")=="rgb(255, 0, 0)";
+      let a9 = $("#b8").css("background-color")=="rgb(255, 0, 0)";
+      if (a1 && a2 && a3 ||a4 && a5 && a6 ||a7 && a8 && a9 ||a1 && a4 && a7 ||a2 && a5 && a8 ||a3 && a6 && a9 ||a1 && a5 && a9 || a3 && a5 && a7  ){
+        $.post({
+          url:"ck.php",
+          data:{
+            name:$("#t0").val(),
+            pass:$("#t1").val(),
+            ckpass:$("#t2").val(),
+          },
+          success:function(e){
+            if (e == "登入成功"){
+              location.href="success.html";
+            };
+            $("#d0").show();
+            $("#d1").hide();
+            alert(e);
+          },
+        });
+      }
+      else {
+        alert("false")
+      }
+    };
+  </script>
+</html>
