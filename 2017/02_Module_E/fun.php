@@ -5,18 +5,18 @@
   if (!empty($_POST["object"])){
     $i = $_POST["object"];
   };
-  if ($call==1){//所有拖拉題
+  if ($call == 1){//所有拖拉題
     $all = mysqli_query($db, "SELECT * FROM `drag`");
     while($row = mysqli_fetch_array($all)){
       echo json_encode($row)."(+{8&^$})";
     };
   }
-  else if ($call==2){//新增拖拉題
+  else if ($call == 2){//新增拖拉題
     $dragob = $i["dragob"];
     $dragbk = $i["dragbk"];
     mysqli_query($db,"INSERT INTO `drag`(`dragob`, `dragbk`, `type`) VALUES ('$dragob','$dragbk','閒置中')");
   }
-  else if ($call==3){//修改拖拉題
+  else if ($call == 3){//修改拖拉題
     $dragob = $i["dragob"];
     $dragbk = $i["dragbk"];
     $id = $i["id"];
@@ -179,11 +179,15 @@
       $row["student"],
       $row["type"],
       $row["now"],
+      $row["showans"],
+      $row["rand"],
+      $row["nowtime"],
     );
     echo json_encode($arr);
   }
   else if ($call==21){ //後臺監視系統
     $id = $_POST["id"];
+    mysqli_query($db, "UPDATE `textpaper` SET `ansall`='' WHERE `id` = $id");
     $row =  mysqli_fetch_array(mysqli_query($db, "SELECT * FROM `textpaper` WHERE `id` = $id"));
     $arr = array(
       $row["showans"],
@@ -196,7 +200,8 @@
   }
   else if ($call==22){
     $id = $_POST["id"];
-    mysqli_query($db, "UPDATE `textpaper` SET `type`='考試完成' WHERE `id` = $id");
+    $ansall = $_POST["ansall"];
+    mysqli_query($db, "UPDATE `textpaper` SET `type`='考試完成',`ansall`='$ansall' WHERE `id` = $id");
   }
   else if ($call==23){
     $id = $_POST["id"];
@@ -211,6 +216,50 @@
   else if ($call==25){//顯示題目
     $now = $_POST["now"];
     $id = $_POST["id"];
+    if (!empty($_POST["ansall"])){
+      $ansall = $_POST["ansall"];
+      mysqli_query($db, "UPDATE `textpaper` SET `now`='$now',`ansall`='$ansall' WHERE `id` = $id");
+    }
     mysqli_query($db, "UPDATE `textpaper` SET `now`='$now' WHERE `id` = $id");
+  }
+  else if ($call==26){//檢查答案並回傳
+    $wh = $_POST["wh"];
+    $id = $_POST["id"];
+    $ans = $_POST["ans"];
+    $textid = $_POST["textid"];
+    if ($ans != 0){
+      $row = mysqli_fetch_array(mysqli_query($db,"SELECT * FROM `$wh` WHERE `id` = $id"));
+      if ($row["ans"] == $ans){
+        mysqli_query($db, "UPDATE `textpaper` SET `ansall`=concat(`ansall`,1) WHERE `id` = $textid");
+      }
+      else {
+        mysqli_query($db, "UPDATE `textpaper` SET `ansall`=concat(`ansall`,2) WHERE `id` = $textid");
+      }
+    }
+    else{
+      mysqli_query($db, "UPDATE `textpaper` SET `ansall`=concat(`ansall`,0) WHERE `id` = $textid");
+    };
+  }
+  else if ($call==27){//檢查答案並回傳
+    $ans = $_POST["ans"];
+    $textid = $_POST["textid"];
+    mysqli_query($db, "UPDATE `textpaper` SET `ansall`=concat(`ansall`,$ans) WHERE `id` = $textid");
+  }
+  else if ($call==28){//更改時間
+    $id = $_POST["id"];
+    $time = $_POST["time"];
+    mysqli_query($db, "UPDATE `textpaper` SET `nowtime`='$time' WHERE `id` = $id");
+  }
+  else if ($call==29){//更改獲取答題
+    $id = $_POST["id"]; 
+    $row = mysqli_fetch_array(mysqli_query($db,"SELECT * FROM `textpaper` WHERE `id` = $id"));
+    echo $row["ansall"];
+    mysqli_query($db, "UPDATE `textpaper` SET `ansall`='' WHERE `id` = $id");
+  }
+  else if ($call==30){ //後臺監視系統
+    $id = $_POST["id"];
+    mysqli_query($db, "UPDATE `textpaper` SET `ansall`='' WHERE `id` = $id");
+    $row = mysqli_fetch_array(mysqli_query($db,"SELECT * FROM `textpaper` WHERE `id` = $id"));
+    echo $row["ansall"];
   }
 ?>

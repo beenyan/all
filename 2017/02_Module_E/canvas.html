@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <link rel="stylesheet" src="js/jquery-ui.min.css">
+  <script src="js/jquery-ui.min.js"></script>
+  <title>互動考試</title>
+</head>
+<body style="text-align: center">
+    <canvas width="50px" height="50px" class="canvas"></canvas>
+    <canvas width="50px" height="50px" class="canvas"></canvas>
+    <canvas width="50px" height="50px" class="canvas"></canvas>
+</body>
+<script>
+  let canvas = document.createElement('canvas');
+  $("body").append(canvas);
+  let ctx = canvas.getContext('2d');
+  canvas.width=200;
+  canvas.height=200;
+  function  can(nn){
+    canvas.width = canvas.width
+    let list = nn.split(",");
+    list.pop();
+    let a0 = 0;
+    let a1 = 0;
+    let a2 = 0;
+    for (let i= 0 ; i< list[list.length-1].length ; i++){
+      if (list[list.length-1][i] == 0){
+        a0++;
+      }
+      else if (list[list.length-1][i] == 1){
+        a1++;
+      }
+      else {
+        a2++;
+      };
+    };
+    let count = a0 + a1 + a2;
+    if (a0 != 0){
+      ctx.beginPath();
+      ctx.fillStyle = "rgb(255,0,0)";
+      ctx.moveTo(100,100);
+      ctx.arc(100,100,50,Math.PI*2/360*-90,Math.PI*2/count*a0 - Math.PI*2/360*90);
+      ctx.closePath();
+      ctx.fill();
+      a0 = Math.PI*2/count*a0 - Math.PI*2/360*90;
+    }
+    else {
+      a0 = Math.PI*2/360*90;
+    }
+    if (a1 != 0){
+      ctx.beginPath();
+      ctx.fillStyle = "rgb(0,255,0)";
+      ctx.moveTo(100,100);
+      ctx.arc(100,100,50,a0,Math.PI*2/count*a1 + a0);
+      ctx.closePath();
+      ctx.fill();
+      a1 = Math.PI*2/count*a1 + a0;
+    }
+    else {
+      a1 = a0;
+    }
+    if (a2 != 0){
+      ctx.beginPath();
+      ctx.fillStyle = "rgb(0,0,255)";
+      ctx.moveTo(100,100);
+      ctx.arc(100,100,50,a1,Math.PI*2/360*-90);
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+</script>
+</html>

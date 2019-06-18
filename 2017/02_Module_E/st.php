@@ -42,19 +42,21 @@
     box-shadow: 3px 5px 5px;
     margin: 0 10px 0 10px;
     vertical-align: top;
+    overflow: auto;
   }
   h1{
+    display: inline-block;
     text-shadow: 5px 5px 3px rgba(50, 0, 0, 0.5);
   }
   h2{
     text-shadow: 3px 4px 3px rgba(50, 0, 0, 0.6);
   }
   h3{
-    text-shadow: 3px 3px 3px rgba(0, 0, 255, 0.6);
+    text-shadow: 3px 3px 1px rgba(255, 128, 128, 1);
     word-wrap:break-word;
   }
   .img{
-    border:2px outset rgb(255, 0, 0);
+    border:2px outset rgb(183, 0, 255,1);
   }
   #boxbk{
     position: relative;
@@ -72,6 +74,23 @@
     background-color: gray;
     border-style: hidden;
     cursor: pointer;
+  }
+  #d2{
+    position: absolute;
+  }
+  #d1{
+    cursor: pointer;
+    position: absolute;
+  }
+  #time{
+    display: inline-block;
+    margin: 21.44px 0 21.44px 100px;
+    font-size: 32px;
+    font-family: "微軟正黑體";
+    text-shadow: 5px 5px 3px rgba(50, 0, 0, 0.7);
+  }
+  #ans{
+    display: none;
   }
 </style>
 <body>
