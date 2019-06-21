@@ -1,0 +1,269 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <link rel="stylesheet" src="js/jquery-ui.min.css">
+  <script src="js/jquery-ui.min.js"></script>
+  <title>購物車</title>
+</head>
+<style> 
+  html{
+    width: 0;
+    height: 0;
+  }
+  body{
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    margin: 0;
+    font-size: 0;
+    text-align: center;
+  }
+  #left{
+    font-size: 20px;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    display: inline-block;
+    vertical-align: top;
+    border-right-color: black;
+    border-right-style: outset; 
+    border-right-width: 5px;
+    box-sizing: border-box;
+  }
+  .h1{
+    cursor: pointer;
+    display: inline-block;
+  }
+  #right{
+    z-index: 0;
+    vertical-align: top;
+    font-size: 20px;
+    position: relative;
+    width: 50%;
+    height: 100%;
+    display: inline-block;
+    border-left-color: black;
+    border-left-style: outset; 
+    border-left-width: 5px;
+    box-sizing: border-box;
+  }
+  .buybox{
+    overflow: auto;
+    position: absolute;
+    display: block;
+    height: 615px;
+    width: 582px;
+    background: rgba(128,128,128,0.2);
+    border-width: 5px;
+    border-style: ridge;
+    box-shadow: 8px 8px 5px 0 rgba(128,128,128,0.7);
+    left: 0;right: 0;
+    margin: auto;
+  }
+  .img{
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    position: relative;
+    margin: 7px;
+    border-style: outset; 
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  .curtain{
+    z-index: 22222222222222999999999992;
+    background-color: aqua;
+    height: 0;
+    width: 582px;
+    position: fixed;
+  }
+  .curtain h1 {
+    display: none;
+    color :blueviolet;
+  }
+  /*text*/
+  #cg{
+    z-index: 1;
+    top: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 100px;
+    background:linear-gradient(45deg,white,gray,white,gray);
+    position: absolute;
+    cursor: pointer;
+    border-width: 2px;
+    border-style: outset;
+    border-radius: 10px;
+    box-shadow: 4px 4px 5px 0 rgba(128,128,128,0.6);
+    overflow: hidden;
+  }
+  #cg:hover{
+    background:linear-gradient(45deg,gray,white,gray,white);
+  }
+  #cg *{
+    z-index: 1;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .water{
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background: rgba(7, 255, 255, 0.822);
+    border-radius: 50%;
+    animation-name: water;
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
+    transform: scale(0);
+  }
+  @keyframes water{
+    100% {
+      transform: scale(1);
+      background: rgba(7, 255, 255, 0);
+    }
+  }
+</style>
+<body>
+  <div id="left">
+    <h1 class="h1">選購區</h1>
+    <div class="buybox">
+      <div class="curtain">
+        <h1>熊 X </h1>
+        <h1>貓 X </h1>
+        <h1>兔 X </h1>
+        <h1>虎 X </h1>
+      </div>
+    </div>
+  </div>
+  <div id="cg"></div>
+  <div id="right">
+    <h1 class="h1">購物籃</h1>
+    <div class="buybox">
+      <div class="curtain">
+        <h1>熊 X </h1>
+        <h1>貓 X </h1>
+        <h1>兔 X </h1>
+        <h1>虎 X </h1>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  $("html").contextmenu(function(){
+    return false;
+  });
+  let drag = {
+    l : 0,
+    t : 0,
+  };
+  let zi = 0;
+  for (let i = 0 ; i < 20 ; i++){
+    let one = rand(1,4);
+    let two = rand(1,4);
+    let three = rand(1,4);
+    let four = rand(1,4);
+    $(".buybox:eq(0)").append(`
+      <img class="img" src="image/box${one}.png">
+      <img class="img" src="image/box${two}.png">
+      <img class="img" src="image/box${three}.png">
+      <img class="img" src="image/box${four}.png">
+    `);
+    $(".img:eq(" + (i * 4) + ")").data("kind",one);
+    $(".img:eq(" + (i * 4 + 1) + ")").data("kind",two);
+    $(".img:eq(" + (i * 4 + 2) + ")").data("kind",three);
+    $(".img:eq(" + (i * 4 + 3) + ")").data("kind",four);
+  };
+  $(".img").mousedown(function(){
+    $(this).css("z-index",++zi);
+  });
+  $(".img").click(function(){
+    $this = $(this);
+    if ( $this.css("position") == "absolute"){
+      $(".buybox:eq(0)").append($this);
+      $this.css("position","relative");
+      $(".buybox:eq(0) .img:last").css({
+        top : 0,
+        left : 0,
+      });
+    }
+    else {
+      $(".buybox:eq(1)").append($this);
+      $this.css("position","absolute");
+      $(".buybox:eq(1) .img:last").css({
+        top : rand(0,605 - $(this).height() - 20),
+        left : rand(0,572 - $(this).width() -20),
+      });
+    };
+    cgtext();
+  });
+  $(".img").draggable({
+    appendTo : "body",
+    scroll : false,  
+    helper : 'clone',
+    distance : 20,
+    start : function(){
+      $(this).hide();
+    },
+    drag : function (){
+      $this = $(this);
+      drag.l = parseFloat($(".ui-draggable-dragging").css("left"));
+      drag.t = parseFloat($(".ui-draggable-dragging").css("top"));
+      if ((drag.l - $("#left").width() - parseInt($(".buybox:eq(1)").css("margin-left")) < 0 || drag.t - parseInt($(".buybox:eq(1)").css("top")) < 0) && !(drag.l > parseInt($(".buybox:eq(0)").css("margin-left")) && drag.t > parseInt($(".buybox:eq(0)").css("top")) && drag.t < $(".buybox:eq(0)").height() && drag.l < $(".buybox:eq(0)").width() && $this.css("position") == "absolute")){
+        $(".img").draggable({
+          revert : true,
+        });
+      }
+      else {
+        $(".img").draggable({
+          revert : false,
+        });
+      }
+    },
+    stop : function(e){
+      $this = $(this);
+      if (drag.l > parseInt($(".buybox:eq(0)").css("margin-left")) && drag.t > parseInt($(".buybox:eq(0)").css("top")) && drag.t < $(".buybox:eq(0)").height() && drag.l < $(".buybox:eq(0)").width() && $this.css("position") == "absolute"){
+        $(".buybox:eq(0)").append($this);
+        $this.css("position","relative");
+        $(".buybox:eq(0) .img:last").css({
+          top : 0,
+          left : 0,
+        });
+        $this.show();
+      }
+      else if (drag.l - $("#left").width() - parseInt($(".buybox:eq(1)").css("margin-left")) < 0 || drag.t - parseInt($(".buybox:eq(1)").css("top")) < 0){
+        $this.show();
+        $(".img").draggable({
+          revert : true,
+        });
+      }
+      else {
+        $(".buybox:eq(1)").append($this);
+        $this.css("position","absolute");
+        $this.css({
+          left :　drag.l - $("#left").width() - parseInt($(".buybox:eq(1)").css("margin-left")),
+          top : drag.t - parseInt($(".buybox:eq(1)").css("top")),
+        });
+        $this.show();
+      };
+      cgtext();
+    },
+  });
+  function rand(nn,mm){
+    return parseInt(Math.random()*(mm - nn + 1) + nn)
+  };
+</script>
+<script src="js/cg.js"></script>
+</html>

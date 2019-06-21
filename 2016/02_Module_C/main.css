@@ -1,0 +1,12 @@
+.canvas{
+  position: absolute;
+}
+#background{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 720px;
+  background: rgba(128, 128,128, 0.6);
+  padding: 10px;
+}

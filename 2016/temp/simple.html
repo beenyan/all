@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <link rel="stylesheet" src="js/jquery-ui.min.css">
+  <script src="js/jquery-ui.min.js"></script>
+  <title>購物車</title>
+</head>
+<style>
+  body{
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    margin: 0;
+    font-size: 0;
+    text-align: center;
+  }
+  #left{
+    font-size: 20px;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    display: inline-block;
+    vertical-align: top;
+    border-right-color: black;
+    border-right-style: outset; 
+    border-right-width: 5px;
+    box-sizing: border-box;
+  }
+  .h1{
+    cursor: pointer;
+    display: inline-block;
+  }
+  #right{
+    z-index: 0;
+    vertical-align: top;
+    font-size: 20px;
+    position: relative;
+    width: 50%;
+    height: 100%;
+    display: inline-block;
+    border-left-color: black;
+    border-left-style: outset; 
+    border-left-width: 5px;
+    box-sizing: border-box;
+  }
+  .buybox{
+    overflow: auto;
+    position: absolute;
+    display: block;
+    height: 615px;
+    width: 582px;
+    background: rgba(128,128,128,0.2);
+    border-width: 5px;
+    border-style: ridge;
+    box-shadow: 8px 8px 5px 0 rgba(128,128,128,0.7);
+    left: 0;right: 0;
+    margin: auto;
+  }
+  .img{
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    position: relative;
+    margin: 7px;
+    border-style: outset; 
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+</style>
+<body>
+  <div id="left">
+    <h1 class="h1">選購區</h1>
+    <div class="buybox">
+    </div>
+  </div>
+  <div id="right">
+    <h1 class="h1">購物籃</h1>
+    <div class="buybox">
+    </div>
+  </div>
+</body>
+<script>
+  $("html").contextmenu(function(){
+    return false;
+  });
+  let drag = {
+    l : 0,
+    t : 0,
+  };
+  let zi = 0;
+  for (let i = 0 ; i < 20 ; i++){//生成照片
+    let one = rand(1,4);
+    let two = rand(1,4);
+    let three = rand(1,4);
+    let four = rand(1,4);
+    $(".buybox:eq(0)").append(`
+      <img class="img" src="image/box${one}.png" draggable="false">
+      <img class="img" src="image/box${two}.png" draggable="false">
+      <img class="img" src="image/box${three}.png" draggable="false">
+      <img class="img" src="image/box${four}.png" draggable="false">
+    `);
+    $(".img:eq(" + (i * 4) + ")").data("kind",one);
+    $(".img:eq(" + (i * 4 + 1) + ")").data("kind",two);
+    $(".img:eq(" + (i * 4 + 2) + ")").data("kind",three);
+    $(".img:eq(" + (i * 4 + 3) + ")").data("kind",four);
+  };
+  $(".img").mousedown(function(){//z-indes+1
+    $(this).css("z-index",++zi);
+  });
+  $(".img").click(function(){//物品被點選交換位置
+    $this = $(this);
+    if ( $this.css("position") == "absolute"){
+      $(".buybox:eq(0)").append($this);
+      $this.css("position","relative");
+      $(".buybox:eq(0) .img:last").css({
+        top : 0,
+        left : 0,
+      });
+    }
+    else {
+      $(".buybox:eq(1)").append($this);
+      $this.css("position","absolute");
+      $(".buybox:eq(1) .img:last").css({
+        top : rand(0,605 - $(this).height() - 20),
+        left : rand(0,572 - $(this).width() -20),
+      });
+    };
+  });
+  function rand(nn,mm){//隨機亂數nn~mm
+    return parseInt(Math.random()*(mm - nn + 1) + nn)
+  };
+  $(".h1:eq(1)").mousedown(function(){//數購物籃的商品
+    let right = {
+      1 : 0,
+      2 : 0,
+      3 : 0,
+      4 : 0,
+    };
+    $("#right .img").each(function(){
+      right[$(this).data("kind")]++;
+    });
+    alert(`
+      熊：${right[1]}隻
+      貓：${right[2]}隻
+      兔：${right[3]}隻
+      獅：${right[4]}隻
+    `);
+  });
+</script>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <meta charset="utf-8">
+  <head>
+    <script src="js/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="js/jquery-ui.css">
+    <script src="js/jquery-ui.js"></script>
+    <link rel="stylesheet" src="js/jquery-ui.min.css">
+    <script src="js/jquery-ui.min.js"></script>
+    <title>電子報</title>
+    <link rel="stylesheet" href="lookpower.css">
+  </head>
+  <body style="text-align: center">
+    <div id="background">
+      <div id="title">
+        商業電子報首頁
+        <div>製作電子報</div>
+      </div>
+      <div id="search">查詢</div>
+    </div>
+    <div id="dialog0" style="display: none">
+      <div class="d0search">
+        <select class="dialog0">
+          <option value="name">名稱</option>
+          <option value="mean">介紹</option>
+          <option value="loca">連結</option>
+        </select>
+        <input class="dialog0" type="text"><br><br>
+        <input class="dialog0" type="button" value="查詢">
+      </div>
+      <div class="d0search" style="display: none">
+        <h3>價格</h3>
+        最低價：<input type="text"><br><br>
+        最高價：<input type="text"><br><br>
+        <input type="button" value="查詢">
+      </div>
+    </div>
+    <div id="dialog1">
+    </div>
+  </body>
+  <script src="lookpower.js"></script>
+</html>
