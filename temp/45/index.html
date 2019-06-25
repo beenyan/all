@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+  <meta charset="utf-8">
+  <head>
+    <script src="js/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="js/jquery-ui.css">
+    <script src="js/jquery-ui.js"></script>
+    <link rel="stylesheet" src="js/jquery-ui.min.css">
+    <script src="js/jquery-ui.min.js"></script>
+    <title>無標題文件</title>
+  </head>
+  <style>
+    body{
+      text-align: center;
+      user-select: none;
+    }
+    .bt{
+      display: inline-block;
+      font-size: 200%;
+      background: #578BC9;
+      border-style: outset;
+      border-width: 3px;
+      border-color: #3A5472;
+      cursor: pointer;
+      width: auto;
+      height: 45px;
+      line-height: 45px;
+      margin: 0 20px 0 20px;
+    }
+    #login{
+      position: absolute;
+      top: 3%;
+      left: 65%;
+    }
+    input[type=text]{
+      position: relative;
+      font-size: 100%;
+      transform: translateY(-75%)
+    }
+  </style>
+  <body>
+    <div class="dialog" id="dialog0">
+    </div>
+    <table align="center" border="1" width="800">
+      <tbody>
+        <tr>
+          <td>
+            <div class="bt" id="login"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+  <script>
+    $(".dialog").dialog({
+      autoOpen : false,
+    });
+    function rand(nn,mm){
+      return parseInt(Math.random()*(mm - nn + 1) + nn);
+    };
+    function login(){
+      if ($(":text:eq(0)").val() == "admin"){
+        location.href = "admin.html";
+      }
+      else{
+        location.href = `people.html?[${$(":text:eq(0)").val()}]`;
+      }
+    };
+    function rainbow(createpos,word,fontsize,shadow,textwidth){
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
+      canvas.width = fontsize * word.length + shadow;
+      canvas.height = fontsize + fontsize / 3;
+      $(canvas).css("pointer-events","none");
+      createpos.append(canvas);
+      ctx.font = "bold " + fontsize +"px 微軟正黑體";
+      ctx.fillText(word,0,fontsize);
+      let pos = 0;
+      let ck = 1;
+      setInterval(function(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillText(word,0,fontsize)
+        if (pos < canvas.width*1.5 && ck) pos++; //控制位置
+        else {
+          ck = 0;
+          pos--;
+        }
+        if (pos < -100) ck = 1;
+        let gar = ctx.createLinearGradient(pos,0,canvas.width-pos,canvas.height);
+        gar.addColorStop(0,"red");
+        gar.addColorStop(0.2,"orange");
+        gar.addColorStop(0.35,"yellow");
+        gar.addColorStop(0.55,"green");
+        gar.addColorStop(0.7,"aqua");
+        gar.addColorStop(0.8,"blue");
+        gar.addColorStop(1,"purple");
+        ctx.fillStyle = gar;
+        ctx.globalCompositeOperation = "source-in";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = "rgba(128,128,128,1)";
+        ctx.strokeStyle = "rgba(0,0,0,1)";
+        ctx.lineWidth = textwidth;
+        ctx.globalCompositeOperation = "destination-over";
+        ctx.fillText(word,shadow,fontsize + shadow);
+        ctx.globalCompositeOperation = "source-over";
+        ctx.strokeText(word,0,fontsize);
+      },10);
+    };
+    function ctimg(){
+      $("img").remove();
+      let arr = [0,1,2,3,4,5,6,7,8,9];
+      for (let i = 0 ; i < 4 ; i++){
+        let count = arr.splice(rand(0,arr.length-1),1);
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        canvas.width = 40;
+        canvas.height = 40;
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.font = "bold 40px 微軟正黑體";
+        ctx.fillStyle = "rgba(255,255,255,1)";
+        ctx.fillText(count[0],8,35);
+        let img = new Image();
+        img.src = canvas.toDataURL();
+        $(img).data("number",count[0]);
+        img.onload = function(){
+          $(img).css({
+            "margin-right" : 10,
+            "margin-top" : 2,
+            "margin-left" : 10,
+          });
+          $(".bt:eq(1)").append(img);
+        };
+      };
+    };
+    ctimg()
+    rainbow($("tr:eq(0) td"),"會議室預約系統",48,7,2);
+    rainbow($("tr:eq(1) td"),"帳號：",40,4,1);
+    let input = document.createElement('input');
+    input.type = "text";
+    $("tr:eq(1) td").append(`${input.outerHTML}<br>`);
+    rainbow($("tr:eq(1) td"),"密碼：",40,4,1);
+    $("tr:eq(1) td").append(`${input.outerHTML}<br>`);
+    rainbow($("tr:eq(1) td"),"認證碼圖片：",40,4,1);
+    $("tr:eq(1) td").append(`<div class="bt"></div>`);
+    $("tr:eq(1) td").append(`<div class="bt"></div>`);
+    rainbow($(".bt:eq(2)"),"刷新驗證碼",35,5,1);
+    $(".bt:eq(2)").mousedown(function(){
+      ctimg();
+    });
+    $(".bt:eq(1)").sortable({
+    });
+    $("tr:eq(1) td").append(`<br><br><div class="bt"></div>`);
+    rainbow($(".bt:eq(3)"),"確定",35,5,1);
+    $("tr:eq(1) td").append(`<div class="bt"></div><br><br>`);
+    rainbow($(".bt:eq(4)"),"忘記密碼",35,5,1);
+    rainbow($("#login"),"會員登入",35,5,1);
+    $(".bt:eq(4)").mousedown(function(){
+      if ($(":text:eq(0)").val() == ""){
+        confirm("Please input your account.");
+        return false;
+      };
+      $.post({
+        url : "fun.php?c=0",
+        data : {account : $(":text:eq(0)").val()},
+        success : function (e){
+          if (e == "此帳號沒有密碼提示" || e == "無此帳號"){
+            alert(e);
+            return false;
+          };
+          $("#dialog0").empty();
+          let list = e.split(";");
+          $("#dialog0").append(`<h1>${list[0]}</h1><input type="text"><br><div class="bt"></div>`);
+          rainbow($("#dialog0 .bt"),"送出",35,5,1);
+          $("#dialog0 :text").attr("maxlength",list[1].length);
+          $("#dialog0").dialog("open");
+          $("#dialog0 .bt").mousedown(function(){
+            if ($("#dialog0 :text").val() == list [1]){
+              alert("login success");
+              login();
+            }
+            else {
+              alert("login false");
+            }
+          });
+        },
+      });
+    });
+    $(".bt:eq(3)").mousedown(function(){
+      if ($(":text:eq(0)").val() == "" || $(":text:eq(1)").val() == ""){
+        alert("值不能為空");
+        return false;
+      }
+      for (let i = 0 ; i < 4 ; i++){
+        for (let j = i ; j < 4 ; j++){
+          if ($("img:eq(" + i + ")").data("number") > $("img:eq(" + j + ")").data("number")){
+            alert("請重新排序，由大到小。");
+            return false;
+          }
+        };
+      };
+      login();
+    });
+  </script>
+</html>

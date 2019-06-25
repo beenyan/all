@@ -1,0 +1,97 @@
+body{
+  text-align: center;
+  user-select: none;
+}
+#bk{
+  position: absolute;
+  left: 50%;
+  width: 60%;
+  height: 90%;
+  border-style: outset;
+  border-color: black;
+  transform: translateX(-50%);
+  background: rgba(128,128,128,0.3);
+  box-shadow: 5px 5px 5px 0 rgba(128,128,128,1);
+  overflow: hidden;
+}
+#title,#ltit{
+  width: 100%;
+  height: 10%;
+  overflow: hidden;
+  background: rgba(255,255,255,1);
+  border-bottom-style: outset;
+  border-bottom-color: black;
+}
+.bt{
+  display: inline-block;
+  font-size: 200%;
+  background: #578BC9;
+  border-style: outset;
+  border-width: 3px;
+  border-color: #3A5472;
+  cursor: pointer;
+  width: auto;
+  height: 45px;
+  line-height: 45px;
+  margin: 0 20px 0 20px;
+}
+#logout{
+  transform: translateX(-80%);
+}
+#ltit div{
+  cursor: pointer;
+  width: 33%;
+  height: 100%;
+  display: inline-block;
+  box-sizing: border-box;
+  border-right-style:outset;
+  border-right-color: red;
+}
+#ltit div:hover{
+  background-color: aqua;
+}
+.mean{
+  width: 100%;
+  height: 80%;
+  overflow: auto;
+  font-size: 100%;
+}
+.ui{
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,20%);
+  width: 95%;
+  height: 60px;
+  border-style: outset;
+  border-color: coral;
+  font-size: 0;
+}
+.li{
+  vertical-align: top;
+  display: inline-block;
+  width: 16.3%;
+  font-size: 45px;
+  height: 100%;
+  line-height: 60px;
+  border-right-style: outset;
+  border-right-color: black;
+  overflow: hidden;
+}
+.li input[type=text]{
+  font-size: 50px;
+  border-style: hidden;
+  padding: 0;
+  width:100%;
+  left: 0;
+}
+.date{
+  font-size: 200%;
+}
+canvas{
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+select{
+  font-size: 150%;
+}
