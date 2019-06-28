@@ -11,8 +11,28 @@
 <title>俄羅斯方塊</title>
 </head>
 <body>
-  <div id="background"></div>
+  <audio id="BGM" autoplay loop src="music/BGM.mp3"></audio>
+  <script>
+    $("#BGM")[0].volume = 0.5
+  </script>
+  <audio id="music" src="music/dele.mp3"></audio>
+  <div id="dialog2"></div>
+  <div id="dialog1"></div>
+  <div id="dialog0"></div>
+  <div id="background">
+    <div id="inbk">
+      <div id="viewnext"></div>
+      <div id="number">
+        <label>難度：</label><br><br>
+        <label>行數：0</label><br><br>
+        <label>時間：0:0</label>
+      </div>
+      <div class="db">畫面分享</div>
+      <div class="db">暫停遊戲</div>
+      <div class="db">放棄遊戲</div>
+    </div>
+  </div>
 </body>
 <script src="js/function.js"></script>
-<script src="js/main.js"></script>
+<script src="js/main.js"> </script>
 </html>

@@ -1,5 +1,32 @@
+body{
+  user-select: none;
+}
 .canvas{
   position: absolute;
+}
+#viewnext{
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  background: white;
+  border-style: outset;
+  border-color: blue;
+}
+#viewnext canvas{
+  position: relative;
+  top: 40px;
+  left: 40px;
+}
+#number{
+  font-size: 150%;
+  position: relative;
+  display: inline-block;
+  width: 300px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 20px;
 }
 #background{
   position: absolute;
@@ -9,4 +36,107 @@
   height: 720px;
   background: rgba(128, 128,128, 0.6);
   padding: 10px;
+}
+#heightline{
+  position: relative;
+  left: 80%;
+  display: inline-block;
+  text-align: right;
+  font-family: "微軟正黑體";
+  font-size: 150%;
+}
+#MVP{
+  text-align: right;
+  font-family: "微軟正黑體";
+  font-size: 100%;
+}
+#title {
+  text-align: center;
+  margin: 50px;
+  font-size: 400%;
+  font-family: "微軟正黑體";
+}
+.title{
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  margin: 50px;
+  font-size: 400%;
+  font-family: "微軟正黑體";
+  left: 10%;
+}
+#dialog1 input[type=text]{
+  transform: translateY(-20%);
+  position: relative;
+  font-size: 200%;
+}
+#difficult{
+  font-family: "微軟正黑體";
+  font-size: 100%;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+}
+#dialog0 select{
+  position: relative;
+  left: 50%;
+}
+.button{
+  position: relative;
+  width: 20%;
+  height: 20%;
+  cursor: pointer;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#start{
+  left: 45%;
+  transform: translateX(-50%);
+  position: relative;
+  width: 30%;
+  margin: 50px;
+  text-align: center;
+  font-family: "微軟正黑體";
+  font-size: 200%;
+  padding : 20px;
+  background-color: #5B9BD5;
+  border-style: outset;
+  border-color: #4477A4;
+  cursor: pointer;
+}
+#inbk{
+  position: absolute;
+  display: inline-block;
+  width: 400px;
+  height: 720px;
+  left: 50%;
+}
+.db{
+  color: white;
+  text-align: center;
+  font-size: 200%;
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px;
+  margin: 10px;
+  background-color: #5B9BD5;
+  border-style: outset;
+  border-color: #4477A4;
+  cursor: pointer;
+}
+.bk{
+  text-align: center;
+  width: 23%;
+  height: 50px;
+  line-height: 50px;
+  margin-right: -7.5px;
+  margin-bottom: -7px;
+  font-size: 30px;
+  border-style: outset;
+  border-color: black;
+  display: inline-block;
+  overflow: hidden;
 }
