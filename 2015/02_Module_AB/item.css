@@ -1,0 +1,112 @@
+body{
+  position: absolute;
+  font-family: "微軟正黑體";
+  font-weight: bold;
+  margin: 0;
+  background: black;
+  user-select: none;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.title{
+  position: relative;
+  margin: 0;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  width: 1440px;
+  height: 200px;
+  line-height: 120px;
+  background: url(img/title.jpg);
+  background-repeat: no-repeat;
+  background-size: 100% 200%;
+  text-align: center;
+}
+.title h1{
+  font-size: 50px;
+  color: #9D3F31;
+  display: inline-block;
+}
+.title img{
+  vertical-align: middle;
+}
+.lt{
+  font-size: 25px;
+  left: 5px;
+  cursor: pointer;
+  position: relative;
+  padding: 15px 37.2px 15px 37.2px;
+  display: inline-block;
+  margin-left: -7px;
+  border-left-color: rgb(255, 0, 0);
+  border-left-style: outset;
+  border-left-width: 10px;
+  color: wheat;
+}
+.lt:nth-child(odd){
+  background: linear-gradient(45deg,rgba(128, 128, 128,0.8),rgba(128, 128, 128,0.1),rgba(128, 128, 128,0.8),rgba(128, 128, 128,0.1));
+}
+.lt:nth-child(even){
+  background: linear-gradient(45deg,rgba(128, 128, 128,0.1),rgba(128, 128, 128,0.8),rgba(128, 128, 128,0.1),rgba(128, 128, 128,0.8));
+}
+.lt:nth-child(odd):hover{
+  background: linear-gradient(-45deg,rgba(128, 128, 128,1),rgba(255, 255, 255, 1),rgba(128, 128, 128,1),rgba(255, 255, 255, 1));
+}
+.lt:nth-child(even):hover{
+  background: linear-gradient(-45deg,rgba(255, 255, 255, 1),rgba(128, 128, 128,1),rgba(255, 255, 255, 1),rgba(128, 128, 128,1));
+}
+#list{
+  position: relative;
+  width: 1440px;
+  height: 64px;
+}
+.ltbk{
+  overflow: hidden;
+  font-size: 0;
+  position: relative;
+  width: 1440px;
+  height: 493px;
+}
+.mean{
+  display: inline-block;
+  position: relative;
+  width: 1440px;
+  height: 100%;
+  background: url(img/ltbk.jpg);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+textarea{
+  top: 50%;
+  transform: translateY(-50%);
+  color: cyan;
+  padding: 20px;
+  font-size: 25px;
+  position: relative;
+  resize: none;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(rgba(255, 255, 255, 0.6),rgba(255, 255, 255, 0.2));
+  border-radius: 10px;
+  left: 150px;
+}
+canvas{
+  transform: translateY(50%);
+}
+.text{
+  padding: 20px;
+  font-size: 25px;
+  position: absolute;
+  display: inline-block;
+  width: 600px;
+  height: auto;
+  background: radial-gradient(rgba(255, 255, 255, 0.6),rgba(255, 255, 255, 0.2));
+  border-color: rgb(169, 169, 169);
+  border-style: solid;
+  border-radius: 10px;
+  border-width: 1px;
+  top: 50%;
+  left: 650px;
+  transform: translateY(-50%);
+  color: orange;
+}
