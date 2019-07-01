@@ -61,6 +61,7 @@
     方塊大小：
     <input type="number" max="10" min="1" value="5" onchange="img.src = img.src">
     <input type="button" value="更換背景顏色" onmousedown="$('#dialog').dialog('open')">
+    <div  id="time">剩餘項目：</div>
   </div>
   <div style="display: none;text-align: center" id="dialog">
     <h1>背景顏色</h1>
@@ -93,7 +94,8 @@
   };
   function rand(nn,mm){
     return parseInt(Math.random()*(mm-nn+1))+nn;
-  }
+  };
+  let time = 0;
   let allarr = [];
   let allset = 1;
   let canvas1 = document.createElement('canvas');
@@ -199,5 +201,8 @@
       $("#bk").css("background-color",`rgb(${$(".slider:eq(0)").slider("value")},${$(".slider:eq(1)").slider("value")},${$(".slider:eq(2)").slider("value")})`);
     },
   });
+  setInterval(function(){
+    $("#time").text("剩餘項目：" + allarr.length);
+  },1);
 </script>
 </html>
