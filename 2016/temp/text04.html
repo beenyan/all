@@ -61,7 +61,7 @@
     <input type="range" id="slider" max="100" min="10" value="50" style="cursor: pointer">
     <input type="file" onchange="cgimg()" accept="image/*">
     方塊大小：
-    <input type="number" max="10" min="1" value="5" onchange="img.src = img.src">
+    <input type="number" max="100" min="1" value="10" onchange="img.src = img.src">
     <input type="button" value="更換背景顏色" onmousedown="$('#dialog').dialog('open')">
     <div  id="time">剩餘項目：</div>
   </div>
@@ -118,78 +118,64 @@
     allarr.length = 0;
     for (let i = 0 ; i < canvas.height +zoom ; i+=zoom){
       for (let j = 0 ; j < canvas.width/2 ; j+=zoom){
-        allarr.push([j,i,j + canvas.width / 2]);
+        allarr.push([j,i,j + canvas.width / 2,ctx.getImageData(j,i,zoom,zoom)]);
       };
     };
   };
   img.src = "image/00005.jpg";
   img.onload = function(e){
-    zoom = parseInt($("input[type=number]").val());
-    setarr();
-    summonarr.length = 0;
-    arr.length = 0;
-    ctx.fillStyle = "black";
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx1.clearRect(0,0,canvas1.width,canvas1.height);
     ctx2.clearRect(0,0,canvas2.width,canvas2.height);
+    zoom = parseInt($("input[type=number]").val());
     ctx.drawImage(img,0,0,canvas.width/2,canvas.height);
+    setarr();
+    summonarr.length = 0;
+    arr.length = 0;
     allset = 0; //開始
   };
+  let pos = {};
+  let img01;
+  let rd0;
   setInterval(function(){//自動位移
-      if (allset) return false;
-      if (!allarr.length) return false;
-      let rd = rand(0,allarr.length-1);
-      let pos = {
-        x : allarr[rd][0],
-        y : allarr[rd][1]
-      };
-      allarr.splice(rd,1);
-      let rgba = [];
-      //像素大小
-      for (let i = 0 ; i < zoom ; i++){
-        let temparr = [];
-        for (let j = 0 ; j < zoom ; j++){
-          let pixel = ctx.getImageData(pos.x+j,pos.y+i,zoom,zoom);
-          let data = pixel.data;
-          temparr.push(`rgba(${data[0]},${data[1]},${data[2]},${data[3]/255})`);
-        };
-        rgba.push(temparr);
-      };
-      arr.push([pos.x , pos.y , pos.x+canvas.width/2]);
-      summonarr.push([pos.x , pos.y , pos.x+canvas.width/2,rgba]);
-      dele();
-    },1);
+    //if (summonarr.length > 60) return false;
+    if (allset) return false;
+    if (!allarr.length) return false;
+    rd0 = rand(0,allarr.length-1);
+    pos = {
+      x : allarr[rd0][0],
+      y : allarr[rd0][1]
+    };
+    img01 = allarr[rd0][3];
+    allarr.splice(rd0,1);
+    arr.push([pos.x , pos.y , pos.x+canvas.width/2]);
+    summonarr.push([pos.x , pos.y , pos.x+canvas.width/2,img01]);
+    dele();
+  },10);
+  let newarr;
   function dele(){
     if (allset) return false;
-    let newarr = arr.shift();
+    newarr = arr.shift();
     ctx.clearRect(newarr[0],newarr[1],zoom,zoom);
+    
   };
+  let i,rd1;
   setInterval(function(){
       if (allset) return false;
       ctx1.clearRect(0,0,canvas1.width,canvas1.height);
-      for (let i = 0 ; i < summonarr.length ; i++){
-        let rd = rand(5,parseInt($("#slider").val()));
-        if (summonarr[i][0]+rd < summonarr[i][2]){
-          summonarr[i][0] += rd;
-          for (let k = 0 ; k < zoom ; k++){
-            for (let j = 0 ; j < zoom ; j++){
-              ctx1.fillStyle = summonarr[i][3][k][j];
-              ctx1.fillRect(summonarr[i][0]+j,summonarr[i][1]+k,1,1);
-            };
-          };
+      for (i = 0 ; i < summonarr.length ; i++){
+        rd1 = rand(5,parseInt($("#slider").val()));
+        if (summonarr[i][0]+rd1 < summonarr[i][2]){
+          summonarr[i][0] += rd1;
+          ctx1.putImageData(summonarr[i][3],summonarr[i][0],summonarr[i][1]);
         }
         else {//完成
           summonarr[i][0] = summonarr[i][2];
-          for (let k = 0 ; k < zoom ; k++){
-            for (let j = 0 ; j < zoom ; j++){
-              ctx2.fillStyle = summonarr[i][3][k][j];
-              ctx2.fillRect(summonarr[i][0]+j,summonarr[i][1]+k,1,1);
-            };
-          };
+          ctx2.putImageData(summonarr[i][3],summonarr[i][0],summonarr[i][1]);
           summonarr.splice(i,1);
         };
       };
-    },10);
+    },50);
   $("#dialog").dialog({
     autoOpen : false,
     width : 700,
@@ -205,6 +191,6 @@
   });
   setInterval(function(){
     $("#time").text("剩餘項目：" + allarr.length);
-  },1);
+  },100);
 </script>
 </html>
