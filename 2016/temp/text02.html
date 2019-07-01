@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <link rel="stylesheet" src="js/jquery-ui.min.css">
+  <script src="js/jquery-ui.min.js"></script>
+  <title>canvas動畫</title>
+</head>
+<body style="text-align: center">
+</body>
+<script>
+  function rand(nn,mm){
+    return parseInt(Math.random()*(mm-nn+1))+nn;
+  }
+  let canvas = document.createElement('canvas');
+  let ctx = canvas.getContext('2d');
+  canvas.width = 300;
+  canvas.height = 2400;
+  $("body").append(canvas);
+  let width = 150;
+  let round = 10;
+  let Offset = 0;
+  let Offsetline = round;
+  let arr = new Array();
+  let ty = 1;let rgb = 255;
+  for (let i = round * 2 ; i < 3000 ; i += (round * 2)){
+    if (ty && rgb > 0){
+      rgb-=5;
+    }
+    else if (rgb < 255 ){
+      ty = 0;
+      rgb+=5;
+    }
+    else {
+      ty = 1;
+      rgb-=5;
+    }
+    arr.push([width / 3 + round + Offset ,i - i / 5,width / 3 + round + width - Offset,i - i / 5,1,0,rgb,1]);
+    if (Offset > width || Offset < 0){
+      Offsetline *= -1;
+    }
+    Offset += Offsetline;
+  };
+  for (let i = 0 ; i < arr.length ; i++){
+    ctx.moveTo(arr[i][0],arr[i][1]);
+    ctx.arc(arr[i][0],arr[i][1],round,0,Math.PI * 2);
+    ctx.closePath();
+    ctx.arc(arr[i][2],arr[i][3],round,0,Math.PI * 2);
+    ctx.closePath();
+  }
+  setInterval(function(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let i = 0 ; i < arr.length ; i++){
+      if (arr[i][0] < width / 3 + round * 2 + width && arr[i][4] == 1){
+        arr[i][0]++;
+      }
+      else if (arr[i][0] > width / 3){
+        arr[i][4] = 0;
+        arr[i][0]--;
+      }
+      else {
+        arr[i][4] = 1;
+      };
+      if (arr[i][2] < width / 3 + round * 2 + width && arr[i][5] == 1){
+        arr[i][2]++;
+      }
+      else if (arr[i][2] > width / 3){
+        arr[i][5] = 0;
+        arr[i][2]--;
+      }
+      else {
+        arr[i][5] = 1;
+      };
+      ctx.beginPath();
+      ctx.moveTo(arr[i][0],arr[i][1]);
+      ctx.arc(arr[i][0],arr[i][1],round,0,Math.PI * 2);
+      ctx.arc(arr[i][2],arr[i][3],round,0,Math.PI * 2);
+      ctx.closePath();
+      if (arr[i][7] && arr[i][6] < 255){
+        arr[i][6] += 1;
+      }
+      else if (arr[i][6] > 0){
+        arr[i][7] = 0;
+        arr[i][6] -= 1;
+      }
+      else {
+        arr[i][7] = 1;
+        arr[i][6] += 1;
+      }
+      ctx.fillStyle = `rgb(0,128,${arr[i][6]})`;
+      ctx.fill();
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(Math.min(arr[i][2],arr[i][0]),arr[i][1]);
+      ctx.lineTo(Math.max(arr[i][2],arr[i][0]),arr[i][1]);
+      ctx.strokeStyle = `rgb(255,${arr[i][6]},128)`;
+      ctx.stroke();
+      ctx.globalCompositeOperation = "destination-over";
+    };
+  },1);
+</script>
+</html>

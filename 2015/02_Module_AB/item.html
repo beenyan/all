@@ -30,63 +30,103 @@
     </div>
   </div>
 </body>
-<script>
-  function rand(nn,mm){
-    return parseInt(Math.random()*(mm - nn + 1) + nn);
-  };
-  function rainbow(createpos,word,fontsize,shadow,textwidth){
-  let canvas = document.createElement('canvas');
-  let ctx = canvas.getContext('2d');
-  canvas.width = fontsize * word.length + shadow;
-  canvas.height = fontsize + fontsize / 3;
-  $(canvas).css("pointer-events","none");
-  createpos.append(canvas);
-  ctx.font = "bold " + fontsize +"px 微軟正黑體";
-  ctx.fillText(word,0,fontsize);
-  let pos = 0;
-  let ck = 1;
-  setInterval(function(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillText(word,0,fontsize)
-    if (pos < canvas.width*1.5 && ck) pos++; //控制位置
-    else {
-      ck = 0;
-      pos--;
-    }
-    if (pos < -100) ck = 1;
-    let gar = ctx.createLinearGradient(pos,0,canvas.width-pos,canvas.height);
-    gar.addColorStop(0,"red");
-    gar.addColorStop(0.2,"orange");
-    gar.addColorStop(0.35,"yellow");
-    gar.addColorStop(0.55,"green");
-    gar.addColorStop(0.7,"aqua");
-    gar.addColorStop(0.8,"blue");
-    gar.addColorStop(1,"purple");
-    ctx.fillStyle = gar;
-    ctx.globalCompositeOperation = "source-in";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = "rgba(128,128,128,1)";
-    ctx.strokeStyle = "rgba(0,0,0,1)";
-    ctx.lineWidth = textwidth;
-    ctx.globalCompositeOperation = "destination-over";
-    ctx.fillText(word,shadow,fontsize + shadow);
-    ctx.globalCompositeOperation = "source-over";
-    ctx.strokeText(word,0,fontsize);
-  },10);
-};
-  rainbow($(".title h1"),"物資資源需求區",50,5,2);
-  $(".lt").mousedown(function(){
-    let speed = 1000;
-    $(".mean:last").after(`<div class="mean" style="top:${parseInt($(".mean:last").css("top"))}px"></div>`);
-    $(".mean").each(function(){
-      let $thistop = parseInt($(this).css("top"));
-      $(this).animate({top:$thistop - $(this).height()},speed,'linear');
-    });
-    setTimeout(function(){
-      $(".mean:first").remove();
-      $(".mean:last").css("top",0);
+  <script>
+    $("html").contextmenu(function(){
       return false;
-    },speed + 100);
-  });
-</script>
+    });
+    function rand(nn,mm){
+      return parseInt(Math.random()*(mm - nn + 1) + nn);
+    };
+    function rainbow(createpos,word,fontsize,shadow,textwidth){
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
+      canvas.width = fontsize * word.length + shadow;
+      canvas.height = fontsize + fontsize / 3;
+      $(canvas).css("pointer-events","none");
+      createpos.append(canvas);
+      ctx.font = "bold " + fontsize +"px 微軟正黑體";
+      ctx.fillText(word,0,fontsize);
+      let pos = 0;
+      let ck = 1;
+      setInterval(function(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillText(word,0,fontsize)
+        if (pos < canvas.width*1.5 && ck) pos++; //控制位置
+        else {
+          ck = 0;
+          pos--;
+        }
+        if (pos < -100) ck = 1;
+        let gar = ctx.createLinearGradient(pos,0,canvas.width-pos,canvas.height);
+        gar.addColorStop(0,"red");
+        gar.addColorStop(0.2,"orange");
+        gar.addColorStop(0.35,"yellow");
+        gar.addColorStop(0.55,"green");
+        gar.addColorStop(0.7,"aqua");
+        gar.addColorStop(0.8,"blue");
+        gar.addColorStop(1,"purple");
+        ctx.fillStyle = gar;
+        ctx.globalCompositeOperation = "source-in";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = "rgba(128,128,128,1)";
+        ctx.strokeStyle = "rgba(0,0,0,1)";
+        ctx.lineWidth = textwidth;
+        ctx.globalCompositeOperation = "destination-over";
+        ctx.fillText(word,shadow,fontsize + shadow);
+        ctx.globalCompositeOperation = "source-over";
+        ctx.strokeText(word,0,fontsize);
+      },10);
+    };
+    rainbow($(".title h1"),"物資資源需求區",50,7,2);
+    $(".lt").mousedown(function(){
+      if ($(".mean").length > 1) return false;
+      let speed = 1000;
+      $(".mean:last").after(`${mean[$(this).index()]}`);
+      if ($(this).index() == 3){
+        $(".mean:last").css("text-align","center");
+      };
+      $(".mean").each(function(){
+        let $thistop = parseInt($(this).css("top"));
+        $(this).animate({top:$thistop - $(this).height()},speed,'linear');
+      });
+      setTimeout(function(){
+        $(".mean:first").remove();
+        $(".mean:last").css("top",0);
+        return false;
+      },speed + 100);
+    });
+    let mean = [
+      `<div class="mean">
+        <textarea></textarea>
+        <div class="text">緊接在災害發生後進行的各項救援活動，包括損害與需求評估、即時需要的幫助、搜索救援，及清除災害造成的破瓦殘礫等。</div>
+      </div>`,
+      `<div class="mean">
+        <textarea></textarea>
+        <div class="text">依據日內瓦公約所賦予之任務，保護及協助武裝衝突中受難的軍事人員及平民。</div>
+      </div>`,
+      `<div class="mean">
+        <textarea></textarea>
+        <div class="text">我們不能遺忘這些被捲入此衝突的無辜平民，我們必須守住我們的承諾，努力協助他們重建被戰亂打亂的生活。</div>
+      </div>`,
+      `<div class="mean">
+        <img class="showimg" src="img/img01.jpg" draggable="false">
+        <img class="showimg" src="img/img02.jpg" draggable="false">
+        <img class="showimg" src="img/img03.jpg" draggable="false">
+      </div>`,
+      `<div class="mean">
+        <textarea></textarea>
+        <input type="file" accept="image/*">
+        <input type="file" accept="image/*">
+      </div>`,
+      `<div class="mean">
+        <textarea></textarea>
+      </div>`,
+    ];
+    $(".lt").mouseenter(function(){
+      $(this).css("text-shadow","5px 5px 3px blue");
+    });
+    $(".lt").mouseleave(function(){
+      $(this).css("text-shadow","");
+    });
+  </script>
 </html>

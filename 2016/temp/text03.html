@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>移動像素</title>
+</head>
+<style>
+  canvas,#bk{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%)
+  }
+  #speed{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 400px;
+    font-size: 200%;
+  }
+  input[type=file]{
+    width: 70px;
+  }
+  #bk{
+    z-index: -1;
+    width: 900px;
+    height: 350px;
+  }
+  .uu{
+    vertical-align: top;
+    display: inline-block;
+    width: 150px;
+    height: 60px;
+    margin: 20px;
+  }
+  .colorbk{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-style: outset;
+    border-color: aqua;
+    border-width: 10px;
+    display: inline-block;
+    top: 100px;
+    background: white;
+  }
+</style>
+<body>
+  <div id="bk"></div>
+  <canvas width="900" height="350"></canvas>
+  <canvas width="900" height="350" style="pointer-events: none"></canvas>
+  <canvas width="900" height="350" style="pointer-events: none"></canvas>
+  <div id="speed">
+    風速：
+    <input type="range" id="slider" max="100" min="10" value="50" style="cursor: pointer">
+    <input type="file" onchange="cgimg()" accept="image/*">
+    方塊大小：
+    <input type="number" max="10" min="1" value="5" onchange="img.src = img.src">
+    <input type="button" value="更換背景顏色" onmousedown="$('#dialog').dialog('open')">
+  </div>
+  <div style="display: none;text-align: center" id="dialog">
+    <h1>背景顏色</h1>
+    <div class="uu">
+      <h1>R</h1>
+      <div class="slider"></div>
+    </div>
+    <div class="uu">
+      <h1>G</h1>
+      <div class="slider"></div>
+    </div>
+    <div class="uu">
+      <h1>B</h1>
+      <div class="slider"></div>
+    </div>
+    <div class="colorbk"></div>
+  </div>
+</body>
+<script>
+  $("input[type=number]").keydown(function(){
+    return false;
+  });
+  function cgimg(){
+    allset = 1;
+    let reader = new FileReader();
+    reader.readAsDataURL($(":file")[0].files[0]);
+    reader.onload = function(e){
+      img.src = e.target.result;
+    };
+  };
+  function rand(nn,mm){
+    return parseInt(Math.random()*(mm-nn+1))+nn;
+  }
+  let allarr = [];
+  let allset = 1;
+  let canvas1 = document.createElement('canvas');
+  canvas1 = $("canvas:eq(1)")[0];
+  let ctx1 = canvas1.getContext('2d');
+  let canvas2 = document.createElement('canvas');
+  canvas2 = $("canvas:eq(2)")[0];
+  let ctx2 = canvas2.getContext('2d');
+  let img = new Image();
+  let zoom = parseInt($("input[type=number]").val());
+  let summonarr = new Array();
+  let canvas = document.createElement('canvas');
+  canvas = $("canvas:eq(0)")[0];
+  let ctx = canvas.getContext('2d');
+  let arr = new Array();
+  let rgba = [];
+  function setarr(){
+    allarr.length = 0;
+    for (let i = 0 ; i < canvas.height +zoom ; i+=zoom){
+      for (let j = 0 ; j < canvas.width/2 ; j+=zoom){
+        allarr.push([j,i,j + canvas.width / 2]);
+      };
+    };
+  };
+  img.src = "image/00005.jpg";
+  img.onload = function(e){
+    zoom = parseInt($("input[type=number]").val());
+    setarr();
+    summonarr.length = 0;
+    arr.length = 0;
+    ctx.fillStyle = "black";
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx1.clearRect(0,0,canvas1.width,canvas1.height);
+    ctx2.clearRect(0,0,canvas2.width,canvas2.height);
+    ctx.drawImage(img,0,0,canvas.width/2,canvas.height);
+    allset = 0; //開始
+  };
+  setInterval(function(){//自動位移
+      if (allset) return false;
+      if (!allarr.length) return false;
+      let rd = rand(0,allarr.length-1);
+      let pos = {
+        x : allarr[rd][0],
+        y : allarr[rd][1]
+      };
+      allarr.splice(rd,1);
+      let rgba = [];
+      //像素大小
+      for (let i = 0 ; i < zoom ; i++){
+        let temparr = [];
+        for (let j = 0 ; j < zoom ; j++){
+          let pixel = ctx.getImageData(pos.x+j,pos.y+i,zoom,zoom);
+          let data = pixel.data;
+          temparr.push(`rgba(${data[0]},${data[1]},${data[2]},${data[3]/255})`);
+        };
+        rgba.push(temparr);
+      };
+      arr.push([pos.x , pos.y , pos.x+canvas.width/2]);
+      summonarr.push([pos.x , pos.y , pos.x+canvas.width/2,rgba]);
+      dele();
+    },1);
+  function dele(){
+    if (allset) return false;
+    let newarr = arr.shift();
+    ctx.clearRect(newarr[0],newarr[1],zoom,zoom);
+  };
+  setInterval(function(){
+      if (allset) return false;
+      ctx1.clearRect(0,0,canvas1.width,canvas1.height);
+      for (let i = 0 ; i < summonarr.length ; i++){
+        let rd = rand(5,parseInt($("#slider").val()));
+        if (summonarr[i][0]+rd < summonarr[i][2]){
+          summonarr[i][0] += rd;
+          for (let k = 0 ; k < zoom ; k++){
+            for (let j = 0 ; j < zoom ; j++){
+              ctx1.fillStyle = summonarr[i][3][k][j];
+              ctx1.fillRect(summonarr[i][0]+j,summonarr[i][1]+k,1,1);
+            };
+          };
+        }
+        else {//完成
+          summonarr[i][0] = summonarr[i][2];
+          for (let k = 0 ; k < zoom ; k++){
+            for (let j = 0 ; j < zoom ; j++){
+              ctx2.fillStyle = summonarr[i][3][k][j];
+              ctx2.fillRect(summonarr[i][0]+j,summonarr[i][1]+k,1,1);
+            };
+          };
+          summonarr.splice(i,1);
+        };
+      };
+    },50);
+  $("#dialog").dialog({
+    autoOpen : false,
+    width : 700,
+    height : 700,
+  });
+  $(".slider").slider({
+    max : 255,
+    min : 0,
+    slide : function(){
+      $(".colorbk").css("background-color",`rgb(${$(".slider:eq(0)").slider("value")},${$(".slider:eq(1)").slider("value")},${$(".slider:eq(2)").slider("value")})`);
+      $("#bk").css("background-color",`rgb(${$(".slider:eq(0)").slider("value")},${$(".slider:eq(1)").slider("value")},${$(".slider:eq(2)").slider("value")})`);
+    },
+  });
+</script>
+</html>

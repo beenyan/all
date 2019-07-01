@@ -110,3 +110,22 @@ canvas{
   transform: translateY(-50%);
   color: orange;
 }
+.showimg{
+  position: relative;
+  margin: 30px;
+  top: 50%;
+  width: 300px;
+  height: 300px;
+  transform: translateY(-50%);
+  border-color: rgb(169, 169, 169);
+  border-style: outset;
+  border-radius: 20px;
+  border-width: 1px;
+}
+input[type=file]{
+  position: relative;
+  font-size: 50px;
+  margin: 20px;
+  left: 200px;
+  width: 217px;
+}
