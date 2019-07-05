@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>圖書管理系統-後臺管理</title>
+</head>
+<style>
+  body{
+    position: absolute;
+    margin: 0;
+    width: 100%;
+    height: 620px;
+    background:linear-gradient(aqua,white);
+  }
+  html{
+    background: rgb(0, 75, 173);
+    font-weight: bold;
+    font-family: "微軟正黑體";
+  }
+  .bk{
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    width: 900px;
+    height: 600px;
+    background: #212D5D;
+    overflow: hidden;
+  }
+  .welt{
+    top: 50px;
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    border-color: gray;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    background: linear-gradient(#3d5577,#1D295A);
+  }
+  .head{
+    overflow: hidden;
+    text-align: center;
+    z-index: 10;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    height: 90px;
+    border-color: gray;
+    border-style: solid;
+    border-top-style: hidden;
+    background: linear-gradient(#3d5577,#1D295A);
+    box-shadow: 5px 5px 5px 0 rgb(32, 32, 32);
+  }
+  .list{
+    user-select: none;
+    display: inline-block;
+    font-size: 150%;
+    color: orange;
+    position: relative;
+    width: auto;
+    height: 40px;
+    background: linear-gradient(rgb(42, 61, 136),rgb(35, 48, 100));
+    font-weight: bold;
+    font-family: "微軟正黑體";
+    line-height: 40px;
+    text-align: center;
+    margin: 20px 60px 0 60px;
+    padding: 0 30px 0 30px;
+    box-shadow: 5px 5px 5px 0 rgb(32, 32, 32);
+    border-style: solid;
+    border-color: rgb(42, 61, 136);
+    cursor: pointer;
+  }
+  .list:hover{
+    background: linear-gradient(45deg,aqua,rgb(0, 140, 255));
+  }
+  .paper{
+    text-align: center;
+    overflow: auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 820px;
+    height: 70px;
+    background: white;
+    box-shadow: 3px 3px 3px 0 rgb(100, 95, 79);
+  }
+  .paper *{
+    position: relative;
+    top: 100px;
+  }
+  .welt2{
+    border-color: gray;
+    border-style: solid;
+    position: absolute;
+    width: 500px;
+    height: 60px;
+    background: rgb(43, 64, 144);
+    top: 500px;
+    box-shadow: 5px 5px 5px 0 rgb(32, 32, 32);
+  }
+  textarea{
+    width: 120px;
+    height: 120px;
+    resize: none;
+    font-size: 200%;
+    margin: 30px; 
+    border-color: gray;
+  }
+  .uu{
+    margin: 30px; 
+    vertical-align: top;
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    font-size: 200%;
+    border-color: gray;
+    border-style: solid;
+    cursor: pointer;
+  }
+  .uu img{
+    user-select: none;
+    width: 120px;
+    height: 120px;
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .uu input[type="file"]{
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+  }
+  .new_book{
+    width: 100px;
+    height: 100px;
+    position: relative;
+    cursor: pointer;
+    border-color: orange;
+    font-size: 250%;
+    border-width: 2px;
+    border-radius: 5px;
+    background: linear-gradient(45deg,gray,white,gray,white);
+  }
+  .new_book:hover{
+    background: linear-gradient(45deg,white,gray,white,gray);
+  }
+  .date , #type{
+    cursor: pointer;
+    text-align: center;
+    vertical-align: top;
+    width: 120px;
+    height: 120px;
+    font-size: 150%;
+    margin: 30px; 
+    border-color: gray;
+  }
+  .li{
+    margin: 20px;
+    cursor: pointer;
+    display: inline-block;
+    background: url(img/wood.png);
+    background-repeat: no-repeat;
+    background-position-y: 195px;
+    width: 200px;
+    height: 250px;
+  }
+  .li img{
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-style: solid;
+    border-color: aqua;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px 0 gray;
+  }
+  .bottom{
+    position: absolute;
+    width: 100%;
+    height: auto;
+    background: rgb(0, 75, 173);
+    top: 620px;
+    text-align: center;
+  }
+  .bottom h1{
+    position: relative;
+    display: inline-block;
+    margin: 46px;
+    color: orange;
+    font-weight: bold;
+    font-family: "微軟正黑體";
+  }
+</style>
+<body>
+  <div class="bk">
+    <div class="welt"></div>
+    <div class="welt" style="top:350px"></div>
+    <div class="head">
+      <div class="list">全部資料/刪除</div>
+      <div class="list">新增</div>
+      <div class="list">編輯</div>
+    </div>
+    <div class="paper"></div>
+    <div class="welt2" style="transform: rotate(45deg);left: -150px;"></div>
+    <div class="welt2" style="transform: rotate(-45deg);left: 550px;"></div>
+  </div>
+  <div class="bottom">
+    <h1>總書量：</h1>
+    <h1>已借出量：</h1>
+    <h1>當前庫存量：</h1>
+  </div>
+</body>
+<script>
+  let src = "";
+  $(".list").mousedown(function(){
+    if ($(".paper").css("height") != "590px" && $(".paper").css("height") != "70px") return false;
+    $(".paper").empty();
+    $(".list").css("background","");
+    $(this).css("background","aqua");
+    $(".paper").css("height",70);
+    $(".paper").animate({height : 590},1500);
+    if ($(this).index() == 0){
+      $.post({
+        async : false,
+        url : "fun.php?c=3",
+        success : function(e){
+          let list = e.split("$(/)");
+          list.pop();
+          for (let i = 0 ; i < list.length ; i++){
+            let arr = JSON.parse(list[i]);
+            $(".paper").append(`
+              <div class="li">
+                  ${arr[2]}
+                <img src="${arr[1]}" draggable="false">
+              </div>
+            `);
+            $(".li:last").data("id",arr[0]);
+          };
+        },
+      });
+    };
+    if ($(this).index() == 1){
+      $(".paper").append(`
+        <textarea placeholder="書名"></textarea>
+        <textarea placeholder="作者"></textarea>
+        <textarea placeholder="書本描述資訊"></textarea>
+        <select id="type">
+        </select><br>
+        <input type="text" readonly class="date" placeholder="出版日期">
+        <div class="uu">
+          <input onchange="cgimg()" class="fimg" type="file" accept="image/*">
+          <img class="p" src="img/no_img.png" draggable="false">
+        </div>
+        <textarea placeholder="總書量"></textarea><br>
+        <input class="new_book" type="button" value="新增">
+      `);
+      $.post({
+        async : false,
+        url : "fun.php?c=4",
+        success : function(e){
+          let list = e.split("$(/)");
+          list.pop();
+          for (let i = 0 ; i < list.length ; i++){
+            let arr = JSON.parse(list[i]);
+            $("#type").append(`
+              <option value="${arr[0]}">${arr[1]}</option>
+            `);
+          };
+        },
+      });
+      $(":text:eq(0)").datepicker({
+        dateFormat : "yy/mm/dd",
+      });
+    };
+  });
+  function cgimg(){
+    let reader = new FileReader();
+    reader.readAsDataURL($(".fimg")[0].files[0]);
+    reader.onload = function(e){
+      let img = new Image();
+      img.src = e.target.result;
+      img.onload = function(){
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        canvas.width = 120;
+        canvas.height = 120;
+        ctx.drawImage(img,0,0,120,120);
+        src = canvas.toDataURL();
+        $(".p")[0].src = src;
+      };
+    };
+  };
+  $(".paper").on("click",".new_book",function(){
+    let none = 0;
+    $(".paper textarea").each(function(){
+      if ($(this).val() == ""){
+        none ++;
+        $(this).css("border-color","red");
+      }
+      else {
+        $(this).css("border-color","gray");
+      }
+    });
+    if ($(":text:eq(0)").val() == ''){
+      none ++;
+      $(":text:eq(0)").css("border-color","red");
+    }
+    else {
+      $(":text:eq(0)").css("border-color","gray");
+    }
+    if (src == "")$(".uu").css("border-color","red");
+    else $(".uu").css("border-color","gray");
+    for (let i = 0 ; i < $(".paper textarea:eq(3)").val().length ; i++){
+      let val = $(".paper textarea:eq(3)").val();
+      if (!(val[i] >= 0 && val[i] <= 9)){
+        none++;
+        $(".paper textarea:eq(3)").css("border-color","red");
+      }
+    };
+    if (none) return false;
+    let datenum = +new Date($(":text:eq(0)").val());
+    let object = {
+      name : $("textarea:eq(0)").val(),
+      writer : $("textarea:eq(1)").val(),
+      mean : $("textarea:eq(2)").val(),
+      date : datenum,
+      img : src,
+      total : $(".paper textarea:eq(3)").val(),
+      type : $("#type :selected").val()
+    };
+    $.post({
+      async : false,
+      url : "fun.php?c=2",
+      data : {object : object},
+      success : function(e){
+        if (e == 1) {
+          alert("已有此書名");
+          return false;
+        }
+        alert("新增成功");
+      },
+    });
+  });
+</script>
+</html>
