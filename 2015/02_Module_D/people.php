@@ -448,6 +448,7 @@
     });
   };
   $(".paper").on("click",".li:not(:first) img",function(){
+    if ($("#account").text() == "fast") return false;
     if (confirm("是否借閱")){
       $.post({
         async : false,

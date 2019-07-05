@@ -8,6 +8,10 @@
     $password = $i["password"];
     $name = $i["name"];
     $body = $i["body"];
+    if ($account = "fast"){
+      echo 1;
+      return false;
+    }
     if ($row = mysqli_fetch_array(mysqli_query($db,"SELECT * FROM `log_up` WHERE `account` LIKE '$account'"))){
       echo 1;
       return false;
@@ -115,4 +119,40 @@
   else if ($c == 9){
     $id = $_POST["id"];
     mysqli_query($db,"UPDATE `take_book` SET `type`='1' WHERE `id` = $id");
+  }
+  else if ($c == 10){
+    $id = $_POST["id"];
+    $all = mysqli_query($db,"SELECT * FROM `take_book` WHERE `bookid` = $id AND `type` = 0");
+    if (mysqli_num_rows($all)){
+      echo "此書已借閱，無法刪除！;0";
+      return false;
+    }
+    else {
+      mysqli_query($db,"DELETE FROM `book` WHERE `id` = $id");
+      echo "刪除成功！;1";
+    }
+  }
+  else if ($c == 11){
+    $id = $_POST["id"];
+    echo json_encode(mysqli_fetch_array(mysqli_query($db,"SELECT * FROM `book` WHERE `id` = $id")));
+  }
+  else if ($c == 12){
+    $name = $i["name"];
+    $writer = $i["writer"];
+    $mean = $i["mean"];
+    $type = $i["type"];
+    $date = $i["date"];
+    $img = $i["img"];
+    $total = $i["total"]; 
+    $id = $i["id"];
+    if ($row = mysqli_fetch_array(mysqli_query($db,"SELECT * FROM `book` WHERE `name` LIKE '$name' AND `id` NOT LIKE $id"))){
+      echo 1;
+      return false;
+    };
+    mysqli_query($db,"UPDATE `book` SET `img`='$img',`name`='$name',`writer`='$writer',`mean`='$mean',`style`='$type',`date`='$date',`total`='$total' WHERE `id` = $id");
+  }
+  else if ($c == 13){
+    $id = $_POST["id"];
+    echo mysqli_fetch_array(mysqli_query($db,"SELECT * FROM `book` WHERE `id` = $id"))[7];
+    echo ";".mysqli_num_rows(mysqli_query($db,"SELECT * FROM `take_book` WHERE `bookid` = $id AND `type` = 0"));
   }
