@@ -334,7 +334,10 @@
     else {
       $(":text:eq(0)").css("border-color","gray");
     }
-    if (src == "")$(".uu").css("border-color","red");
+    if (src == ""){
+      none ++;
+      $(".uu").css("border-color","red");
+    }
     else $(".uu").css("border-color","gray");
     for (let i = 0 ; i < $(".paper textarea:eq(3)").val().length ; i++){
       let val = $(".paper textarea:eq(3)").val();
@@ -465,7 +468,10 @@
     else {
       $(":text:eq(0)").css("border-color","gray");
     }
-    if (src == "")$(".uu").css("border-color","red");
+    if (src == ""){
+      none ++;
+      $(".uu").css("border-color","red");
+    }
     else $(".uu").css("border-color","gray");
     for (let i = 0 ; i < $(".paper textarea:eq(3)").val().length ; i++){
       let val = $(".paper textarea:eq(3)").val();

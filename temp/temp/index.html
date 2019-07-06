@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>日工作計畫表</title>
+  <script>
+    function fillzero(val,num){
+      while (val.toString().length < num){
+        val = "0" + val;
+      };
+      return val;
+    };
+  </script>
+</head>
+<style>
+  html{
+    font-family: "微軟正黑體";
+    font-weight: bold;
+    text-align: center;
+    font-size: 150%;
+  }
+  table{
+    border-collapse: collapse;
+  }
+  tr{
+    height: 49px;
+    border-color: black;
+    overflow: hidden;
+    line-height: 49px;
+  }
+  #ll{
+    position: absolute;
+    height: 100%;
+    width: 350px;
+    left: 0;top: 0;
+  }
+  .bt{
+    position: relative;
+    top: 20px;
+    margin: 50px;
+    padding: 20px;
+    border-style: solid;
+    border-color: orange;
+    border-radius: 5px;
+    background: rgba(255, 165, 0,0.2);
+    cursor: pointer;
+  }
+  .bt:hover{
+    background: rgba(255, 165, 0,0.6);
+  }
+  td{
+    pointer-events: none;
+    position: relative;
+    vertical-align: top;
+    padding: 0;
+  }
+  td:nth-child(odd){
+    overflow: hidden;
+  }
+  .black{
+    pointer-events: all;
+    position: absolute;
+    width: 200px;
+    background: rgba(255, 0, 0, 0.3);
+    overflow: auto;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 15px;
+    box-sizing: border-box;
+    border-style: solid;
+    border-color : gold;
+    border-width: 2px;
+  }
+  .black *{
+    position: relative;
+    pointer-events: none;
+  }
+  .black:hover{
+    background: rgba(255, 0, 0, 0.6);
+  }
+</style>
+<body>
+  <table align="center" border="2">
+    <tr style="background: #4F81BD">
+      <td style="width: 150px;">時間</td>
+      <td style="width: 500px;" style="height: ">工作計畫</td>
+    </tr>
+  </table>
+  <div id="ll">
+    <div class="bt">新增工作</div>
+  </div>
+  <div class="dg" id="dg0" style="display: none">
+    <input type="text" placeholder="工作名稱"><br><br>
+    處理情況：
+    <select class="sele">
+      <option value="1">未處理</option>
+      <option value="2">處理中</option>
+      <option value="3">已處理</option>
+    </select><br>
+    優先程度：
+    <select class="sele">
+        <option value="1">普通件</option>
+        <option value="2">高速件</option>
+        <option value="3">最速件</option>
+    </select><br><br>
+    開始時間：<select class="sele" onchange="cgsele()"></select><br>
+    <script>
+      for (let i = 0 ; i < 24 ; i++){
+        $(".sele:eq(2)").append(`
+          <option value="${i}">${fillzero(i,2)}</option>
+        `);
+      };
+    </script>
+    結束時間：<select class="sele"></select><br><br>
+    <script>
+      for (let i = 1 ; i <= 24 ; i++){
+        $(".sele:eq(3)").append(`
+          <option value="${i - 1}">${fillzero(i,2)}</option>
+        `);
+      };
+    </script>
+    <textarea placeholder="工作內容" style="resize: none;height: 180px;"></textarea>
+  </div>
+  <div class="dg" id="dg1">
+    <div id="id" style="display: none"></div>
+    <input type="text" placeholder="工作名稱"><br><br>
+    處理情況：
+    <select class="sele">
+      <option value="1">未處理</option>
+      <option value="2">處理中</option>
+      <option value="3">已處理</option>
+    </select><br>
+    優先程度：
+    <select class="sele">
+        <option value="1">普通件</option>
+        <option value="2">高速件</option>
+        <option value="3">最速件</option>
+    </select><br><br>
+    開始時間：<select class="sele" onchange="cgsele()"></select><br>
+    <script>
+      for (let i = 0 ; i < 24 ; i++){
+        $("#dg1 .sele:eq(2)").append(`
+          <option value="${i}">${fillzero(i,2)}</option>
+        `);
+      };
+    </script>
+    結束時間：<select class="sele"></select><br><br>
+    <script>
+      for (let i = 1 ; i <= 24 ; i++){
+        $("#dg1 .sele:eq(3)").append(`
+          <option value="${i - 1}">${fillzero(i,2)}</option>
+        `);
+      };
+    </script>
+    <textarea placeholder="工作內容" style="resize: none;height: 180px;"></textarea>
+  </div>
+</body>
+<script>
+  let time = 0;
+  for (let i = 0 ; i < 12 ; i++){
+    $("table").append(`
+      <tr>
+        <td style="width: 150px;background: #C6D9F1">${fillzero(time,2)}-${fillzero(time + 2,2)}</td>
+        <td style="width: 500px;"></td>
+      </tr>
+    `);
+    time += 2;
+  };
+  $(".dg").dialog({
+    autoOpen : false,
+    width : 700,
+    height : 700,
+    resizable : false,
+  });
+  $("#dg0").dialog({
+    buttons : {
+      "新增" : function(){
+        if ($("#dg0 :text").val() == "" || $("#dg0 textarea").val() == ""){
+          alert("值不能為空");
+          return false;
+        }
+        let object = {
+          title : $("#dg0 :text").val(),
+          mean : $("textarea").val(),
+          a0 : $(".sele:eq(0) :selected").text(),
+          a1 : $(".sele:eq(1) :selected").text(),
+          start : $(".sele:eq(2) :selected").text(),
+          end : $(".sele:eq(3) :selected").text(),
+        };
+        $.post({
+          async : false,
+          url : "fun.php?c=0",
+          data : {object : object},
+        });
+        alert("新增成功");
+        all();
+        $(".dg").dialog("close");
+      },
+      "取消" : function(){
+        $(".dg").dialog("close");
+      },
+    },
+  })
+  $("#dg1").dialog({
+    buttons : {
+      "修改" : function(){
+        if ($("#dg1 :text").val() == "" || $("#dg1 textarea").val() == ""){
+          alert("值不能為空");
+          return false;
+        };
+        let object = {
+          title : $("#dg1 :text").val(),
+          mean : $("#dg1 textarea").val(),
+          a0 : $("#dg1 .sele:eq(0) :selected").text(),
+          a1 : $("#dg1 .sele:eq(1) :selected").text(),
+          start : $("#dg1 .sele:eq(2) :selected").text(),
+          end : $("#dg1 .sele:eq(3) :selected").text(),
+          id : $("#id").text(),
+        };
+        $.post({
+          async : false,
+          url : "fun.php?c=4",
+          data : {object : object},
+        });
+        alert("修改成功");
+        $("#dg1").dialog("close");
+        all();
+      },
+      "刪除" : function(){
+        $.post({
+          async : false,
+          url : "fun.php?c=5",
+          data : {id : $("#id").text()},
+        });
+        alert("刪除成功");
+        $("#dg1").dialog("close");
+        all();
+      },
+      "取消" : function(){
+        $("#dg1").dialog("close");
+      },
+    },
+  })
+  $(".ui-dialog-titlebar").hide();
+  $(".bt:eq(0)").mousedown(function(){
+    $("#dg0").dialog("open");
+  });
+  function cgsele(){
+    let index = 0;
+    let i = parseInt($(".sele:eq(2) :selected").val()) + 1;
+    while (i <= 24){
+      $(".sele:eq(3)").empty();
+      for (i ; i <= 24 ; i++){
+        $(".sele:eq(3)").append(`
+          <option value="${index}">${fillzero(i,2)}</option>
+        `);
+      };
+      i++;
+      index++;
+    };
+    index = 0;
+    i = parseInt($("#dg1 .sele:eq(2) :selected").val()) + 1;
+    while (i <= 24){
+      $("#dg1 .sele:eq(3)").empty();
+      for (i ; i <= 24 ; i++){
+        $("#dg1 .sele:eq(3)").append(`
+          <option value="${index}">${fillzero(i,2)}</option>
+        `);
+      };
+      i++;
+      index++;
+    };
+  };
+  function all(){
+    $(".black").remove();
+    $.post({
+      async : false,
+      url : "fun.php?c=1",
+      success : function(e){
+        let list = e.split("$()");
+        list.pop();
+        for (let i = 0 ; i < list.length ; i++){
+          let arr = JSON.parse(list[i]);
+          $("td:eq(3)").append(`
+            <div class="black"></div>
+          `);
+          $(".black:last").height((arr["end"]-arr["start"])*25);
+          $(".black:last").css("top",parseInt($(".black:last").css("top")) + (arr["start"])*25);
+          $(".black:last").css("left",parseInt(arr["offleft"]));
+          $(".black:last").append(`
+            <label>${arr["start"]}-${arr["end"]}</label><br>
+            <label>${arr["title"]}</label><br>
+            <label>${arr[3]}</label><br>
+            <label>${arr[4]}</label>
+          `);
+          $(".black:last").data("id",arr[0]);
+        };
+        $(".black").draggable({
+          grid : [1,25],
+          stop : function(e){
+            $.post({
+              async : false,
+              url : "fun.php?c=2",
+              data : {
+                start : fillzero((parseInt((parseInt($(e.target).css("top"))) / 25)),2),
+                end : fillzero((parseInt((parseInt($(e.target).css("top")) + $(e.target).height()) / 25)),2),
+                id : $(e.target).data("id"),
+                left : $(this).css("left"),
+              },
+              success : function (e){
+                all();
+              },
+            });
+          }
+        });
+        $(".black").each(function(){
+          $(this).draggable("option", "containment",[$("td:eq(3)").offset().left,50,$("td:eq(3)").offset().left + $("td:eq(3)").width() - $(this).width(),650 - $(this).height()]);
+        });
+      },
+    });
+  };all();
+  $("body").on("click",".black",function(){
+    $(".black").css("border-color","");
+    $(this).css("border-color","blue");
+    let id = $(this).data("id");
+    $("#dg1").dialog("open");
+    $.post({
+      async : false,
+      url : "fun.php?c=3",
+      data : {id : id},
+      success : function(e){
+        let list = e.split(";");
+        $("#dg1 :text").val(list[0]);
+        $("#dg1 textarea").val(list[1]);
+        $("#id").text(id);
+      },
+    });
+  });
+</script>
+</html>
