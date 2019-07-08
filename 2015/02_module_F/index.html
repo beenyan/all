@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="main.css">
+  <title>臉譜大師</title>
+</head>
+<body>
+  <div class="li">
+    <img src="img/icon3.png" alt="" width="180">
+    <img src="img/icon0.png" class="icon">
+    <img src="img/icon1.png" class="icon">
+    <img src="img/icon2.png" class="icon">
+  </div>
+  <div class="ll" style="display: none">
+    <img src="img/cap0.png" alt="" class="img">
+    <img src="img/cap1.png" alt="" class="img">
+    <img src="img/cap2.png" alt="" class="img">
+    <img src="img/cap3.png" alt="" class="img">
+  </div>
+  <div class="ll" style="display: none">
+    <img src="img/glasses0.png" alt="" class="img">
+    <img src="img/glasses1.png" alt="" class="img">
+    <img src="img/glasses2.png" alt="" class="img">
+  </div>
+  <div class="ll" style="display: none">
+    <img src="img/bt0.png" alt="" class="img">
+    <img src="img/bt1.png" alt="" class="img">
+    <img src="img/bt2.png" alt="" class="img">
+    <img src="img/bt3.png" alt="" class="img">
+  </div>
+  <div id="download" onclick="">
+    下載圖片
+  </div>
+  <div class="up">
+    <input type="file" onchange="img(this)" accept="image/jpeg" style="position: absolute;width: 100%;height: 100%;top: 0;left: 0;">
+    <div style="position: absolute;width: 100%;height: 100%;pointer-events: none;top: 0;left: 0;background: white">
+      把你的圖片拖到這來<br>
+      <span style="color: red">JPG圖檔，最多300KB</span><br><br>
+      <div id="asd" style="border-style: solid;width: 60%;position: relative;left: 50%;transform: translateX(-50%);height: 30px;">
+        <div class="schedule"></div>
+      </div>
+    </div>
+  </div>
+  <div class="canvasbox">
+    <canvas id="canvas0">
+    </canvas>
+  </div>
+</body>
+<script src="js/function.js"></script>
+<script src="js/main.js"></script>
+</html>
