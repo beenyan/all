@@ -1,0 +1,83 @@
+html{
+  user-select: none;
+  font-size: 150%;
+  font-family: "微軟正黑體";
+  font-weight: bold;
+}
+.barrier{
+  display: inline-block;
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+}
+.background{
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  width: auto;
+  height: auto;
+  transform: translateX(-50%);
+  font-size: 0;
+}
+.background *:not(br) {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+.beeline{/*直線*/
+  display: inline-block;
+  position: relative;
+  top: 0;left: 0;
+  height: 150px;
+  width: 15px;
+  font-size: 8px;
+  color: white;
+  background: black;
+  cursor: pointer;
+  text-align: center;
+}
+.line{/*橫線*/
+  position: relative;
+  top: 0;left: 0;
+  font-size: 12px;
+  color: white;
+  height: 15px;
+  width: 150px;
+  background: black;
+  cursor: pointer;
+  text-align: right;
+}
+.line:hover,.beeline:hover{
+  background: gray;
+}
+.dialog{
+  text-align: center;
+  overflow: auto;
+}
+.down{
+  position: absolute;
+  top: -70px;left: -152px;
+  width: 400px;
+  height: 150px;
+  background: red;
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+.down:hover{
+  background: orange;
+}
+.right{
+  position: absolute;
+  top: 0;left: 0;
+  width: 150px;
+  height: 150px;
+  background: blue;
+  cursor: pointer;
+}
+.right:hover{
+  background: aqua;
+}
+
