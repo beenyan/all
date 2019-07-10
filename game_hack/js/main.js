@@ -172,14 +172,48 @@ setInterval(() => {
 		if (leftarr[i].length == 1){//左
 			let object = haveX(i);
 			for (let j = 0 ; j < object.x.length ; j++){
-				while (object.x[j] < leftarr[i][0]){//有的格數小於要填格數
+				while (object.x[j] < parseInt(leftarr[i][0])){//有的格數小於要填格數
 					fillbg(object.pos[j],2);
+					object = haveX(i);
 				};
 				if (object.x[j] < leftarr[i][0] * 2){//大於螢幕的一半可以填色
-					fillbg(halfX(i,leftarr[i][0]),1);
+					fillbg(halfX(i,leftarr[i][0],bg[i]),1);
+				};
+			};
+			lookmissX(i);
+		};
+		if (toparr[i].length == 1){//右
+			let object = haveY(i);
+			for (let j = 0 ; j < object.y.length ; j++){
+				while (object.y[j] < parseInt(toparr[i][0])){//有的格數小於要填格數
+					fillbg(object.pos[j],2);
+					object = haveY(i);
+				};
+				if (object.y[j] < toparr[i][0] * 2){//大於螢幕的一半可以填色
+					fillbg(halfY(i,toparr[i][0]),1);
 				};
 			};
 		};
 	};
-},1);
+	for (let i = 0 ; i < size ; i++){//一行可以填滿
+		if (arrlistlength(leftarr[i]) == arrlistlength(haveX(i).x)){//左
+			for (let j = 0 ; j < haveX(i).pos.length ; j++){
+				fillbg(canfillX(i),1)
+			};
+		};
+		if (arrlistlength(toparr[i]) == arrlistlength(haveY(i).y)){//上
+			for (let j = 0 ; j < haveY(i).pos.length ; j++){
+				fillbg(canfillY(i),1)
+			};
+		};
+	}
+	for (let i = 0 ; i < size ; i++){//靈魂放置
+		if (leftarr[i].length > 1 && haveX(i).x.length == 1){//左
+			ghostX(i);
+		};
+		if (toparr[i].length > 1 && haveY(i).y.length == 1){//上
+			ghostY(i);
+		};
+	};
+},1000);
 //</script>

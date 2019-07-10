@@ -1,4 +1,7 @@
 //<script>
+function JS(nn){
+	return JSON.parse(JSON.stringify(nn));
+};
 function make_all(size){
 	toparr.length = size;
 	leftarr.length = size;
@@ -55,6 +58,7 @@ function haveY(x){
 		y : [],
 		pos : [],
 		light : [],
+		miss : 0,
 	};
 	let havey = 0;
 	let light = 0;
@@ -76,7 +80,10 @@ function haveY(x){
 			havey = 0;
 			light = 0;
 			arrpos.length = 0;
-		}
+		};
+		if (bg[y][x] == 2){
+			object.miss++;
+		};
 	};
 	if (havey != 0){//結束後還有殘值
 		object.y.push(havey);
@@ -90,6 +97,7 @@ function haveX(y){
 		x : [],
 		pos : [],
 		light : [],
+		miss : 0,
 	};
 	let havex = 0;
 	let light = 0;
@@ -111,7 +119,10 @@ function haveX(y){
 			havex = 0;
 			light = 0;
 			arrpos.length = 0;
-		}
+		};
+		if (bg[y][x] == 2){
+			object.miss++;
+		};
 	};
 	if (havex != 0){//結束後還有殘值
 		object.x.push(havex);
@@ -125,10 +136,10 @@ function fillbg(pos,num){
 		bg[pos[i][0]][pos[i][1]] = num;
 	};
 };
-function halfX(y,num){
+function halfX(y,num,line){
 	num = parseInt(num);
 	let pos = [];
-	let arr = JSON.parse(JSON.stringify(bg[y]));
+	let arr = JSON.parse(JSON.stringify(line));
 	let first = 0;
 	let second = size - 1;
 	for (let i = arr.length - 1 ; i >= 0 ; i--){//獲取結尾
@@ -157,5 +168,281 @@ function halfX(y,num){
 		};
 	};
 	return pos;
+};
+function halfY(x,num){
+	num = parseInt(num);
+	let pos = [];
+	let arr = [];
+	for (let y = 0 ; y < size ; y++){
+		arr.push(bg[y][x]);
+	};
+	let first = 0;
+	let second = size - 1;
+	for (let i = arr.length - 1 ; i >= 0 ; i--){//獲取結尾
+		if (arr[i] == 0 || arr[i] == 1){
+			second = i;
+			break;
+		};
+	};
+	for (let i = 0 ; i < arr.length ; i++){//獲取開頭
+		if (arr[i] == 0 || arr[i] == 1){
+			first = i;
+			break;
+		};
+	};
+	//製造重疊部分
+	for (let i = first ; i < first + num ; i++){
+		arr[i] += 5;
+	};
+	for (let i = second ; i > second - num ; i--){
+		arr[i] += 5;
+	};
+	for (let y = 0 ; y < arr.length ; y++){
+		if (arr[y] >= 10){
+			pos.push([y,x]);
+		};
+	};
+	return pos;
+};
+function arrlistlength(arr){
+	let num = 0;
+	for (let i = 0 ; i < arr.length ; i++){
+		num = num + parseInt(arr[i]);
+	};
+	num = num + arr.length - 1;
+	return num;
+};
+function canfillX(y){
+	let arr = bg[y];
+	let pos = [];
+	let line = JSON.parse(JSON.stringify(leftarr[y]));
+	let num = line.shift();
+	let count = 0;
+	let miss = [];
+	for (let x = 0 ; x < size ; x++){
+		if (arr[x] != 2){//可以填色
+			count++;
+			pos.push([y,x]);
+		};
+		if (count == num){
+			num = line.shift();
+			count = 0;
+			x++;
+			if (x >= size)break;
+			miss.push([y,x]);
+		};
+	};
+	fillbg(miss,2);
+	return pos;
+};
+function canfillY(x){
+	let arr = [];
+	for (let y = 0 ; y < size ; y++){
+		arr.push(bg[y][x]);
+	};
+	let pos = [];
+	let line = JSON.parse(JSON.stringify(toparr[x]));
+	let num = line.shift();
+	let count = 0;
+	let miss = [];
+	for (let y = 0 ; y < size ; y++){
+		if (arr[y] != 2){//可以填色
+			count++;
+			pos.push([y,x]);
+		};
+		if (count == num){
+			num = line.shift();
+			count = 0;
+			y++;
+			if (y >= size) break;
+			miss.push([y,x]);
+		};
+	};
+	fillbg(miss,2);
+	return pos;
+};
+function ghostX(y){
+	let arr = JSON.parse(JSON.stringify(bg[y]));
+	let line = JSON.parse(JSON.stringify(leftarr[y]));
+	let num = line.shift();
+	let count = 0;
+	let first = 0;
+	let second = size - 1;
+	for (let i = arr.length - 1 ; i >= 0 ; i--){//獲取結尾
+		if (arr[i] == 0 || arr[i] == 1){
+			second = i;
+			break;
+		};
+	};
+	for (let i = 0 ; i < arr.length ; i++){//獲取開頭
+		if (arr[i] == 0 || arr[i] == 1){
+			first = i;
+			break;
+		};
+	};
+	for (let x = first ; x <= second ; x++){
+		if (line.length > 0){
+			arr[x] = 2;
+			if (count != num){
+				count++;
+			}
+			else {
+				x++;
+				count = 0;
+				num = line.shift();
+			};
+		}
+		else {
+			fillbg(halfX(y,num,arr),1);
+			break;
+		}
+	};
+	arr = JSON.parse(JSON.stringify(bg[y]));
+	line = JSON.parse(JSON.stringify(leftarr[y]));
+	num = line.pop();
+	count = 0;
+	first = 0;
+	second = size - 1;
+	for (let i = arr.length - 1 ; i >= 0 ; i--){//獲取結尾
+		if (arr[i] == 0 || arr[i] == 1){
+			second = i;
+			break;
+		};
+	};
+	for (let i = 0 ; i < arr.length ; i++){//獲取開頭
+		if (arr[i] == 0 || arr[i] == 1){
+			first = i;
+			break;
+		};
+	};
+	for (let x = second ; x >= first ; x--){
+		if (line.length > 0){
+			arr[x] = 2;
+			if (count != num){
+				count++;
+			}
+			else {
+				count = 0;
+				num = line.pop();
+			};
+		}
+		else {
+			fillbg(halfX(y,num,arr),1);
+			break;
+		}
+	};
+};
+function ghostY(x){
+	let arr = [];
+	for (let y = 0 ; y < size ; y++){
+		arr.push(bg[y][x]);
+	};
+	let line = JSON.parse(JSON.stringify(toparr[x]));
+	let num = line.shift();
+	let count = 0;
+	let first = 0;
+	let second = size - 1;
+	for (let i = arr.length - 1 ; i >= 0 ; i--){//獲取結尾
+		if (arr[i] == 0 || arr[i] == 1){
+			second = i;
+			break;
+		};
+	};
+	for (let i = 0 ; i < arr.length ; i++){//獲取開頭
+		if (arr[i] == 0 || arr[i] == 1){
+			first = i;
+			break;
+		};
+	};
+	for (let y = first ; y <= second ; y++){
+		if (line.length > 0){
+			arr[y] = 2;
+			if (count != num){
+				count++;
+			}
+			else {
+				y++;
+				count = 0;
+				num = line.shift();
+			};
+		}
+		else {
+			fillbg(ghostYfix(x,num,arr),1);
+			break;
+		}
+	};
+	arr = [];
+	for (let y = 0 ; y < size ; y++){
+		arr.push(bg[y][x]);
+	};
+	line = JSON.parse(JSON.stringify(toparr[x]));
+	num = line.pop();
+	count = 0;
+	first = 0;
+	second = size - 1;
+	for (let i = arr.length - 1 ; i >= 0 ; i--){//獲取結尾
+		if (arr[i] == 0 || arr[i] == 1){
+			second = i;
+			break;
+		};
+	};
+	for (let i = 0 ; i < arr.length ; i++){//獲取開頭
+		if (arr[i] == 0 || arr[i] == 1){
+			first = i;
+			break;
+		};
+	};
+	for (let y = second ; y >= first ; y--){
+		if (line.length > 0){
+			arr[y] = 2;
+			if (count != num){
+				count++;
+			}
+			else {
+				count = 0;
+				num = line.pop();
+			};
+		}
+		else {
+			fillbg(ghostYfix(x,num,arr),1);
+			break;
+		}
+	};
+};
+function ghostYfix(x,num,line){
+	num = parseInt(num);
+	let pos = [];
+	let arr = JSON.parse(JSON.stringify(line));
+	let first = 0;
+	let second = size - 1;
+	for (let i = arr.length - 1 ; i >= 0 ; i--){//獲取結尾
+		if (arr[i] == 0 || arr[i] == 1){
+			second = i;
+			break;
+		};
+	};
+	for (let i = 0 ; i < arr.length ; i++){//獲取開頭
+		if (arr[i] == 0 || arr[i] == 1){
+			first = i;
+			break;
+		};
+	};
+	//製造重疊部分
+	for (let i = first ; i < first + num ; i++){
+		arr[i] += 5;
+	};
+	for (let i = second ; i > second - num ; i--){
+		arr[i] += 5;
+	};
+	for (let y = 0 ; y < arr.length ; y++){
+		if (arr[y] >= 10){
+			pos.push([y,x]);
+		};
+	};
+	return pos;
+}
+function lookmissX(y){
+	let pos = [];
+	let arr = JS(arr[y]);
 };
 //</script>
