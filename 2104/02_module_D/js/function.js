@@ -28,7 +28,7 @@
       success : function(e){
         let list = e.split("$()");
         list.pop();
-        $("table").empty();
+        $("#t0").empty();
         for (let i = 0 ; i < list.length ; i++){
           let arr = JSON.parse(list[i]);
           if (i == 0){
@@ -110,7 +110,7 @@
               arr[11] = "優";
             }
           };
-          $("table").append(`<tr></tr>`);
+          $("#t0").append(`<tr></tr>`);
           for (let j = 1 ; j < 14 ; j++){
             $("tr:last").append(`
               <td>${arr[j]}</td>
@@ -146,5 +146,7 @@
     });
     all();
   };
-  
+  function rand(nn,mm){
+      return parseInt(Math.random()*(mm - nn + 1) + nn);
+    };
 //</script>

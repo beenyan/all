@@ -14,8 +14,8 @@
       success : function(e){
         let list = e.split("$()");
         list.pop();
-        $("table").empty();
-        $("table").append(`
+        $("#t0").empty();
+        $("#t0").append(`
           <tr>
             <td>姓名</td>
             <td>年齡</td>
@@ -108,7 +108,7 @@
           else if (arr[11] == 4){
             arr[11] = "優";
           }
-          $("table").append(`<tr></tr>`);
+          $("#t0").append(`<tr></tr>`);
           for (let j = 1 ; j < 14 ; j++){
             $("tr:last").append(`
               <td>${arr[j]}</td>
@@ -127,6 +127,7 @@
       <span>使用</span>
       <select class="sele">
         <option value="3">性別</option>
+        <option value="4">學歷</option>
         <option value="5">居住地區</option>
         <option value="11">最高得獎</option>
         <option value="8">喜歡路跑活動類型</option>
@@ -170,12 +171,48 @@
             <td>統計</td>
           </tr>
           <tr>
-            <td>女</td>
+            <td>女性</td>
             <td>${arr[0]}</td>
           </tr>
           <tr>
-            <td>男</td>
+            <td>男性</td>
             <td>${arr[1]}</td>
+          </tr>
+          <tr>
+            <td>總計</td>
+            <td>${arr[9]}</td>
+          </tr>
+        `);
+      }
+      else if (sele0 == "學歷"){
+        $("#dg0 table").append(`
+          <tr>
+            <td>${sele0}</td>
+            <td>統計</td>
+          </tr>
+          <tr>
+            <td>小學</td>
+            <td>${arr[0]}</td>
+          </tr>
+          <tr>
+            <td>國中</td>
+            <td>${arr[1]}</td>
+          </tr>
+          <tr>
+            <td>高中</td>
+            <td>${arr[2]}</td>
+          </tr>
+          <tr>
+            <td>大專</td>
+            <td>${arr[3]}</td>
+          </tr>
+          <tr>
+            <td>碩士</td>
+            <td>${arr[4]}</td>
+          </tr>
+          <tr>
+            <td>博士</td>
+            <td>${arr[5]}</td>
           </tr>
           <tr>
             <td>總計</td>
@@ -218,23 +255,23 @@
             <td>統計</td>
           </tr>
           <tr>
-            <td>無</td>
+            <td>無獎</td>
             <td>${arr[0]}</td>
           </tr>
           <tr>
-            <td>金</td>
+            <td>金牌</td>
             <td>${arr[1]}</td>
           </tr>
           <tr>
-            <td>銀</td>
+            <td>銀牌</td>
             <td>${arr[2]}</td>
           </tr>
           <tr>
-            <td>銅</td>
+            <td>銅牌</td>
             <td>${arr[3]}</td>
           </tr>
           <tr>
-            <td>優</td>
+            <td>優勝</td>
             <td>${arr[4]}</td>
           </tr>
           <tr>
@@ -319,10 +356,66 @@
         canvas.height = 600;
         $("#dg0 canvas").remove();
         $("#dg0").append(canvas);
-        ctx.strokeRect(50,0,canvas.width,canvas.height - 50);
+        ctx.arc(300,300,300,0,Math.PI * 2);
+        let total = parseInt($("tr:last td:last").text());
+        let begin = Math.PI / 180 * -90;
+        let end = 0;
+        for (let i = 1 ; i < $("#dg0 tr").length - 1 ; i++){
+          ctx.fillStyle = `rgb(${30 * i },${20 * i },${20 * i })`;
+          ctx.beginPath();
+          ctx.moveTo(300,300);
+          end = Math.PI / 180 * (360 / total) * parseFloat($(`#dg0 tr:eq(${i}) td:last`).text()) + begin;
+          ctx.arc(300,300,300,begin,end);
+          begin = end;
+          ctx.fill();
+          ctx.closePath();
+        };
+        for (let i = 1 ; i < $("#dg0 tr").length - 1 ; i++){
+          ctx.fillStyle = `rgb(${30 * i },${20 * i },${20 * i })`;
+          ctx.fillRect(700,i*70,50,50);
+          ctx.font = "40px 微軟正黑體";
+          ctx.fillText($(`#dg0 tr:eq(${i}) td:first`).text(),780,i * 70 + 40);
+          ctx.fillStyle = `rgb(255,255,255)`;
+          ctx.fillText($(`#dg0 tr:eq(${i}) td:last`).text(),700,i * 70 + 40);
+        };
       }
       else if (sele1 == "折線圖"){
-        
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        canvas.width = 1000;
+        canvas.height = 600;
+        $("#dg0 canvas").remove();
+        $("#dg0").append(canvas);
+        ctx.strokeRect(50,0,canvas.width,canvas.height - 50);
+        for (let i = 50 ; i < canvas.height - 50; i += 50){
+          ctx.strokeRect(50,i,canvas.width,canvas.height - i - 50);
+          ctx.font = "20px 微軟正黑體";
+          ctx.fillText((canvas.height - i) / 5 - 10,10,i + 7);
+        };
+        let arr = [];
+        ctx.beginPath();
+        for (let i = 0 ; i < $("#dg0 tr").length - 1 ; i++){
+          ctx.lineTo(i * 100 + 25,(110 - parseInt($(`#dg0 tr:eq(${i}) td:last`).text())) * 5);
+          arr.push([i * 100 + 25,(110 - parseInt($(`#dg0 tr:eq(${i}) td:last`).text())) * 5]);
+        }; 
+        ctx.strokeStyle = "#C0504E";
+        ctx.lineWidth = 5;
+        ctx.stroke();
+        ctx.closePath();
+        for (let i = 0 ; i < arr.length ; i++){
+          ctx.fillRect(arr[i][0] - 5,arr[i][1] - 5,10,10);
+          ctx.font = "15px 微軟正黑體";
+          ctx.fillText($(`#dg0 tr:eq(${i}) td:last`).text(),arr[i][0] + 10,arr[i][1] + 5);
+        };
+        let j = 0;
+        for (let i = 1 ; i < $("#dg0 tr").length - 1 ; i++){
+          j++;
+          let name = $(`#dg0 tr:eq(${i})`).children(`:eq(0)`).text();
+          let val = $(`#dg0 tr:eq(${i})`).children(`:eq(1)`).text();
+          ctx.font = "20px 微軟正黑體";
+          ctx.fillStyle = "blue";
+          ctx.fillText(name,i * 50 + j * 50 + 5,canvas.height - 5);
+        };
       }
       else if (sele1 == "雷達圖"){
         
