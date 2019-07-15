@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="main.css">
+  <title>公益路跑資料分析功能</title>
+</head>
+<body>
+  <div class="dg" id="dg0"></div>
+  <div class="dg" id="dg1"></div>
+  <input type="button" value="首頁">
+  <input type="button" class="p" value="基本圖表">
+  <input type="button" class="p" value="樞紐圖表">
+  <input type="file" onchange="text()">
+  <input type="file" onchange="add()"><span><-新增</span>
+  <h1>首頁</h1>
+  <span id="money">目前累積贊助金額：0元</span><br>
+  <input type="text" class="search"> <input type="button" value="篩選" class="search"><span>(姓名、學歷、性別、居住區域)</span>
+  <table style="border-collapse: collapse" border="1" align="center"></table>
+</body>
+<script src="js/function.js"></script>
+<script src="js/main.js"></script>
+</html>

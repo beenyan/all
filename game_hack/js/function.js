@@ -1,4 +1,17 @@
 //<script>
+function txt(){
+	$.post({
+		url : "fun.php?c=1",
+		data : {name : $(":file")[0].files[0].name},
+		success : function(e){
+			let list = e.split("$()");
+			document.cookie="leftarr=" + list[0];
+			document.cookie="toparr=" + list[1];
+			document.cookie="size=" + size;
+			history.go(0);
+		},
+	});
+};
 function JS(nn){
 	return JSON.parse(JSON.stringify(nn));
 };
@@ -26,6 +39,24 @@ function make_all(size){
 	$(".background").append(canvas);
 	stop = 0;
 	cookie();
+	$(canvas).mousedown(function(e){
+		if (e.button == 0){//左鍵
+			if (bg[parseInt(e.offsetY / 15)][parseInt(e.offsetX / 15)] == 0){
+				bg[parseInt(e.offsetY / 15)][parseInt(e.offsetX / 15)] = 1;
+			}
+			else {
+				bg[parseInt(e.offsetY / 15)][parseInt(e.offsetX / 15)] = 0;
+			}
+		}
+		else if (e.button == 1){//中鍵
+			if (bg[parseInt(e.offsetY / 15)][parseInt(e.offsetX / 15)] == 0){
+				bg[parseInt(e.offsetY / 15)][parseInt(e.offsetX / 15)] = 2;
+			}
+			else {
+				bg[parseInt(e.offsetY / 15)][parseInt(e.offsetX / 15)] = 0;
+			}
+		}
+	});
 };
 function cookie(){
 	if (document.cookie == "") return false;
@@ -58,13 +89,19 @@ function haveY(x){
 		y : [],
 		pos : [],
 		light : [],
+		bklight : [],
 		miss : 0,
 	};
 	let havey = 0;
 	let light = 0;
+	let bklight = 0;
 	let arrpos = [];
 	for (y = 0 ; y < size ; y++){
 		if (bg[y][x] == 0){//空位
+			if (bklight != 0){
+				object.bklight.push(bklight)
+				bklight = 0;
+			};
 			havey++;
 			arrpos.push([y,x]);
 		}
@@ -72,8 +109,13 @@ function haveY(x){
 			havey++;
 			light++;
 			arrpos.push([y,x]);
+			bklight++;
 		}
 		else if (bg[y][x] == 2 && havey > 0){//阻擋物
+			if (bklight != 0){
+				object.bklight.push(bklight)
+				bklight = 0;
+			};
 			object.y.push(havey);
 			object.pos.push(JSON.parse(JSON.stringify(arrpos)));
 			object.light.push(light);
@@ -90,6 +132,10 @@ function haveY(x){
 		object.pos.push(JSON.parse(JSON.stringify(arrpos)));
 		object.light.push(light);
 	};
+	if (bklight != 0){
+		object.bklight.push(bklight)
+		bklight = 0;
+	};
 	return object;
 };
 function haveX(y){
@@ -97,22 +143,33 @@ function haveX(y){
 		x : [],
 		pos : [],
 		light : [],
+		bklight : [],
 		miss : 0,
 	};
 	let havex = 0;
 	let light = 0;
+	let bklight = 0;
 	let arrpos = [];
 	for (x = 0 ; x < size ; x++){
 		if (bg[y][x] == 0){//空位
+			if (bklight != 0){
+				object.bklight.push(bklight)
+				bklight = 0;
+			};
 			havex++;
 			arrpos.push([y,x]);
 		}
 		else if (bg[y][x] == 1){//以填色
+			bklight++;
 			havex++;
 			light++;
 			arrpos.push([y,x]);
 		}
 		else if (bg[y][x] == 2 && havex > 0){//阻擋物
+			if (bklight != 0){
+				object.bklight.push(bklight)
+				bklight = 0;
+			};
 			object.x.push(havex);
 			object.pos.push(JSON.parse(JSON.stringify(arrpos)));
 			object.light.push(light);
@@ -123,6 +180,10 @@ function haveX(y){
 		if (bg[y][x] == 2){
 			object.miss++;
 		};
+	};
+	if (bklight != 0){
+		object.bklight.push(bklight)
+		bklight = 0;
 	};
 	if (havex != 0){//結束後還有殘值
 		object.x.push(havex);
@@ -443,6 +504,103 @@ function ghostYfix(x,num,line){
 }
 function lookmissX(y){
 	let pos = [];
-	let arr = JS(arr[y]);
+	let arr = JS(bg[y]);
+	let first = 0;
+	/*let second = size - 1;
+	for (let i = arr.length - 1 ; i >= 0 ; i--){//獲取結尾
+		if (arr[i] == 1){
+			second = i;
+			break;
+		};
+	};*/
+	for (let i = 0 ; i < arr.length ; i++){//獲取開頭
+		if (arr[i] == 1){
+			first = i;
+			break;
+		};
+	};
+	if (first - parseInt(leftarr[y][0]) > 0){
+		for (let x = first - parseInt(leftarr[y][0]) ; x >= 0 ; x--){
+			pos.push([y,x]);
+		};
+	};
+	if (first + parseInt(leftarr[y][0]) < size){
+		for (let x = first + parseInt(leftarr[y][0]) ; x < size ; x++){
+			pos.push([y,x]);
+		};
+	};
+	/*if (second + parseInt(leftarr[y][0]) < size){
+		for (let x = second + parseInt(leftarr[y][0]) ; x < size ; x++){
+			pos.push([y,x]);
+		};
+	};*/
+	fillbg(pos,2);
+};
+function lookmissY(x){
+	let pos = [];
+	let arr = [];
+	for (let y = 0 ; y < size ; y++){
+		arr.push(bg[y][x]);
+	};
+	let first = 0;
+	for (let i = 0 ; i < arr.length ; i++){//獲取開頭
+		if (arr[i] == 1){
+			first = i;
+			break;
+		};
+	};
+	if (first - parseInt(toparr[x][0]) > 0){
+		for (let y = first - parseInt(toparr[x][0]) ; y >= 0 ; y--){
+			pos.push([y,x]);
+		};
+	};
+	if (first + parseInt(toparr[x][0]) < size){
+		for (let y = first + parseInt(toparr[x][0]) ; y < size ; y++){
+			pos.push([y,x]);
+		};
+	};
+	fillbg(pos,2);
+};
+function sideX(y){
+	let pos = [];
+	let miss = [];
+	let arr = bg[y];
+	let first = 0;
+	let second = 0;
+	let line = JS(leftarr[y]);
+	let ck = line.shift();
+	let num = ck;
+	let set = 0 ;
+	for (let x = 0 ; x < size ; x++){
+		if (set == 0){
+			if (arr[x] == 0){
+				set = 1;
+				ck--;
+			}
+			else if (arr[x] == 1){
+				for (var i = x ; i < x + parseInt(ck) ; i++){
+					pos.push([y,i]);
+				};
+				x += ck;
+				ck = line.shift();
+				num = ck;
+			};
+		}
+		else if (set == 1 && ck > 0){
+			if (arr[x] == 1){
+				for (var i = x ; i < x + parseInt(ck) ; i++){
+					pos.push([y,i]);
+				};
+				x += ck;
+				ck = line.shift();
+				num = ck;
+			}
+			else if (arr[x] == 0){
+				ck--;
+			};
+		}
+	};
+	fillbg(pos,1);
+	fillbg(miss,2);
 };
 //</script>

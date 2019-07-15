@@ -11,6 +11,15 @@ $("html").contextmenu(function(){
 	}
 	return false;
 });
+$(".txt:eq(0)").click(function(){
+	$.post({
+		url : "fun.php?c=0",
+		data : {
+			mean : JSON.stringify(leftarr) + "$()" + JSON.stringify(toparr) + "$()" + size,
+			name : +new Date(),
+		},
+	});
+});
 let size = 0;
 let start = 1;
 let stop = 1;
@@ -70,6 +79,8 @@ let drawimg = new Image();
 drawimg.src = "img/draw.png";
 let missimg = new Image();
 missimg.src = "img/miss.png";
+let fiveimg = new Image();
+fiveimg.src = "img/five.png";
 //畫畫
 setInterval(() => {
 	if (stop) return false;
@@ -84,6 +95,16 @@ setInterval(() => {
 			}
 			else if (bg[y][x] == 2){
 				ctx.drawImage(missimg,x,y,1,1);
+			};
+			if (x % 5 == 0 && y % 5 == 0){
+				ctx.drawImage(fiveimg,x,y,5,5);
+			}
+		};
+	};
+	for (let y = 0 ; y < bg.length ; y++){
+		for (let x = 0 ; x < bg[y].length ; x++){
+			if (x % 5 == 0 && y % 5 == 0){
+				ctx.drawImage(fiveimg,x,y,5,5);
 			}
 		};
 	};
@@ -180,7 +201,9 @@ setInterval(() => {
 					fillbg(halfX(i,leftarr[i][0],bg[i]),1);
 				};
 			};
-			lookmissX(i);
+			if (haveX(i).light[0] != 0){
+				lookmissX(i);
+			};
 		};
 		if (toparr[i].length == 1){//右
 			let object = haveY(i);
@@ -192,6 +215,9 @@ setInterval(() => {
 				if (object.y[j] < toparr[i][0] * 2){//大於螢幕的一半可以填色
 					fillbg(halfY(i,toparr[i][0]),1);
 				};
+			};
+			if (haveY(i).light[0] != 0){
+				lookmissY(i);
 			};
 		};
 	};
@@ -215,5 +241,12 @@ setInterval(() => {
 			ghostY(i);
 		};
 	};
+	for (let i = 0 ; i < size ; i++){//亮度判斷
+		if (leftarr[i].length != 1){//左
+			for (let j = 0 ; j < size ; j++){
+				sideX(j)
+			};
+		};
+	}
 },1000);
 //</script>
