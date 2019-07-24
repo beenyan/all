@@ -41,3 +41,8 @@
       echo $row[$wh].";";
     }
   }
+  else if ($c == 6){
+    $wh = $_POST["wh"];
+  }
+  else if ($c == 7){
+  }

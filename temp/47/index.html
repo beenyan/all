@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="js/jquery-3.4.1.js"></script>
+  <title>測試中</title>
+</head>
+<style>
+  #bk{
+    border-style: solid;
+    width: 400px;
+    height: 150px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    font-size: 200%;
+    vertical-align: top;
+    font-family: "微軟正黑體";
+    font-weight: bold;
+  }
+  #fin{
+    position: absolute;
+    border-style: solid;
+    width: 300px;
+    height: 30px;
+    left: 50%;top: 70%;
+    transform: translate(-50%,-50%);
+    overflow: hidden;
+  }
+  #word{
+    color: red;
+    position: relative;
+    top: 20%;
+  }
+  #line{
+    position: absolute;
+    width: 0;
+    height: 30px;
+    background: linear-gradient(45deg,rgba(0, 128, 0,0.9),rgba(0, 128, 0,0.4),rgba(0, 128, 0,0.9),rgba(0, 128, 0,0.4),rgba(0, 128, 0,0.9),rgba(0, 128, 0,0.4));
+  }
+  .allimg{
+    position: relative;
+    border-style: solid;
+    border-color: aqua;
+    border-width: 2px;
+    vertical-align: top;
+    display: inline-block;
+    width: 100px;height: 100px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 10px;
+    cursor: pointer;
+    background: radial-gradient(rgba(255,0,0,0.4),rgba(0,0,255,0.4));
+  }
+</style>
+<body>
+  <input type="email" name="" id="mail"><input type="button" value="確認" onclick="ck()">
+  <input type="checkbox" id="c0" checked><label for="c0" id="s0">被點擊</label>
+  <input type="checkbox" id="c1"><label for="c1" id="s1">沒被點擊</label>
+  <input type="file" accept="image/*" multiple>
+  <input type="button" value="上傳" onclick="up()">
+  <div id="bk">
+    <span id="word">完成度</span>
+    <div id="fin">
+      <div id="line"></div>
+    </div>
+  </div><br>
+  <img id="php"></img> <input type="button" value="圖片" onclick="createimg()">
+</body> 
+<script>
+  function createimg(){
+    let img = new Image;
+    img.src = "fun.php?c=2";
+    img.onload = function(){
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
+      canvas.width = 60;
+      canvas.height = 20;
+      ctx.drawImage(img,0,0,60,20);
+      $("#php")[0].src = canvas.toDataURL();
+    }
+  };
+  function ck(){
+    if ($("#mail").val() == ""){
+      alert ("請輸入值");
+      return false;
+    }
+    if ($("#mail")[0].validationMessage == ""){
+      return false;
+    }
+    alert($("#mail")[0].validationMessage)
+  }
+  function up(){
+    if ($(":file")[0].files.length > 5){
+      alert("最多上傳5張圖片");
+      return false;
+    };
+    let finish = 0;
+    let imgsrc = "";
+    $("#line").width(0);
+    for (let i = 0 ; i < $(":file")[0].files.length ; i++){
+      let reader = new FileReader();
+      reader.readAsDataURL($(":file")[0].files[i]);
+      reader.onload = function(e){
+        let img = new Image();
+        img.src = e.target.result;
+        img.onload = function(){
+          let canvas = document.createElement('canvas');
+          let ctx = canvas.getContext('2d');
+          canvas.width = 100;
+          canvas.height = 100;
+          ctx.drawImage(img,0,0,100,100);
+          imgsrc += canvas.toDataURL() + "$()";
+          finish++;
+          $("#line").width($("#fin").width() / $(":file")[0].files.length * finish);
+          if (finish == $(":file")[0].files.length){//上傳完成
+            $.post({
+              url : "fun.php?c=0",
+              async : false,
+              data : {src : imgsrc},
+            });
+          };
+        };
+      };
+    };
+  };
+  $.post({
+    async : false,
+    url : "fun.php?c=1",
+    success : function(e){
+      let list = e.split("$(())");
+      list.pop();
+      for (let i = 0 ; i < list.length ; i++){
+        let arr = list[i].split("$()");
+        arr.pop();
+        let img = new Image();
+        let k = 0;
+        $("body").append(`<div class="allimg"></div>`);
+        $(".allimg:last").append(img);
+        img.src = arr[k];
+        setTimeout(function(){
+          $(img).fadeOut(1000);
+        },1000)
+        setInterval(function(){
+          $(img).fadeIn(500);
+          k = (k + 1) % arr.length;
+          img.src = arr[k];
+          setTimeout(function(){
+            $(img).fadeOut(1000);
+          },1000)
+        },2000)
+      };
+    },
+  });
+  setInterval(function(){
+    if ($("#c0")[0].checked){
+      $("#s0").text("被點擊");
+    }
+    else {
+      $("#s0").text("沒被點擊");
+    }
+    if ($("#c1")[0].checked){
+      $("#s1").text("被點擊");
+    }
+    else {
+      $("#s1").text("沒被點擊");
+    }
+  },1);
+</script>
+</html>

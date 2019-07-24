@@ -157,7 +157,6 @@
     if (allset) return false;
     newarr = arr.shift();
     ctx.clearRect(newarr[0],newarr[1],zoom,zoom);
-    
   };
   let i,rd1;
   setInterval(function(){
@@ -175,7 +174,7 @@
           summonarr.splice(i,1);
         };
       };
-    },50);
+    },1);
   $("#dialog").dialog({
     autoOpen : false,
     width : 700,
@@ -191,6 +190,6 @@
   });
   setInterval(function(){
     $("#time").text("剩餘項目：" + allarr.length);
-  },100);
+  },1);
 </script>
 </html>

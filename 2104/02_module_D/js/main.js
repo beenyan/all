@@ -418,8 +418,182 @@
         };
       }
       else if (sele1 == "雷達圖"){
-        
-      }
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        canvas.width = 1000;
+        canvas.height = 800;
+        $("#dg0 canvas").remove();
+        $("#dg0").append(canvas);
+        for (let i = 0 ; i < 8 ; i++){
+          ctx.save();
+          ctx.translate(300 - i * 35,400 - i * 20);
+          for (let j = 0 ; j < 6 ; j++){
+            ctx.beginPath();
+            ctx.moveTo(0,0);
+            ctx.lineTo(0,i * 40);
+            ctx.stroke();
+            ctx.translate(0,i * 40);
+            ctx.rotate(Math.PI * 2 / 360 * -60);
+            if (j == 4){
+              ctx.fillStyle = "rgba(255,0,0,1)";
+              ctx.font = "20px Arial"
+              ctx.fillText(i * 20,0,0);
+            };
+          };
+          ctx.restore();
+        };
+        let arry = [
+          [297, 120],
+          [297, 680],
+          [539, 261],
+          [55, 540],
+          [540, 540],
+          [55, 260]
+        ];
+        let array = [
+          [315, 110],
+          [574, 260],
+          [574, 559],
+          [315, 709],
+          [55, 559],
+          [55, 260]
+        ];
+        for (let i = 0 ; i < 6 ; i += 2){
+          ctx.beginPath();
+          ctx.moveTo(arry[i][0],arry[i][1]);
+          ctx.lineTo(arry[i + 1][0],arry[i + 1][1]);
+          ctx.stroke();
+        };
+        ctx.beginPath();
+        for (let i = 1 ; i < $("#dg0 tr").length - 1 ; i++){
+          ctx.save();
+          if (i > 6) break;
+          ctx.translate(298,400);
+          ctx.rotate(Math.PI * 2 / -2);
+          ctx.rotate(Math.PI * 2 / 360 * (i - 1) * 60);
+          ctx.lineTo(0,$(`#dg0 tr:eq(${i}) td:last`).text() * 2);
+          ctx.fillStyle = "blue";
+          ctx.fillRect(0,$(`#dg0 tr:eq(${i}) td:last`).text() * 2,10,10)
+          ctx.restore();
+        };
+        ctx.closePath();
+        ctx.strokeStyle = "aqua";
+        ctx.lineWidth = 5;
+        ctx.stroke();
+        for (let i = 1 ; i < $("#dg0 tr").length - 1 ; i++){
+          if (i > 6) break;
+          ctx.font = "20px 微軟正黑體";
+          ctx.fillText($(`#dg0 tr:eq(${i}) td:first`).text(),array[i - 1][0] - 20,array[i - 1][1] + 5);
+        };
+      };
     });
   });
+  $(".p:eq(1)").mousedown(function(){
+    $("#dg1").dialog("open");
+    $("#dg1").empty();
+    $("#dg1").append(`
+      <h3>樞紐分析</h3><span>使用</span>
+      <select class="sele">
+        <option value="3">性別</option>
+        <option value="4">學歷</option>
+        <option value="5">居住地區</option>
+        <option value="11">最高得獎</option>
+        <option value="8">喜歡路跑活動類型</option>
+      </select>
+      <span>及</span>
+      <select class="sele">
+        <option value="3">性別</option>
+        <option value="4">學歷</option>
+        <option value="5">居住地區</option>
+        <option value="11">最高得獎</option>
+        <option value="8">喜歡路跑活動類型</option>
+      </select>
+      <span>進行統計</span>
+      <input type="button" value="確定">
+    `);
+    $("#dg1 :button").mousedown(function(){
+      $("#dg1 table").remove();
+      if ($("#dg1 .sele:eq(0) :selected").text() ===  $("#dg1 .sele:eq(1) :selected").text()) return false;
+      $("#dg1").append(`
+        <table border="1" align="center">
+          <tr>
+            <td>${$("#dg1 .sele:eq(0) :selected").text()}</td>
+            <td>${$("#dg1 .sele:eq(1) :selected").text()}</td>
+            <td>統計</td>
+          </tr>
+        </table>
+      `);
+      let temp0 = type($("#dg1 .sele:eq(0) :selected").val());
+      let temp1 = type($("#dg1 .sele:eq(1) :selected").val());
+      for (let i = 0 ; i < temp0.length ; i++){
+        $("#dg1 table").append(`
+          <tr>
+            <td>${temp0[i][0]}</td>
+            <td></td>
+            <td></td>
+          </tr>
+        `);
+        $.post({
+          url : "fun.php?c=6",
+          async : false,
+          data : {wh : temp0[i][1],val :  temp0[i][2]},
+          success : function(e){
+
+          },
+        })
+        for (let j = 0 ; j < temp1.length ; j++){
+        $("#dg1 table").append(`
+          <tr>
+            <td></td>
+            <td>${temp1[j][0]}</td>
+            <td></td>
+          </tr>
+        `);
+        };
+      };
+    });
+  });
+  function type(nn){
+    if (nn == 3){
+      return [["女",0],["男",1]]
+    }
+    else if (nn == 4){
+      return [
+        ["小學","learn",0],
+        ["國中","learn",1],
+        ["高中","learn",2],
+        ["大專","learn",3],
+        ["碩士","learn",4],
+        ["博士","learn",5],
+      ]
+    }
+    else if (nn == 5){
+      return [
+        ["北部","home",0],
+        ["中部","home",1],
+        ["南部","home",2],
+        ["東部","home",3],
+      ]
+    }
+    else if (nn == 8){
+      return [
+        ["超馬","item",0],
+        ["全馬","item",1],
+        ["半馬","item",2],
+        ["中程","item",3],
+        ["趣味","item",4],
+        ["夜跑","item",5],
+        ["健行","item",6],
+      ]
+    }
+    else if (nn == 11){
+      return [
+        ["無","pleasure",0],
+        ["金","pleasure",1],
+        ["銀","pleasure",2],
+        ["銅","pleasure",3],
+        ["優","pleasure",4],
+      ]
+    }
+  };
 //</script>
