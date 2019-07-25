@@ -97,10 +97,58 @@
       if (point1.length == 2){
         ctx.beginPath();
         ctx.fillStyle = pen_color;
-        ctx.ellipse(point0[0],point0[1],Math.max(point1[0],point0[0]) - Math.min(point1[0],point0[0]),Math.max(point1[1],point0[1]) - Math.min(point1[1],point0[1]),0,0,Math.PI * 2);
+        ctx.ellipse((point0[0] + point1[0]) / 2,(point0[1] + point1[1]) / 2,Math.max(point1[0],point0[0]) - Math.min(point1[0],point0[0]),Math.max(point1[1],point0[1]) - Math.min(point1[1],point0[1]),0,0,Math.PI * 2);
         ctx.fill();
         ctx.closePath();
       };
-    };
+    }
+    else if (tool == "polygon"){
+      if (point1.length == 2){
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(point0[0] + Math.max(Math.abs(point0[1] - point1[1]),Math.abs(point0[0] - point1[0])),point0[1]);
+        for (let i = 0 ; i < 6 ; i++){
+          ctx.lineTo(0,Math.max(Math.abs(point0[1] - point1[1]),Math.abs(point0[0] - point1[0])));
+          ctx.translate(0,Math.max(Math.abs(point0[1] - point1[1]),Math.abs(point0[0] - point1[0])));
+          ctx.rotate(Math.PI / 180 * 60);
+        };
+        ctx.closePath();
+        ctx.fillStyle = pen_color;
+        ctx.fill();
+        ctx.restore();
+      };
+    }
+    else if (tool == "triangle"){
+      if (point1.length == 2){
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(point0[0] + Math.max(Math.abs(point0[1] - point1[1]),Math.abs(point0[0] - point1[0])),point0[1]);
+        for (let i = 0 ; i < 3 ; i++){
+          ctx.lineTo(0,Math.max(Math.abs(point0[1] - point1[1]),Math.abs(point0[0] - point1[0])));
+          ctx.translate(0,Math.max(Math.abs(point0[1] - point1[1]),Math.abs(point0[0] - point1[0])));
+          ctx.rotate(Math.PI / 180 * 120);
+        };
+        ctx.closePath();
+        ctx.fillStyle = pen_color;
+        ctx.fill();
+        ctx.restore();
+      };
+    }
+    else if (tool == "star"){
+      if (point1.length == 2){
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(point0[0] + Math.max(Math.abs(point0[1] - point1[1]),Math.abs(point0[0] - point1[0])),point0[1]);
+        for (let i = 0 ; i < 5 ; i++){
+          ctx.lineTo(0,Math.max(Math.abs(point0[1] - point1[1]),Math.abs(point0[0] - point1[0])));
+          ctx.translate(0,Math.max(Math.abs(point0[1] - point1[1]),Math.abs(point0[0] - point1[0])));
+          ctx.rotate(Math.PI / 180 * 144);
+        };
+        ctx.closePath();
+        ctx.fillStyle = pen_color;
+        ctx.fill();
+        ctx.restore();
+      };
+    }
   };
 //</script>

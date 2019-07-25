@@ -43,6 +43,15 @@
   }
   else if ($c == 6){
     $wh = $_POST["wh"];
+    $val = $_POST["val"];
+    $all = mysqli_query($db,"SELECT * FROM `login` WHERE `$wh` = $val");
+    echo mysqli_num_rows($all);
   }
   else if ($c == 7){
+    $wh0 = $_POST["wh0"];
+    $val0 = $_POST["val0"];
+    $wh1 = $_POST["wh1"];
+    $val1 = $_POST["val1"];
+    $all = mysqli_query($db,"SELECT * FROM `login` WHERE `$wh0` = $val0 AND `$wh1` = $val1");
+    echo mysqli_num_rows($all);
   }

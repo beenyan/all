@@ -538,24 +538,34 @@
           async : false,
           data : {wh : temp0[i][1],val :  temp0[i][2]},
           success : function(e){
-
+            $("#dg1 table tr:last td:last").text(e)
           },
         })
         for (let j = 0 ; j < temp1.length ; j++){
-        $("#dg1 table").append(`
-          <tr>
-            <td></td>
-            <td>${temp1[j][0]}</td>
-            <td></td>
-          </tr>
-        `);
+          $("#dg1 table").append(`
+            <tr>
+              <td></td>
+              <td>${temp1[j][0]}</td>
+              <td></td>
+            </tr>
+          `);
+          $.post({
+            url : "fun.php?c=7",
+            async : false,
+            data : {wh0 : temp0[i][1],val0 :  temp0[i][2],wh1 : temp1[j][1],val1 :  temp1[j][2]},
+            success : function(e){
+              $("#dg1 table tr:last td:last").text(e)
+            },
+          })
         };
       };
     });
   });
   function type(nn){
     if (nn == 3){
-      return [["女",0],["男",1]]
+      return [
+        ["女","sex",0],["男","sex",1]
+      ]
     }
     else if (nn == 4){
       return [
