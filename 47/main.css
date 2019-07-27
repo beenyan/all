@@ -1,0 +1,87 @@
+html{
+  font-family: "微軟正黑體";
+  font-weight: bold;
+  font-size: 120%;
+  user-select: none;
+  text-align: center;
+}
+table{
+  border-collapse: collapse;
+}
+.yellow,.dark_yellow,.tt{
+  box-sizing: border-box;
+  border-collapse: collapse;
+  display: inline-block;
+  width: 100px;
+  background: yellow;
+  margin: 3px;
+  border-style: solid;
+  border-color: gray;
+  border-radius: 10px;
+  text-align: center;
+  border-width: 2px;
+}
+.purple{
+  box-sizing: border-box;
+  border-collapse: collapse;
+  display: inline-block;
+  background: linear-gradient(white,#AEAEEE,rgb(146, 146, 202));
+  margin: 1px;
+  padding: 0 5px 0 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: gray;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transform: translateY(-3px);
+}
+.dark_yellow{
+  background: orange;
+  cursor: pointer;
+}
+.week_day{
+  width: 50px;
+}
+select{
+  font-size: 100%;
+  width: 174px;
+  height: 27px;
+}
+input[type="text"]{
+  font-size: 100%;
+  width: 170px;
+  height: 20px;
+  transform: translateY(-3px);
+}
+.select_date{
+  cursor: pointer;
+}
+.sele_table{
+  cursor: pointer;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #8CA6A9;
+  display: inline-block;
+  width: 100px;
+  margin: 10px;
+}
+#dialog0{
+  text-align: left;
+}
+.tt{
+  background: none;
+  width: 200px;
+  text-align: left;
+  padding: 0 5px 0 5px;
+}
+#admin{
+  font-size: 200%;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #8CA6A9;
+  margin: 10px;
+  display: inline-block;
+  cursor: pointer;
+  background: linear-gradient(white,rgb(0, 183, 255),rgb(101, 101, 231));
+}

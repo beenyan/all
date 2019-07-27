@@ -32,3 +32,37 @@ html{
   width: 70px;
   height: 70px;
 }
+.stamp{
+  pointer-events: auto;
+  cursor: pointer;
+}
+.gray{
+  width: 150px;
+  height: 150px;
+  display: inline-block;
+  pointer-events: none;
+  border-style: solid;
+  border-color: aqua;
+  margin: 5px;
+}
+.over{
+  position: relative;
+  height: 60px;
+  width: 250px;
+  background: #4F81BD;
+  border-style: solid;
+  border-color: #385D8A;
+  margin: 10px 0px 10px 0px;
+  text-align: center;
+  font-size: 150%;
+  color: white;
+  cursor: pointer;
+  left: 50%;
+  line-height: 60px;
+  transform: translateX(-50%);
+}
+.over:hover{
+  background: rgb(117, 169, 233);
+  color: rgb(209, 209, 209);
+  border-color: rgb(23, 62, 107);
+}

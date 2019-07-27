@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <link rel="stylesheet" src="js/jquery-ui.min.css">
+  <script src="js/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="main.css">
+  <title>47屆區賽</title>
+</head>
+<body>
+  <div id="admin" onclick="location.href='admin.html'" style="display: none">管理者後台</div>
+  <table border="1" align="center" style="width: 55%;">
+    <tr>
+      <td>訪客訂餐 - 選擇訂餐資訊</td>
+    </tr>
+    <tr>
+      <td>
+        <br>
+        <table class="date" border="3" align="center" style="width: 700px;border-color:#7373B6;">
+          <tr>
+            <td colspan="8">
+              <span id="before_date" style="cursor: pointer;margin: 0px 50px 0 -50px">前一周<<</span>
+              <span id="year_date"></span>
+              <span id="after_date" style="cursor: pointer;margin: 0px -50px 0 50px">>>下一周</span>
+            </td>
+          </tr>
+          <tr id="week">
+            <td style="width: 100px;">
+            </td>
+          </tr>
+          <tr id="lunch">
+            <td>
+              午餐<br>(可訂桌數)
+            </td>
+          </tr>
+          <tr id="afternoon_tea">
+            <td>
+              下午茶<br>(可訂桌數)
+            </td>
+          </tr>
+          <tr id="dinner">
+            <td>
+              晚餐<br>(可訂桌數)
+            </td>
+          </tr>
+        </table><br>
+        <div style="width: 48%;display: inline-block;text-align: right;">
+          <span class="yellow">日期</span> <input type="text" id="text_date" readonly><br>
+          <span class="yellow">訂餐數量</span> 
+          <select id="count">
+            <script>
+              for (let i = 1 ; i < 100 ; i++){
+                $("#count").append(`
+                  <option value="${i}">${i}客</option>
+                `);
+              };
+            </script>
+          </select><br>
+          <span class="yellow">訂餐桌數</span>
+          <select id="text_table_count">
+            <script>
+              for (let i = 1 ; i <= 10 ; i++){
+                $("#text_table_count").append(`
+                  <option value="${i}">${i}桌</option>
+                `);
+              };
+            </script>
+          </select><br>
+          <span class="yellow">桌號</span> <input type="text" id="text_table_number" readonly><br>
+        </div>
+        <div style="width: 48%;display: inline-block;text-align: left;vertical-align: top;">
+          <span class="yellow">時段</span> 
+          <select id="time">
+            <option value="0">中午</option>
+            <option value="1">下午</option>
+            <option value="2">晚上</option>
+          </select>
+          <br>
+          <span class="yellow">套餐名稱</span> <input type="text" id="text_name"><br><br>
+          <span class="purple" style="position: relative; top: 15px;">自動產生桌號</span>
+          <span class="purple" style="position: relative; top: 15px;">選擇桌號</span>
+        </div>
+        <span class="dark_yellow">確定訂餐</span>
+        <span class="dark_yellow">取消</span>
+      </td>
+    </tr>
+  </table>
+  <div id="dialog" class="dialog">
+
+  </div>
+  <div id="dialog0" class="dialog">
+
+  </div>
+  <div id="dialog1" class="dialog">
+
+  </div>
+</body>
+<script src="js/function.js"></script>
+<script src="js/main.js"></script>
+</html>

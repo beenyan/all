@@ -1,4 +1,5 @@
 //<script>
+  $("img").attr("draggable",false);
   $("html").contextmenu(function () {
     return false;
   })
@@ -13,6 +14,8 @@
     pen_size = $(this).children().width();
   });
   $(".tool").mousedown(function () {//選擇工具
+    $(".stamp").css("background-color","");
+    stamp = "";
     for (let i = 0; i < $(".tool").length; i++) {
       $(`.tool:eq(${i})`).css("background", `url(image/${$(`.tool:eq(${i})`).data("tool")}0.png)`);
     };
@@ -25,6 +28,7 @@
       $(this).css("background", `url(image/${tool}1.png)`);
     }
   });
+  let stamp = "";
   let ckdown = 1;
   let tool = "";
   let pen_color = "";
@@ -62,6 +66,10 @@
     draw(e);
   });
   $("html").mouseup(function(e){
+    if (stamp != ""){
+      ckdown = 1;
+      return false;
+    }
     point1 = [e.pageX - canpos.x,e.pageY - canpos.y]
     draw(e);
     ckdown = 1;
@@ -69,6 +77,9 @@
     point0 = [];
   });
   function draw(e){
+    if (stamp != "" && !ckdown){
+      ctx.drawImage(stamp,e.pageX - canpos.x - 75,e.pageY - canpos.y - 75);
+    }
     if (pen_color == "" || pen_size == "" || ckdown){
       return false;
     };
@@ -151,4 +162,49 @@
       };
     }
   };
+  $(".stamp").mousedown(function(){
+    if ($(this).css("background-color") == "rgba(128, 128, 128, 0.4)"){
+      tool = "";
+      stamp = "";
+      $(this).css("background-color","");
+    }
+    else {
+      $(".stamp").css("background-color","");
+      $(this).css("background-color","rgba(128 , 128, 128, 0.4)");
+      let img = new Image();
+      img.src = $(this)[0].src;
+      img.onload = function(){
+        stamp = img;
+      };
+      tool = "stamp";
+    }
+  });
+  $(".over:eq(0)").mousedown(function(){
+    let a = $("<a>");
+    $(a).attr("download",+new Date());
+    $(a).attr("href",canvas.toDataURL());
+    $(a)[0].click();
+  });
+  $(".over:eq(1)").mousedown(function(){
+    $.post({
+      url : "fun.php",
+      async : false,
+      data : {name : +new Date() , val : canvas.toDataURL()},
+      success : function(e){
+        alert ("儲存成功")
+      },
+    });
+  });
+  function txt(){
+    let reader = new FileReader();
+    reader.readAsText($(":file")[0].files[0]);
+    reader.onload = function(e){
+      let img = new Image();
+      img.src = e.target.result;
+      img.onload = function(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      };
+    }
+  }
 //</script>
