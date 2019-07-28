@@ -1,0 +1,10 @@
+html{
+  font-size: 120%;
+  font-weight: bold;
+  user-select: none;
+  user-select: none;
+  font-family: "微軟正黑體";
+}
+#accordion{
+  width: 600px;
+}
