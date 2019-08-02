@@ -1,0 +1,111 @@
+html{
+  font-size: 120%;
+  font-weight: bold;
+  user-select: none;
+  font-family: "微軟正黑體";
+}
+#background{
+  position: absolute;
+  display: inline-block;
+  top: 50%;left: 50%;transform: translate(-50%,-50%);
+  border-style: solid;
+  border-width: 10px;
+  border-color: #252525;
+  overflow: hidden;
+  font-size: 0;
+}
+#gas,#score,#stop,#time,#set,#book{
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #366070;
+  border-color: #F5D96B;
+  border-style: dashed;
+  border-radius: 50%;
+  overflow: hidden;
+  left: 420px;top: 50px;
+  text-align: center;
+}
+span{
+  color: white;
+}
+#have_gas{
+  background: #D81416;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 30px;
+  left: 0;
+}
+#light{
+  position: absolute;
+  content: '';
+  width: 100px;height: 1200px;
+  background: blue;
+  top: -400px;left: -400px;  
+  transform: rotate(-45deg);
+  background: -webkit-linear-gradient(rgba(200, 200, 200,0), rgba(200, 200, 200, 0.2), rgba(200, 200, 200,0));
+}
+.list_text{
+  color: rgb(83, 83, 83);
+  position: relative;
+  left: 40px;
+}
+.water{
+  position: absolute;
+  left: 50%;top: 50%;transform: translate(-50%,-50%);
+  width: 0;
+  height: 0;
+  background-color: rgba(0, 255, 255,0.6);
+  transition: 2s;
+  border-radius: 50%;
+}
+#rank{
+  width: 98%;
+  height: 380px;
+  overflow: auto;
+}
+.show_rank{
+  display: inline-block;
+  position: relative;
+  color: coral;
+  font-size: 38px;
+}
+#sg{
+  width: 98%;
+  margin: 5px;
+  height: 60px;
+  background-color: rgb(255, 78, 24);
+  cursor: pointer;
+}
+#dialog4{
+  font-size: 0;
+}
+.game_list0{
+  display: inline-block;
+  text-align: left;
+  width: 40%;
+  padding: 5px;
+  font-size: 20px;
+  border-right-style: solid;
+  border-right-color: aqua;
+}
+.game_list1{
+  display: inline-block;
+  text-align: left;
+  width: 30%;
+  padding: 5px;
+  font-size: 20px;
+}
+.red{
+  color : red;
+}
+.green{
+  color : green;
+}
+.purple{
+  color : purple;
+}
+.tomato{
+  color : tomato;
+}

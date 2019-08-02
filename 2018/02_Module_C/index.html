@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="js/jquery-3.4.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <link rel="stylesheet" src="js/jquery-ui.min.css">
+  <script src="js/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="main.css">
+  <title>太空射擊</title>
+</head>
+<body>
+  <div id="background">
+    <div id="gas">
+      <div id="have_gas"></div>
+      <img src="image/gas.png" width="30" height="30" style="position: relative;top: 5px;"><br>
+      <span id="gas_text" style="font-size: 15px;position: relative;top: 5px;">15</span>
+    </div>
+    <div id="score" style="left: 340px;top: 10px;line-height: 60px">
+      <span id="score_text" style="font-size: 20px;position: relative;">0</span>
+    </div>
+    <div id="light"></div>
+    <div id="stop" style="left: 510px;line-height: 60px;cursor: pointer;">
+      <img src="image/gameplay.png" style="pointer-events: none;">
+    </div>
+    <div id="time" style="left: 590px;line-height: 60px;top: 10px;">
+      <span id="time_text" style="font-size: 20px;position: relative;">00:00</span>
+    </div>
+    <div id="set" style="left: 860px;font-size: 0;top: 0;cursor: pointer;">
+      <img src="image/set.png" style="pointer-events: none;position: absolute;top: 0;left: 0;width: 60px;height: 60px;">
+    </div>
+    <div id="book" style="left: 780px;font-size: 0;top: 0;cursor: pointer;">
+      <img src="image/book.png" style="pointer-events: none;position: absolute;top: 0;left: 0;width: 40px;height: 50px;left:50%;top: 50%;transform: translate(-50%,-50%);">
+    </div>
+    <img id="lf" src="image/leftfont.png" style="position: absolute;left: 50px;top: 543px;cursor: pointer;" draggable="false" alt="">
+    <img id="rf" src="image/rightfont.png" style="position: absolute;left: 188px;top: 543px;cursor: pointer;" draggable="false" alt="">
+  </div>
+  <div id="dialog0" style="text-align: center;display: none">
+    <h1>Star Battle</h1><hr style="border-width: 2px;border-color: black;border-radius: 2em;">
+    <div id="how_to_play" style="border-style: solid;border-width: 1px;border-color: gray;text-align: left;height: 330px;display: none">
+      <h3 style="color: black;margin: 10px;position: relative;">How to Play</h3>
+      <span class="list_text">1.Move the airplane using the arrows keys;</span><br>
+      <span class="list_text">2.The timer present the time lapsed;</span><br>
+      <span class="list_text">3.The fuel counter show the remain fuel;</span><br>
+      <span class="list_text">4.During the flight, the aircraft need to avoid the birds that are presented in the <br> &nbsp;&nbsp; sky. If the airplane hit a bird, the game is over;</span><br>
+      <span class="list_text">5.During the flight, the aircraft need to collect fuel and stars in the sky;</span><br>
+      <span class="list_text">6.You can pause the game clicking in a button pause, or pressing the space <br> &nbsp;&nbsp; bar;</span><br>
+      <span class="list_text">7.Go beyond all limits;</span><br>
+      <span class="list_text" style="color: rgb(236, 194, 142);">Flight in sky Angel Challenge...</span><br>
+    </div>
+  </div>
+  <div id="dialog1" style="display: none;text-align: center">
+    <h1>Input Your Name</h1><hr style="border-width: 2px;border-color: black;border-radius: 2em;">
+    <input type="text" maxlength="10" id="name" placeholder="Your name" style="font-size: 200%;width: 100%;margin: 10px 0 10px 0;padding: 10px 0 10px 0;"><br><br>
+    <input type="button" id="continue" disabled value="Continue" style="font-size: 200%;width: 100%;margin: 10px 0 10px 0;padding: 10px 0 10px 0;background-color: #FF4E18;cursor: pointer;">
+  </div>
+  <div id="dialog2" style="display: none;text-align: center">
+
+  </div>
+  <div id="dialog3" style="display: none;text-align: center">
+    <input type="checkbox" class="set" id="cb0"><label for="cb0">顯示碰撞箱</label>
+    <input type="checkbox" class="set" id="cb1"><label for="cb1" id="music">聲音</label>
+  </div>
+  <div id="dialog4" style="display: none;text-align: center">
+
+  </div>
+  <audio class="music" loop src="music/backmusic.mp3"></audio>
+  <audio class="music" src="music/shootmusic.wav"></audio>
+  <audio class="music" src="music/boommusic.wav"></audio>
+</body>
+<script>
+  $("#dialog0").dialog({
+    width : 800,
+    height : "auto",
+    resizable : false,
+    buttons : {
+      "How to play" : function(){
+        $("#how_to_play").toggle(1500);
+      },
+      "Start Game" : function(){
+        $(".start_game").append(`<div class="water"></div>`);
+        $(".water:last").animate({
+          width : 100,
+          height : 100,
+        },50,"linear")
+        setTimeout(() => {
+          if (music == 0){
+            $(".music:eq(0)")[0].play();
+          }
+          $(".water").remove();
+          $("#dialog0").dialog("close");
+          start = 0;
+        }, 1000);
+      },
+    },
+    open : function(){
+      $(".ui-dialog").css("top",90);
+      $(".ui-button:eq(1)").css({
+        "background-color" : "#F09F0D",
+        "border-radius" : "2em",
+        "outline-style" : "none",
+        height : 60,
+      });
+      $(".ui-button:eq(2)").css({
+        "background-color" : "#FF4E18",
+        "outline-style" : "none",
+        "overflow" : "hidden",
+        width : 550,
+        height : 60,
+      });
+      $(".ui-button:eq(2)").addClass("start_game");
+    },
+  });
+  $("#dialog1").dialog({
+    autoOpen : false,
+    resizable : false,
+    width : 800,
+    height : 400,
+  });
+  $("#dialog2").dialog({
+    autoOpen : false,
+    resizable : false,
+    width : 800,
+    height : 600,
+  });
+  $("#dialog3").dialog({
+    autoOpen : false,
+    resizable : false,
+    width : 800,
+    height : 600,
+    buttons :{
+      "關閉並繼續遊戲" : function(){
+        $("#dialog3").dialog("close");
+        stop = 0;
+      },
+    },
+  });
+  $("#dialog4").dialog({
+    autoOpen : false,
+    resizable : false,
+    width : 800,
+    height : 600,
+    buttons :{
+      "關閉並繼續遊戲" : function(){
+        $("#dialog4").dialog("close");
+        stop = 0;
+        if (music == 0){
+          $(".music:first")[0].play();
+        };
+      },
+    },
+  });
+  $(".ui-dialog-titlebar").hide();
+  $(".set").checkboxradio({
+
+  });
+  $("#music").click()
+</script>
+<script src="js/function.js"></script>
+<script src="js/main.js"></script>
+</html>
