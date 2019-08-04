@@ -1,0 +1,236 @@
+html{
+  font-size: 120%;
+  font-weight: bold;
+  user-select: none;
+  user-select: none;
+  font-family: "微軟正黑體";
+}
+body{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+#main{
+  position: absolute;
+  left: 50%;top: 50%;
+  transform: translate(-50%,-50%);
+  border-style: solid;
+  border-width: 5px;
+  border-left-color: orange;
+  border-right-color: red;
+  border-bottom-color: aqua;
+  border-top-color: yellow;
+}
+.material{
+  position: absolute;
+  display: none;
+}
+#logo{
+  position: absolute;
+  left: 500px;
+  top: -260px;
+  animation-name: logo;
+  animation-duration: 4s;
+  animation-fill-mode: forwards;
+  transform: scale(2);
+  overflow: hidden;
+  width: 390px;height: 260px;
+  background: url(image/logo.png);
+}
+#logo::before{
+  position: absolute;
+  content: '';
+  width: 60px;height: 260px;
+  top: 0;
+  left: -160px;
+  background: linear-gradient(to right,rgba(0,0,0,0),rgba(255,255,255,0.6),rgba(0,0,0,0));
+  animation-name: logof;
+  animation-duration: 5s;
+  animation-fill-mode: forwards;
+}
+@keyframes logo{
+  50%{
+    transform: perspective(500px) rotateY(0deg);
+    top: 200px;
+    left: 500px;
+    transform: scale(0.4);
+  }
+  62.5%{
+    transform: perspective(500px) rotateY(180deg);
+  }
+  75%{
+    transform: perspective(500px) rotateY(360deg);
+  }
+  100%{
+    transform: perspective(500px) rotateY(360deg);
+    top: 20px;
+    left: 20px;
+    transform: scale(1);
+  }
+}
+@keyframes logof{
+  100%{
+    left: 395px;
+  }
+}
+#play_icon{
+  position: absolute;
+  width: 335px;height: 130px;top: 300px;
+  background: url(image/image024.png);
+  left: 1440px;
+  overflow: hidden;
+  animation-name: play_icon;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-delay: 2s;
+  cursor: pointer;
+  transition: 1s;
+  overflow: hidden;
+}
+@keyframes play_icon{
+  50%{
+    transform: scale(1);
+    top: 600px;
+    left: 600px;
+  }
+  100%{
+    top: 300px;
+    left: 50px;
+    transform: scale(0.6);
+  }
+}
+#play_icon::before{
+  position: absolute;
+  content: '';
+  border-radius: 50%;
+  background: #F00;
+  width: 20px;height: 20px;
+  left: 50%;top: 50%;
+  animation-delay: 2s;
+  transform: translate(-50%,-50%);
+  animation-name: play_iconf;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  animation-delay: 2s;
+  opacity: 1;
+  pointer-events: none
+}
+@keyframes play_iconf{
+  100%{
+    opacity: 0;
+    transform: scale(20);
+    background: #00F;
+  }
+}
+.r{
+  position: absolute;
+  width: 150px;
+  height: 610px;
+  top: 50%;left: calc(50% + 280px);
+  transform: translate(-50%,-50%);
+}
+#score,#line,#time,#level,#people{
+  width: 100%;
+  text-align: left;
+  font-size: 20px;
+  padding: 5px;
+}
+.dialog{
+  font-size: 200%;
+  text-align: center;
+}
+.bt{
+  position: relative;
+  background: rgba(0, 0, 0, 0);
+  border-style: solid;
+  border-color: purple;
+  border-width: 5px;
+  width: 400px;
+  height: 80px;
+  cursor: pointer;
+  overflow: hidden;
+  color: purple;
+  transition: 0.5s;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,1);
+}
+.bt:hover{
+  color: white;
+}
+.bt::before{
+  z-index: -2;
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 80px;
+  background: purple;
+  transition: 0.5s;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  transform: scale(0,1);
+}
+.bt:hover::before{
+  opacity: 1;
+  transform: scale(1,1);
+}
+.water{
+  z-index: -1;
+  position: absolute;
+  border-radius: 50%;
+  width: 400px;
+  height: 400px;
+  background: wheat;
+  opacity: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) scale(0,0);
+  animation: water;
+  animation-duration: 2s;
+}
+@keyframes water{
+  100%{
+    transform: translate(-50%,-50%) scale(1,1);
+    opacity: 0;
+  }
+}
+#stop_start,#regame{
+  position: absolute;
+  font-size: 200%;
+  text-align: center;
+  line-height: 60px;
+  top: 450px;
+  left: 40px;
+  animation-name: rotate;
+  animation-duration: 4s;
+}
+@keyframes rotate{
+  0%{
+    transform: perspective(500px) rotateY(0deg) rotateX(0deg) rotateZ(0deg) scale(0,0.5);
+  }
+  33%{
+    transform: perspective(500px) rotateY(720deg) rotateX(0deg) rotateZ(0deg) scale(0.3,0.65);
+  }
+  66%{
+    transform: perspective(500px) rotateY(720deg) rotateX(720deg) rotateZ(0deg) scale(0.6,0.8);
+  }
+  100%{
+    transform: perspective(500px) rotateY(720deg) rotateX(720deg) rotateZ(720deg) scale(1,1);
+  }
+}
+#regame{
+  top: 550px;
+}
+.word{
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 650px;
+  cursor: pointer;
+  left: 80px;
+  transform: scale(1.5,1.5);
+  z-index: 0;
+}
+.word:active{
+  transform: scale(1,1);
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="js/jquery-3.3.1.js"></script>
+  <link rel="stylesheet" href="js/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <link rel="stylesheet" src="js/jquery-ui.min.css">
+  <script src="js/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="main.css">
+  <title>俄羅斯方塊</title>
+</head>
+<body>
+  <canvas id="main" width="300" height="600"></canvas>
+  <img src="image/bk0.png" alt="" class="material">
+  <img src="image/T.png" alt="" class="material">
+  <img src="image/I.png" alt="" class="material">
+  <img src="image/J.png" alt="" class="material">
+  <img src="image/L.png" alt="" class="material">
+  <img src="image/O.png" alt="" class="material">
+  <img src="image/S.png" alt="" class="material">
+  <img src="image/Z.png" alt="" class="material">
+  <img src="image/bk0.png" alt="" class="material">
+  <img src="image/stone.png" alt="" class="material">
+  <div id="logo"></div>
+  <div id="play_icon"></div>
+  <button id="stop_start" class="bt">S T O P</button>
+  <button id="regame" class="bt">重新遊戲</button>
+  <img src="image/image007.png" class="word" alt="" draggable="false">
+  <img src="image/image008.png" class="word" alt="" style="left: 200px;" draggable="false">
+  <div class="r">
+    <div id="time">時間：0</div>
+    <div id="score">分數：0</div>
+    <div id="line">行數：0</div>
+    <div id="level">等級：</div>
+    <div id="people"></div>
+  </div>
+  <dialog class="dialog" id="dialog0">
+    <input type="text" id="name" placeholder="名稱"><br><br>
+    <span>難度：</span>
+    <select id="difficult">
+      <option value="0">簡單</option>
+      <option value="1">一般</option>
+      <option value="2">困難</option>
+    </select><br><br>
+    <button type="button" class="bt">開始</button>
+  </dialog>
+</body>
+<script>
+  $('html').keydown(function(e){
+    if ($("#name").val() == "tetris"){
+      if (e.keyCode == 9){
+        let temp = 0;
+        for (let i = 0 ; i < all_block.length ; i++){
+          if (next_block == all_block[i]){
+            temp = (i + 1) % all_block.length;
+            break;
+          };
+        };
+        next_block = all_block[temp];
+        return false;
+      };
+    };
+    if (e.keyCode == 40){//下
+      down();
+      draw_nblock();
+    };
+    if (e.keyCode == 37){//左
+      goleft();
+      draw_nblock();
+    };
+    if (e.keyCode == 38){//上
+      cgstyle();
+    };
+    if (e.keyCode == 39){//右
+      goright();
+      draw_nblock();
+    };
+  });
+  $(".dialog").dialog({
+    width : 600,
+    height : 600,
+    resizable : false,
+    autoOpen : false,
+  });
+  $(".bt").mousedown(function(){
+    $(this).append(`<div class="water"></div>`);
+    setTimeout(function(){
+      $(".water:first").remove();
+    },2000)
+  });
+  $("#play_icon").mousedown(function(){
+    if ($("#people").text() != "") return false;
+    $("#dialog0").dialog("open");
+  });
+  $("#dialog0 .bt").mousedown(function(){
+    setTimeout(function(){
+      if ($("#name").val() == ""){
+        confirm("Please Input Your Name.");
+        return false;
+      };
+      $("#dialog0").dialog("close");
+      $("#level").text("等級：" + $("#dialog0 :selected").text());
+      $("#people").text("挑戰者：" + $("#dialog0 #name").val());
+      start = 0;
+      draw_nblock();
+      if ($("#dialog0 :selected").val() == 0){
+        time = 1000;
+      }
+      else if ($("#dialog0 :selected").val() == 1){
+        time = 500;
+      }
+      else if ($("#dialog0 :selected").val() == 2){
+        time = 250;
+      };
+      setInterval(() => {
+        if (start) return false;
+        down();
+        draw_nblock();
+      }, time);
+    },1000);
+  });
+  $("#stop_start").mousedown(function(){
+    if ($("#people").text() == "" || game_over) return false;
+    start = (start + 1) % 2;
+    if (start){
+      $("#stop_start").text("S T A R T");
+      $(this).append(`<div class="water"></div>`);
+      setTimeout(function(){
+        $(".water:first").remove();
+      },2000)
+    }
+    else {
+      $("#stop_start").text("S T O P");
+      $(this).append(`<div class="water"></div>`);
+      setTimeout(function(){
+        $(".water:first").remove();
+      },2000)
+    }
+  });
+  $("#regame").mousedown(function(){
+    setTimeout(function(){
+      history.go(0);
+    },1000);
+  });
+  $(".word:eq(0)").mousedown(function(){
+    $("*").css("font-size",parseFloat($("*").css("font-size")) - 0.5);
+  });
+  $(".word:eq(1)").mousedown(function(){
+    if (parseFloat($("*").css("font-size")) < 25)
+    $("*").css("font-size",parseFloat($("*").css("font-size")) + 0.5);
+  });
+</script>
+<script src="js/function.js"></script>
+<script src="js/main.js"></script>
+</html>

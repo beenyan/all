@@ -1,0 +1,30 @@
+html{
+  font-size: 120%;
+  font-weight: bold;
+  user-select: none;
+  user-select: none;
+  font-family: "微軟正黑體";
+}
+#animation{
+  position: relative;
+  top: 0;
+  width: 100px;height: 100px;
+  background-color: red;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: animation;
+}
+@keyframes animation{
+  0%{
+    background-color: red;
+    top: 0;
+  }
+  50%{
+    background-color: blue;
+    top: 50px;
+  }
+  100%{
+    background-color: red;
+    top: 0;
+  }
+}
