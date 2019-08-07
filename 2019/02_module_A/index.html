@@ -13,6 +13,7 @@
   <title>俄羅斯方塊</title>
 </head>
 <body>
+  <canvas width="1440" height="757" id="bk"></canvas>
   <canvas id="main" width="300" height="600"></canvas>
   <img src="image/bk0.png" alt="" class="material">
   <img src="image/T.png" alt="" class="material">
@@ -36,6 +37,11 @@
     <div id="line">行數：0</div>
     <div id="level">等級：</div>
     <div id="people"></div>
+    <div class="move">上</div>
+    <div class="move">下</div>
+    <div class="move">左</div>
+    <div class="move">右</div>
+    <div class="move">空白鍵</div>
   </div>
   <dialog class="dialog" id="dialog0">
     <input type="text" id="name" placeholder="名稱"><br><br>
@@ -47,8 +53,12 @@
     </select><br><br>
     <button type="button" class="bt">開始</button>
   </dialog>
+  <dialog class="dialog" id="dialog1"></dialog>
 </body>
 <script>
+  $("html").contextmenu(function(){
+    return false;
+  });
   $('html').keydown(function(e){
     if ($("#name").val() == "tetris"){
       if (e.keyCode == 9){
@@ -78,8 +88,41 @@
       goright();
       draw_nblock();
     };
+    if (e.keyCode == 32){//空白建
+      clearInterval(space);
+      space = setInterval(() => {
+        down();
+        draw_nblock();
+      }, 1);
+    };
+    if (e.keyCode == 16){//shift
+      if (shift) return false;
+      shift++;
+      let nn = player.block[player.style];
+      for (let y = 0 ; y < nn.length - bkempty(nn).y ; y++){
+        for (let x = 0 ; x < nn[y].length ; x++){
+          if (nn[y][x] != 0){
+            bg_arr[y + player.y][x + player.x] = 0;
+          };
+        };
+      };
+      player.y = 0;
+      player.x = 4;
+      player.style = 0;
+      let temp = player.block;
+      player.block = next_block;
+      next_block = temp;
+      draw_nblock();
+    };
   });
-  $(".dialog").dialog({
+  $("#dialog1").dialog({
+    width : 900,
+    height : 700,
+    resizable : false,
+    autoOpen : false,
+  });
+  $(".ui-dialog-titlebar").hide();
+  $("#dialog0").dialog({
     width : 600,
     height : 600,
     resizable : false,
@@ -115,7 +158,8 @@
       else if ($("#dialog0 :selected").val() == 2){
         time = 250;
       };
-      setInterval(() => {
+      clearInterval(set_time);
+      set_time = setInterval(() => {
         if (start) return false;
         down();
         draw_nblock();
@@ -146,11 +190,46 @@
     },1000);
   });
   $(".word:eq(0)").mousedown(function(){
-    $("*").css("font-size",parseFloat($("*").css("font-size")) - 0.5);
+    $("*").each(function(){
+      $(this).css("font-size",parseFloat($(this).css("font-size")) - 0.5);
+    });
   });
   $(".word:eq(1)").mousedown(function(){
-    if (parseFloat($("*").css("font-size")) < 25)
-    $("*").css("font-size",parseFloat($("*").css("font-size")) + 0.5);
+    if (parseFloat($("*").css("font-size")) < 25){
+      $("*").each(function(){
+        $(this).css("font-size",parseFloat($(this).css("font-size")) + 0.5);
+      });
+    };
+  });
+  $(".move:eq(0)").mousedown(function(){
+    let e = $.Event();
+    e.type = "keydown";
+    e.keyCode = 38;
+    $("html").trigger(e);
+  });
+  $(".move:eq(1)").mousedown(function(){
+    let e = $.Event();
+    e.type = "keydown";
+    e.keyCode = 40;
+    $("html").trigger(e);
+  });
+  $(".move:eq(2)").mousedown(function(){
+    let e = $.Event();
+    e.type = "keydown";
+    e.keyCode = 37;
+    $("html").trigger(e);
+  });
+  $(".move:eq(3)").mousedown(function(){
+    let e = $.Event();
+    e.type = "keydown";
+    e.keyCode = 39;
+    $("html").trigger(e);
+  });
+  $(".move:eq(4)").mousedown(function(){
+    let e = $.Event();
+    e.type = "keydown";
+    e.keyCode = 32;
+    $("html").trigger(e);
   });
 </script>
 <script src="js/function.js"></script>

@@ -22,13 +22,46 @@
       ctx.font = "arial 20px";
       ctx.fillText("CHEAT",1,8,8,6);
     };
+    if (start == 0) {
+      let block = player.block[player.style];
+      let pos = fake(block,player);
+      for (let y = pos.y ; y < block.length + pos.y ; y++){
+        for (let x = pos.x ; x < block[y - pos.y].length + pos.x ; x++){
+          if (block[y - pos.y][x - pos.x] != 0){
+            if (block[y - pos.y][x - pos.x] == 2){
+              ctx.strokeStyle = "aqua";
+            }
+            else if (block[y - pos.y][x - pos.x] == 3){
+              ctx.strokeStyle = "rgb(60, 60, 253)";
+            }
+            else if (block[y - pos.y][x - pos.x] == 1){
+              ctx.strokeStyle = "purple";
+            }
+            else if (block[y - pos.y][x - pos.x] == 4){
+              ctx.strokeStyle = "orange";
+            }
+            else if (block[y - pos.y][x - pos.x] == 5){
+              ctx.strokeStyle = "yellow";
+            }
+            else if (block[y - pos.y][x - pos.x] == 6){
+              ctx.strokeStyle = "green";
+            }
+            else if (block[y - pos.y][x - pos.x] == 7){
+              ctx.strokeStyle = "red";
+            };
+            ctx.lineWidth = 1 / 10;
+            ctx.strokeRect(x,y,1,1);
+          };
+        };
+      };
+    };
   };
   function draw_nblock(){
     if (start) return false;
     let block = player.block[player.style];
     for (let y = 0 ; y < block.length - bkempty(block).y ; y++){
       for (let x = 0 ; x < block[y].length ; x++){
-        if (bg_arr[y + player.y][x + player.x] != 0 && block[y][x] != 0){
+        if (bg_arr[y + player.y][x + player.x] != 0 && block[y][x] != 0 && have_down(block)){
           gameover();
           start = 1;
           return false;
@@ -52,6 +85,8 @@
           player.style = 0;
           player.block = next_block;
           next_block = all_block[rand(0,all_block.length - 1)];
+          clearInterval(space);
+          shift = 0;
           return false;
         }
       };
@@ -70,6 +105,8 @@
       player.style = 0;
       player.block = next_block;
       next_block = all_block[rand(0,all_block.length - 1)];
+      clearInterval(space);
+      shift = 0;
       return false;
     }
     for (let y = 0 ; y < block.length - bkempty(block).y ; y++){
@@ -141,28 +178,22 @@
       };
     };
     return false;
-    /*let arr = [];
-    for (let x = 0 + bkempty(nn).lx ; x < nn[0].length - bkempty(nn).rx ; x++){
-      arr.push(0);
-    };
-    for (let x = 0 + bkempty(nn).lx ; x < nn[0].length - bkempty(nn).rx ; x++){
-      for (let y = 0 ; y < nn.length ; y++){
-        if (nn[y][x] == 0 && arr[x - bkempty(nn).lx] == 0){
-          arr[x - bkempty(nn).lx] = y;
+  };
+  function fake_down(nn,player){
+    if (player.y + nn.length - bkempty(nn).y > bg_arr.length) return false;
+    for (let y = 0 ; y < nn.length - bkempty(nn).y ; y++){
+      for (let x = 0 ; x < nn[y].length ; x++){
+        if (nn[y][x] != 0){
+          if (bg_arr[y + player.y + 1] === undefined){
+            return false;
+          }
+          if (bg_arr[y + player.y + 1][x + player.x] != 0){
+            return false;
+          };
         };
       };
     };
-    for (let x = 0 ; x < arr.length ; x++){
-      if (arr[x] == 0){
-        arr[x] = nn.length - bkempty(nn).y;
-      };
-    };
-    for (let x = 0 ; x < arr.length ; x++){
-      if (bg_arr[arr[x] + player.y][player.x + bkempty(nn).lx + x] != 0){
-        return true;
-      };
-    };
-    return false;*/
+    return true;
   };
   function have_left(nn){
     for (let y = 0 ; y < nn.length - bkempty(nn).y ; y++){
@@ -332,16 +363,144 @@
   };
   function gameover(){
     game_over = 1;
-    let object = {
-      time : all_time,
-      lines : line,
-      score : score,
-      difficult : $("#dialog0 :selected").text(),
+    if ($("#name").val() != "tetris"){
+      let object = {
+        time : parseInt(all_time),
+        lines : line,
+        score : score,
+        difficult : $("#dialog0 :selected").text(),
+      };
+      $.post({
+        url : "fun.php?c=0",
+        async : false,
+        data : {js : object},
+      });
+      $("#dialog1").empty();
+      $("#dialog1").dialog("open");
+      $.post({
+        url : "fun.php?c=1",
+        async : false,
+        data : {difficult : $("#dialog0 :selected").text(),},
+        success : function(e){
+          e = JSON.parse(e);
+          $("#dialog1").append(`
+            <h2 style="font-size:40px">${$("#dialog0 :selected").text()}</h2>
+            <div class="line0">
+              <div class="line1">排名</div>
+              <div class="line1">時間</div>
+              <div class="line1">消行</div>
+              <div class="line1" style="border-style:none">分數</div>
+            </div>
+          `);
+          for (let i = 0 ; i < e.results.length ; i++){
+            $("#dialog1").append(`
+              <div class="line0">
+                <div class="line1">${i + 1}</div>
+                <div class="line1">${e.results[i].time}</div>
+                <div class="line1">${e.results[i].lines}</div>
+                <div class="line1" style="border-style:none">${e.results[i].score}</div>
+              </div>
+            `);
+            if (e.results[i].id == e.current_id){
+              $(".line0:last").css("background-color","aqua");
+            };
+          };
+          $("#dialog1").append(`<button id="re-game" class="bt" style="font-size:28px">重啟遊戲</button>`);
+          $("#re-game").mousedown(function(){
+            $(this).append(`<div class="water"></div>`);
+            setTimeout(function(){
+              $(".water:first").remove();
+              $("#dialog1").dialog("close");
+              $("#dialog0").dialog("open");
+              bg_arr = [];
+              for (let y = 0 ; y < 20 ; y++){
+                let temp = [];
+                for (let x = 0 ; x < 10 ; x++){
+                  temp.push(0);
+                };
+                bg_arr.push(temp);
+                player.x = 4;
+                player.y = 0;
+                player.style = 0;
+                player.block = next_block;
+                next_block = all_block[rand(0,all_block.length - 1)];
+                all_time = 0;
+                score = 0;
+                line = 0;
+                clearInterval(space);
+                $("#people").text("");
+                $("#score").text("分數：" + score);
+                $("#line").text("行數：" + line);
+              };
+            },2000)
+          });
+        },
+      });
+    }
+    else {
+      $("#dialog1").empty();
+      $("#dialog1").dialog("open");
+      $("#dialog1").append(`<button id="re-game" class="bt" style="font-size:28px">重啟遊戲</button>`);
+      $("#re-game").mousedown(function(){
+        $(this).append(`<div class="water"></div>`);
+        setTimeout(function(){
+          $(".water:first").remove();
+          $("#dialog1").dialog("close");
+          $("#dialog0").dialog("open");
+          bg_arr = [];
+          for (let y = 0 ; y < 20 ; y++){
+            let temp = [];
+            for (let x = 0 ; x < 10 ; x++){
+              temp.push(0);
+            };
+            bg_arr.push(temp);
+            player.x = 4;
+            player.y = 0;
+            player.style = 0;
+            player.block = next_block;
+            next_block = all_block[rand(0,all_block.length - 1)];
+            all_time = 0;
+            score = 0;
+            line = 0;
+            clearInterval(space);
+            $("#people").text("");
+            $("#score").text("分數：" + score);
+            $("#line").text("行數：" + line);
+          };
+        },2000)
+      });
     };
-    $.post({
-      url : "fun.php?c=0",
-      async : false,
-      data : {js : object}
-    });
+  };
+  function fake(nn,mm){
+    let obj = {
+      x : mm.x,
+      y : mm.y,
+    };
+    obj.y += nn.length;
+    let block = nn;
+    let now = [];
+    for (let y = 0 ; y < block.length ; y++){
+      for (let x = 0 ; x < block[y].length ; x++){
+        if (block[y][x] != 0){
+          now.push([x,y]);
+        };
+      };
+    };
+    while (fake_down(block,obj)){
+      obj.y++;
+    };
+    if (obj.y > 20 - nn.length + bkempty(block).y){
+      obj.y = 20 - nn.length + bkempty(block).y;
+    }
+    let bk = 0;
+    return obj;
+  };
+  function cknow(nn,mm){
+    for (let i = 0 ;i < mm.length ; i++){
+      if (nn[0] == mm[i][0] && nn[1] == mm[i][1]){
+        return false;
+      };
+    };
+    return true;
   };
 //</script>

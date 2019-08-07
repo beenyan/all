@@ -3,14 +3,18 @@
   canvas = $("#main")[0];
   let ctx = canvas.getContext('2d');
   ctx.scale(30,30);
+  let space;
   let bg_arr = [];
   let img_block = [];
   let time = 1000;
   let score = 0;
+  let set_time;
   let line = 0;
   let start = 1;
   let all_time = 0;
   let game_over = 0;
+  let shift = 0;
+  let bk_color = [];
   let scanvas = document.createElement('canvas');
   scanvas.width = 150;
   scanvas.height = 150;
@@ -171,4 +175,36 @@
     draw_next();
     draw_bk();
   }, 1000/60);
+  setInterval(function(){  
+    let canvas = document.createElement('canvas');
+    canvas = $("#bk")[0];
+    let ctx = canvas.getContext('2d');
+    if (rand(0,5) == 0){
+      bk_color.push(
+        [
+          rand(-rand(20,100),canvas.width + rand(20,100)),//X
+          rand(-rand(20,100),canvas.height + rand(20,100)),//Y
+          rand(20,100),//大小
+          `${rand(0,255)},${rand(0,255)},${rand(0,255)},`,//顏色
+          1 //深淺
+        ]
+      );
+    };
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for (let i = 0 ; i < bk_color.length ; i++){
+      let bk = bk_color[i];
+      bk_color[i][2] += 2;
+      if (bk_color[i][4] < 0.01){
+        bk_color.splice(i,1);
+      }
+      else if (bk_color[i][4] > 0){
+        bk_color[i][4] -= 0.01;
+      }
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(${bk[3]}${bk[4]})`;
+      ctx.arc(bk[0],bk[1],bk[2],0,Math.PI * 2);
+      ctx.fill();
+      ctx.closePath();
+    };
+  },1000/60);
 //</script>

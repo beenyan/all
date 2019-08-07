@@ -14,13 +14,23 @@ body{
 #main{
   position: absolute;
   left: 50%;top: 50%;
-  transform: translate(-50%,-50%);
   border-style: solid;
-  border-width: 5px;
+  border-width: 50px;
   border-left-color: orange;
   border-right-color: red;
   border-bottom-color: aqua;
   border-top-color: yellow;
+  animation-duration: 4s;
+  animation-fill-mode: forwards;
+  animation-name: ro;
+  box-shadow: 8px 8px 5px 0 rgba(0, 0, 0, 0.6);
+  transform: translate(-50%,-50%) scale(0,0) perspective(500px) rotateZ(0) rotateX(0);
+}
+@keyframes ro{
+  100%{
+    border-width: 5px;
+    transform: translate(-50%,-50%) scale(1,1) perspective(500px) rotateZ(720deg) rotateX(1800deg);
+  }
 }
 .material{
   position: absolute;
@@ -135,6 +145,19 @@ body{
   text-align: left;
   font-size: 20px;
   padding: 5px;
+  animation-duration: 4s;
+  animation-fill-mode: forwards;
+  animation-name: big;
+  transform: perspective(500px) scale(0,0) rotateX(0);
+}
+@keyframes big{
+  50% {
+    transform: perspective(500px) scale(1,1) rotateX(5040deg)
+  }
+  100%{
+    border-width: 5px;
+    transform: perspective(500px) scale(1,1) rotateX(1080deg);
+  }
 }
 .dialog{
   font-size: 200%;
@@ -225,12 +248,47 @@ body{
   width: 100px;
   height: 100px;
   position: absolute;
-  top: 650px;
+  top: 800px;
   cursor: pointer;
   left: 80px;
   transform: scale(1.5,1.5);
   z-index: 0;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  animation-name: word;
+}
+@keyframes word{
+  100%{
+    top: 650px;
+  }
 }
 .word:active{
   transform: scale(1,1);
+}
+#dialog1{
+  font-size: 0;
+}
+.line0{
+  width: 98%;
+  height: auto;
+  border-radius: 2px;
+  border-style: solid;
+  border-color: purple;
+  margin: 0;
+}
+.line1{
+  font-size: 30px;
+  display: inline-block;
+  width: 23%;
+  padding: 5px;
+  border-radius: 2px;
+  border-right-style: solid;
+  border-color: black;
+}
+#bk{
+  position: absolute;
+  left: 50%;top: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  z-index: -5;
 }
