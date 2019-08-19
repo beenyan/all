@@ -1,0 +1,4 @@
+ffplay 指令 影片
+-ss [int] 		重int秒開始撥放
+-t [int] 		撥放int秒
+-window_title "名稱" 	title名稱
