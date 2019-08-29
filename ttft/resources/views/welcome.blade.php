@@ -34,7 +34,6 @@
     <input type="password" id="password" placeholder="密碼"><br><br>
     <input type="text" id="ck_password" placeholder="確認密碼"><br><br>
     <input type="button" value="提交" id="send">
-    <input type="button" value="asd" id="asd">
     <div id="dialog0">
         <h1></h1><hr>
         <div class="uu"></div>
@@ -44,22 +43,30 @@
         <hr>
         <button>送出</button>
     </div>
+    <br>
+    email：<input type="text" name="email" id="email"><br>
+    password：<input type="text" name="pass" id="pass"><br>
+    <input type="button" value="提交" id="se">
 </body>
 <script>
-    $("#asd").mousedown(function(){
+    let question = [];
+    let ans;
+    let score = 0;
+    let new_q = [];
+    $("#se").mousedown(function(){
         $.post({
-            url : "http://localhost/ttft/public/userlogin",
+            url : "http://localhost/ttft/public/ck",
             async : false,
-            data : {_token : "{{csrf_token()}}",name : $("#name").val()},
+            data : {
+                mail : $("#email").val(),
+                password : $("#pass").val(),
+                _token : "{{csrf_token()}}",
+            },
             success : function(e){
                 console.log(e);
             },
         });
     });
-    let question = [];
-    let ans;
-    let score = 0;
-    let new_q = [];
     $("#dialog0").dialog({
         width : 1000,
         height : 650,

@@ -50,6 +50,15 @@ Route::post('/userlogin',function(){
     return view("userlogin");
 });
 
+Route::post('/ck',function(){
+    if (Auth::attempt(['email' => $_POST["mail"],'password' => $_POST["password"]])){
+        return "成功登入";
+    }
+    else {
+        return "登入失敗";
+    }
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
